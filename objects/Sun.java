@@ -1,3 +1,4 @@
+package objects;
 public class Sun{
     private static int totalSun = 25;
 
