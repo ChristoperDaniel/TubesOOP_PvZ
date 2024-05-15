@@ -6,10 +6,10 @@ public class Tanaman extends Aquatic{
     private int attack_speedTanaman;
     private int rangeTanaman;
     private int cooldownTanaman;
-    private zombie zombieTerdepan;
+    
     
     // konstruktor
-    public Tanaman(String namaTanaman, int costTanaman, int healthTanaman, int attack_damageTanaman, int attack_speedTanaman, int rangeTanaman, int cooldownTanaman, zombie zombieTerdepan){
+    public Tanaman(String namaTanaman, int costTanaman, int healthTanaman, int attack_damageTanaman, int attack_speedTanaman, int rangeTanaman, int cooldownTanaman){
         this.namaTanaman = namaTanaman;
         this.costTanaman = costTanaman;
         this.healthTanaman = healthTanaman;
@@ -17,7 +17,6 @@ public class Tanaman extends Aquatic{
         this.attack_speedTanaman = attack_speedTanaman;
         this.rangeTanaman = rangeTanaman;
         this.cooldownTanaman = cooldownTanaman;
-        this.zombieTerdepan = zombieTerdepan;
     }
     
     // method
