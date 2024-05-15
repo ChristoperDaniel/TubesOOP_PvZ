@@ -2,8 +2,6 @@ package classes.player;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
 import java.util.List;
 import plant.*;
 import classes.objects.*;
@@ -13,6 +11,7 @@ public class Player {
     // Constructor
     public Player() {
         this.scheduler = Executors.newScheduledThreadPool(1);
+
     }
 
     // menanam tanaman
@@ -41,6 +40,7 @@ public class Player {
                     System.out.println("Tanaman tidak tersedia atau sedang dalam cooldown.");
                 }
             }
+            scanner.close();
         }
 
     // menggali tanaman

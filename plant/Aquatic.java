@@ -1,3 +1,4 @@
+package plant;
 public abstract class Aquatic {
     private boolean is_aquatic;
 

@@ -1,46 +1,42 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import classes.objects.Deck;
-import classes.objects.Inventory;
-import classes.objects.Sun;
-import classes.player.Player;
-import zombie.BucketheadZombie;
-import zombie.ConeheadZombie;
-import zombie.DolphinRiderZombie;
-import zombie.JackInTheBoxZombie;
+import classes.map.*;
+import classes.objects.*;
+import classes.player.*;
+import interfaces.*;
+import plant.*;
+import zombie.*;
 
 public class Game {
     private String statusGame;
     private Player player;
-    private Map map;
+    private volatile Map map;
     private Deck plantDeck;
     private Inventory inventory;
     private Zombie zombie;
     private int time;
     private Sun sun;
-    private boolean isDayTime;
-    private boolean gameOver;
+    private volatile boolean isDayTime;
+    private volatile boolean gameOver;
     private Random random;
     private ScheduledExecutorService executor;
     private volatile int currentTime;
-    private List<Zombie> listofWaterZombies = new ArrayList<>(List.of(
-
+    private List<Zombie> listofAllZombies = new ArrayList<>(List.of(
+        new NormalZombie(),
         new BucketheadZombie(),
         new ConeheadZombie(),
         new DolphinRiderZombie(),
         new JackInTheBoxZombie(),
-        new Squash(),
-        new TangleKelp(),
-        new Jalapeno(),
-        new Wallnut(),
-        new Lilypad(),
+        new PeashooterZombie(),
+        new PoleVaultingZombie(),
+        new RugbyZombie(),
+        new ScreendoorZombie()
         // jangan lupa bikin jadi zombie
     ));
 
@@ -49,7 +45,6 @@ public class Game {
         player = new Player();
         map = new Map();
         plantDeck = new Deck();
-        zombie = new Zombie();
         inventory = new Inventory();
         time = 0;
         isDayTime = true;
@@ -207,6 +202,7 @@ public class Game {
                     break;
             }
         }
+        scanner.close();
 
     }
 
@@ -318,8 +314,8 @@ public class Game {
 
         executor.scheduleAtFixedRate(this::updateSun, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::gameLoop, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
-        executor.scheduleAtFixedRate(this::spawnZombieThread, 0, 1, TimeUnit.SECONDS); // Memulai thread spawnZombie
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
     }
 
@@ -340,7 +336,7 @@ public class Game {
     private void gameLoop() {
         if (!gameOver) {
             perang();
-            map.removeDeadEntities();
+            /*map.removeDeadEntities();
             if (currentTime >= 160 && currentTime <= 200) {
             if (map.isZombieAtColumn(0)) {
                 System.out.println("Game Over! Zombies have breached your defenses!");
@@ -353,7 +349,7 @@ public class Game {
                 System.out.println("Game Over! Zombies have breached your defenses!");
                 stopGame();
             }
-            }
+            }*/
         }
     }
 
@@ -366,7 +362,7 @@ public class Game {
                 case 1:
                     // Menanam Tanaman
                     // Implementasi
-                    player.menanam();
+                    player.menanam(plantDeck);
                     break;
                 case 2:
                     // Menggali Tanaman
@@ -396,30 +392,15 @@ public class Game {
                     System.out.println("Invalid choice!");
             }
         }
+        scanner.close();
     }
 
     private void stopGame() {
         gameOver = true;
     }
 
-    private void spawnZombieThread() {
-        if (!gameOver && !day && currentTime >= 20 && currentTime <= 160) {
-            double randomValue = Math.random();
-            if (randomValue <= 0.3) {
-                int zombieTypeIndex = random.nextInt(zombieTypes.size()); // Pilih tipe zombie secara acak
-                Zombie zombieType = zombieTypes.get(zombieTypeIndex); // Ambil tipe zombie dari list
-                int randomRow = random.nextInt(Map.HEIGHT); // Pilih baris secara acak
-                int randomCol = Map.WIDTH - 1; // Pilih kolom di sisi kanan map
-                System.out.println("Zombie " + zombieType.getNamaZombie() + " muncul pada baris " + (randomRow + 1) + " dan kolom " + (randomCol + 1) + "!");
-                map.spawnZombie(zombieType, randomRow, randomCol); // Spawnya dengan baris dan kolom yang dipilih secara acak
-                zombieCount++;
-                map.attackPlant(zombieType);
-            }
-        }
-    }
-
     private void perang() {
-        if (!gameOver) {
+        /*if (!gameOver) {
             for (int lane = 0; lane < Map.HEIGHT; lane++) {
                 List<Tanaman> tanamanLane = map.getTanamanLane(lane);
                 List<Zombie> zombieLane = map.getZombieLane(lane);
@@ -454,14 +435,12 @@ public class Game {
                     }
                 }
             }
-        }
+        }*/
     }
 
-    private String getTimeOfDay() {
-        if (time <= 100) {
-            return "Pagi hari";
-        } else {
-            return "Malam hari";
+    public void changeTimeOfDay() {
+        if (time >= 100){
+            isDayTime = !isDayTime;
         }
     }
 
@@ -481,13 +460,15 @@ public class Game {
     }
 
     public void implementFlag() {
-        System.out.println("Implementasi flag...");
+        if (time == 100){
+            map.Flag();
+        }
     }
 
     public static void main(String[] args) {
         System.out.println("Selamat datang di ");
         Game game = new Game();
-        game.displayMenu();
+        game.displayMenuUtama();
     }
 }
 
