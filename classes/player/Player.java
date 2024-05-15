@@ -9,23 +9,10 @@ import plant.*;
 import classes.objects.*;
 
 public class Player {
-    private String namaLengkap;
     private ScheduledExecutorService scheduler;
     // Constructor
-    public Player(String namaLengkap) {
-        this.namaLengkap = namaLengkap;
+    public Player() {
         this.scheduler = Executors.newScheduledThreadPool(1);
-
-    }
-
-    // mendapatkan nama lengkap
-    public String get_namaLengkap() {
-        return namaLengkap;
-    }
-
-    // mengatur nama lengkap
-    public void set_namaLengkap(String namaLengkap) {
-        this.namaLengkap = namaLengkap;
     }
 
     // menanam tanaman

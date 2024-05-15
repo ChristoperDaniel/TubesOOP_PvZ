@@ -4,6 +4,8 @@ import zombie.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.random.*;
 
 import plant.*;
 
@@ -13,12 +15,13 @@ public class Map {
 
     private Tile[][] tiles;
 
+
     // Constructor
     public Map() {
         tiles = new Tile[total_rows][total_columns];
         for (int row = 0; row < total_rows; row++) {
             for (int col = 0; col < total_columns; col++) {
-                tiles[row][col] = new Tile("Tile (" + row + ", " + col + ")", row, col);
+                tiles[row][col] = new Tile("_", row, col);
             }
         }
     }
@@ -70,18 +73,14 @@ public class Map {
         return (row == 2 || row == 3) && (col >= 1 && col <= 9);
     }
 
-    // Metode untuk menempatkan LilyPad pada tile air
-    public void placeLilyPad(int row, int col, Tanaman lilyPad) {
+    private boolean isLilypadAvail(int row, int col){
         Tile current_Tile = getTile(row, col);
-        if (current_Tile != null && isWaterTile(row, col)) {
-            if (current_Tile.getTanaman() == null) {
-                current_Tile.addTanaman(lilyPad);
-            } else {
-                System.out.println("Tile sudah ditempati oleh tanaman lain.");
-            }
-        } else {
-            System.out.println("Tile ini bukan area air atau di luar batas.");
+        if(isWaterTile(row, col)){
+            if(current_Tile.getTanaman().get(0).getNamaTanaman() == "Lilypad"){
+                return true;
+            } 
         }
+        return false;
     }
 
     // Menempatkan tanaman pada tile tertentu
@@ -89,15 +88,29 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null) {
             if (isWaterTile(row, col)) {
-                if (!(current_Tile.getTanaman().contains(Lilypad))) {
-                    System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
-                    return;
+                if(tanaman.getNamaTanaman() == "Lilypad"){
+                    if(current_Tile.getTanaman() == null){
+                        current_Tile.addTanaman(tanaman);
+                    } else {
+                        System.out.println("Lilypad sudah terpasang.");
+                    }
+                } else if (tanaman.getNamaTanaman() != "Lilypad"){
+                    if(current_Tile.getTanaman() == null || !isLilypadAvail(row, col)){
+                        System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
+                    } else if (!isLilypadAvail(row, col)){
+                        current_Tile.addTanaman(tanaman);
+                    }
                 }
-            }
-            if (current_Tile.getTanaman() == null || current_Tile.getTanaman() instanceof LilyPad) {
-                current_Tile.addTanaman(tanaman);
-            } else {
-                System.out.println("Tile sudah ditempati oleh tanaman lain.");
+            } else if (!isWaterTile(row, col)){
+                if(tanaman.getNamaTanaman() == "Lilypad" && current_Tile.getTanaman() == null){
+                    System.out.println("Lilypad hanya bisa terpasang di air");
+                } else if(tanaman.getNamaTanaman() != "Lilypad"){
+                    if(current_Tile.getTanaman() == null){
+                        current_Tile.addTanaman(tanaman);
+                    } else {
+                        System.out.println("Tile sudah ditempati tanaman lain.");
+                    }
+                }
             }
         } else {
             System.out.println("Tile tidak tersedia.");
@@ -105,7 +118,19 @@ public class Map {
     }
 
     // Menempatkan zombie pada tile 
-    public void placeZombie(int row, int col, Zombie zombie) {
+    public void placeZombie(int row, int col, List<Zombie> listofZombies) {
+        double randomValue = Math.random();
+        Random random;
+        if (randomValue <= 0.3) {
+            int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
+            Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
+            int randomRow = random.nextInt(Map.HEIGHT); // Pilih baris secara acak
+            int randomCol = Map.WIDTH - 1; // Pilih kolom di sisi kanan map
+                    System.out.println("Zombie " + zombieType.getNamaZombie() + " muncul pada baris " + (randomRow + 1) + " dan kolom " + (randomCol + 1) + "!");
+                    map.spawnZombie(zombieType, randomRow, randomCol); // Spawnya dengan baris dan kolom yang dipilih secara acak
+                    zombieCount++;
+                    map.attackPlant(zombieType);
+                }
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null) {
             current_Tile.addZombie(zombie);
