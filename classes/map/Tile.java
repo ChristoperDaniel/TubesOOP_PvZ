@@ -8,17 +8,33 @@ import java.util.List;
 
 public class Tile {
     private String displayName;
-    private Tanaman tanaman;
+    private List<Tanaman> plants;
     private List<Zombie> zombies;
+    private int x;
+    private int y;
 
     // Constructor
-    public Tile(String displayName) {
+    public Tile(String displayName, int y, int x) {
         this.displayName = displayName;
-        this.tanaman = null;
+        this.plants = new ArrayList<>();
         this.zombies = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
 
     // Getters and Setters
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
+    public void setX(int x){
+        this.x = x;
+    }
+    public void getY(int y){
+        this.y = y;
+    }
     public String getIdentifier() {
         return displayName;
     }
@@ -27,12 +43,16 @@ public class Tile {
         this.displayName = displayName;
     }
 
-    public Tanaman getTanaman() {
-        return tanaman;
+    public List<Tanaman> getTanaman() {
+        return plants;
     }
 
-    public void setTanaman(Tanaman tanaman) {
-        this.tanaman = tanaman;
+    public void addTanaman(Tanaman plants) {
+        this.plants.add(plants);
+    }
+
+    public void removeTanaman(Tanaman plants) {
+        this.plants.remove(plants);
     }
 
     public List<Zombie> getZombies() {
@@ -47,8 +67,10 @@ public class Tile {
         this.zombies.remove(zombie);
     }
 
+    
+
     // Method untuk mengecek apakah tile kosong
     public boolean isEmpty() {
-        return tanaman == null && zombies.isEmpty();
+        return plants.isEmpty() && zombies.isEmpty();
     }
 }

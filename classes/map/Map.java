@@ -1,7 +1,10 @@
 package classes.map;
 
-
 import zombie.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import plant.*;
 
 public class Map {
@@ -15,7 +18,7 @@ public class Map {
         tiles = new Tile[total_rows][total_columns];
         for (int row = 0; row < total_rows; row++) {
             for (int col = 0; col < total_columns; col++) {
-                tiles[row][col] = new Tile("Tile (" + row + ", " + col + ")");
+                tiles[row][col] = new Tile("Tile (" + row + ", " + col + ")", row, col);
             }
         }
     }
@@ -28,13 +31,54 @@ public class Map {
         return null;
     }
 
+    public List<Tile> getRow(int row) {
+        List<Tile> rowTiles = new ArrayList<>();
+        if (row >= 0 && row < total_rows) {
+            for (int col = 0; col < total_columns; col++) {
+                rowTiles.add(tiles[row][col]);
+            }
+        } else {
+            System.out.println("Baris tidak valid.");
+        }
+        return rowTiles;
+    }
+
+    // Metode untuk memeriksa apakah tile adalah air
+    private boolean isWaterTile(int row, int col) {
+        return (row == 2 || row == 3) && (col >= 1 && col <= 9);
+    }
+
+    // Metode untuk menempatkan LilyPad pada tile air
+    public void placeLilyPad(int row, int col, Tanaman lilyPad) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null && isWaterTile(row, col)) {
+            if (current_Tile.getTanaman() == null) {
+                current_Tile.addTanaman(lilyPad);
+            } else {
+                System.out.println("Tile sudah ditempati oleh tanaman lain.");
+            }
+        } else {
+            System.out.println("Tile ini bukan area air atau di luar batas.");
+        }
+    }
+
     // Menempatkan tanaman pada tile tertentu
     public void placeTanaman(int row, int col, Tanaman tanaman) {
         Tile current_Tile = getTile(row, col);
-        if (current_Tile != null && current_Tile.getTanaman() == null) {
-            current_Tile.setTanaman(tanaman);
+        if (current_Tile != null) {
+            if (isWaterTile(row, col)) {
+                if (!(current_Tile.getTanaman().contains(Lilypad))) {
+                    System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
+                    return;
+                }
+            }
+            if (current_Tile.getTanaman() == null || current_Tile.getTanaman() instanceof LilyPad) {
+                current_Tile.addTanaman(tanaman);
+            } else {
+                System.out.println("Tile sudah ditempati oleh tanaman lain.");
+            }
         } else {
-            System.out.println("Tile tidak tersedia untuk menempatkan tanaman.");
+            System.out.println("Tile tidak tersedia.");
         }
     }
 
@@ -49,10 +93,10 @@ public class Map {
     }
 
     // Menghapus tanaman dari tile
-    public void removeTanaman(int row, int col) {
+    public void removeTanaman(int row, int col, Tanaman tanaman) {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null && current_Tile.getTanaman() != null) {
-            current_Tile.setTanaman(null);
+            current_Tile.removeTanaman(tanaman);
         }
     }
 
