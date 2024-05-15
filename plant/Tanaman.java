@@ -2,7 +2,7 @@ package plant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import zombie.*;
-import interface.*;
+import interfaces.*;
 
 public class Tanaman extends Aquatic{
     private String namaTanaman;

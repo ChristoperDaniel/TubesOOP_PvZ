@@ -5,7 +5,11 @@ public class Peashooter extends Tanaman{
     }
 
     @Override
-    public void attackPlant(Zombie zombie){
-        zombie.setHealthZombie(zombie.getHealthZombie()-this.attack_damageTanaman);
+    public void attackPlant(Zombie zombie, Tiles tiles) {
+        // Mengecek apakah zombie berada pada row yang sama dengan tanaman
+        if (zombie.getPosition().getRow() == tiles.getRow()) {
+            // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
+            zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
+        }
     }
 }

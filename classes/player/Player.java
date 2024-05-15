@@ -6,14 +6,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
 import plant.*;
-import classes.objects.Deck;
+import classes.objects.*;
 
 public class Player {
     private String namaLengkap;
-
+    private ScheduledExecutorService scheduler;
     // Constructor
     public Player(String namaLengkap) {
         this.namaLengkap = namaLengkap;
+        this.scheduler = Executors.newScheduledThreadPool(1);
+
     }
 
     // mendapatkan nama lengkap
@@ -53,7 +55,6 @@ public class Player {
                 }
             }
         }
-    }
 
     // menggali tanaman
     public void menggali() {

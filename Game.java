@@ -11,6 +11,10 @@ import classes.objects.Deck;
 import classes.objects.Inventory;
 import classes.objects.Sun;
 import classes.player.Player;
+import zombie.BucketheadZombie;
+import zombie.ConeheadZombie;
+import zombie.DolphinRiderZombie;
+import zombie.JackInTheBoxZombie;
 
 public class Game {
     private String statusGame;
@@ -26,43 +30,17 @@ public class Game {
     private Random random;
     private ScheduledExecutorService executor;
     private volatile int currentTime;
-    private List<Zombie> listofAllZombies = new ArrayList<>(List.of(
-        new Sunflower(),
-        new Peashooter(),
-        new SnowPea(),
-        new Seashroom(),
-        new Squash(),
-        new TangleKelp(),
-        new Jalapeno(),
-        new Wallnut(),
-        new Lilypad(),
-        new Magnetshroom()
-        // jangan lupa bikin jadi zombie
-    ));
-    private List<Zombie> listofLandZombies = new ArrayList<>(List.of(
-        new Sunflower(),
-        new Peashooter(),
-        new SnowPea(),
-        new Seashroom(),
-        new Squash(),
-        new TangleKelp(),
-        new Jalapeno(),
-        new Wallnut(),
-        new Lilypad(),
-        new Magnetshroom()
-        // jangan lupa bikin jadi zombie
-    ));
     private List<Zombie> listofWaterZombies = new ArrayList<>(List.of(
-        new Sunflower(),
-        new Peashooter(),
-        new SnowPea(),
-        new Seashroom(),
+
+        new BucketheadZombie(),
+        new ConeheadZombie(),
+        new DolphinRiderZombie(),
+        new JackInTheBoxZombie(),
         new Squash(),
         new TangleKelp(),
         new Jalapeno(),
         new Wallnut(),
         new Lilypad(),
-        new Magnetshroom()
         // jangan lupa bikin jadi zombie
     ));
 
