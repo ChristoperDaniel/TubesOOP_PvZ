@@ -1,12 +1,95 @@
 package classes.map;
 
 
+import zombie.*;
+import plant.*;
+
+public class Map {
+    public static int total_rows = 5;
+    public static int total_columns = 10;
+
+    private Tile[][] tiles;
+
+    // Constructor
+    public Map() {
+        tiles = new Tile[total_rows][total_columns];
+        for (int row = 0; row < total_rows; row++) {
+            for (int col = 0; col < total_columns; col++) {
+                tiles[row][col] = new Tile("Tile (" + row + ", " + col + ")");
+            }
+        }
+    }
+
+    // Mendapatkan tile berdasarkan posisi
+    public Tile getTile(int row, int col) {
+        if (row >= 0 && row < total_rows && col >= 0 && col < total_columns) {
+            return tiles[row][col];
+        }
+        return null;
+    }
+
+    // Menempatkan tanaman pada tile tertentu
+    public void placeTanaman(int row, int col, Tanaman tanaman) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null && current_Tile.getTanaman() == null) {
+            current_Tile.setTanaman(tanaman);
+        } else {
+            System.out.println("Tile tidak tersedia untuk menempatkan tanaman.");
+        }
+    }
+
+    // Menempatkan zombie pada tile 
+    public void placeZombie(int row, int col, Zombie zombie) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null) {
+            current_Tile.addZombie(zombie);
+        } else {
+            System.out.println("Tile tidak tersedia untuk menempatkan zombie.");
+        }
+    }
+
+    // Menghapus tanaman dari tile
+    public void removeTanaman(int row, int col) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null && current_Tile.getTanaman() != null) {
+            current_Tile.setTanaman(null);
+        }
+    }
+
+    // Menghapus zombie dari tile
+    public void removeZombie(int row, int col, Zombie zombie) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null) {
+            current_Tile.removeZombie(zombie);
+        }
+    }
+
+    // Menampilkan peta
+    public void displayMap() {
+        for (int row = 0; row < total_rows; row++) {
+            for (int col = 0; col < total_columns; col++) {
+                Tile tile = tiles[row][col];
+                System.out.print("[" + (tile.getTanaman() != null ? "T" : " ") + (!tile.getZombies().isEmpty() ? "Z" : " ") + "]");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        Map gameMap = new Map();
+        gameMap.placeTanaman(2, 2, new Sunflower());
+        gameMap.displayMap();
+
+    }
+}
+
+/*
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import Tanaman.Tanaman;
-import Zombie.Zombie;
+import plant.*;
+import zombie.*;
 
 public class Map {
     private class Tile {
@@ -94,6 +177,7 @@ public class Map {
         }
     }
 
+
     public void addPlant(int row, int col, String plantSymbol) {
         if (row >= 0 && row < rows && col >= 0 && col < columns) {
             map[row][col].addPlantTile(plantSymbol);
@@ -115,7 +199,7 @@ public class Map {
         }
     }
 
-    
+
 
     public static void main(String[] args) {
         Map gameMap = new Map();
@@ -129,3 +213,5 @@ public class Map {
         gameMap.displayMap();
     }
 }
+
+*/
