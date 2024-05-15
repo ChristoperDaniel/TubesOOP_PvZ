@@ -2,30 +2,16 @@ package classes.player;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
 import java.util.List;
 import plant.*;
 import classes.objects.*;
 
 public class Player {
-    private String namaLengkap;
     private ScheduledExecutorService scheduler;
     // Constructor
-    public Player(String namaLengkap) {
-        this.namaLengkap = namaLengkap;
+    public Player() {
         this.scheduler = Executors.newScheduledThreadPool(1);
 
-    }
-
-    // mendapatkan nama lengkap
-    public String get_namaLengkap() {
-        return namaLengkap;
-    }
-
-    // mengatur nama lengkap
-    public void set_namaLengkap(String namaLengkap) {
-        this.namaLengkap = namaLengkap;
     }
 
     // menanam tanaman
@@ -54,6 +40,7 @@ public class Player {
                     System.out.println("Tanaman tidak tersedia atau sedang dalam cooldown.");
                 }
             }
+            scanner.close();
         }
 
     // menggali tanaman
