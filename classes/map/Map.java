@@ -43,6 +43,28 @@ public class Map {
         return rowTiles;
     }
 
+    // Method untuk mengecek apakah di suatu tile terdapat zombie
+    public boolean isZombieAvail(int row, int col) {
+        Tile currentTile = getTile(row, col);
+        if (currentTile != null) {
+            return !currentTile.getZombies().isEmpty();
+        } else {
+            System.out.println("Tile tidak tersedia.");
+            return false;
+        }
+    }
+
+    // Method untuk mengecek apakah di suatu tile terdapat tanaman
+    public boolean isTanamanAvail(int row, int col) {
+        Tile currentTile = getTile(row, col);
+        if (currentTile != null) {
+            return !currentTile.getTanaman().isEmpty();
+        } else {
+            System.out.println("Tile tidak tersedia.");
+            return false;
+        }
+    }
+
     // Metode untuk memeriksa apakah tile adalah air
     private boolean isWaterTile(int row, int col) {
         return (row == 2 || row == 3) && (col >= 1 && col <= 9);
