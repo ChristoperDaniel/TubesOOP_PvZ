@@ -6,12 +6,13 @@ public class SnowPea extends Tanaman{
         this.slowingEffect = new SlowingEffect(0.5f, 3000);
     }
 
-    public int slowDamage(){
-        
-    }
-
     @Override
-    public void attackPlant(Zombie zombie){
-        zombie.setHealthZombie(zombie.getHealthZombie()-this.attack_damageTanaman);
+    public void attackPlant(Zombie zombie, Tiles tiles) {
+        // Mengecek apakah zombie berada pada row yang sama dengan tanaman
+        if (zombie.getPosition().getRow() == tiles.getRow()) {
+            // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
+            zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
+        }
+        zombie.applySlowEffect(slowingEffect);
     }
 }

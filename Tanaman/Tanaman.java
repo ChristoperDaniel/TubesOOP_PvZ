@@ -5,7 +5,7 @@ public class Tanaman extends Aquatic{
     private int attack_damageTanaman;
     private int attack_speedTanaman;
     private int rangeTanaman;
-    private int cooldownTanaman;
+    private int cooldownTanaman
     
     
     // konstruktor
