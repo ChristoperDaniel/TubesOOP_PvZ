@@ -1,35 +1,33 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Deck {
+public class DeckdenganException {
     private static final int MaxDeckSize = 6;
     private List<Tanaman> listPlants = new ArrayList<>();
 
+    // Metode-metode lain dari kelas Deck
     public int getMaxDeckSize(){
         return MaxDeckSize;
     }
     public int getSize(){
         return listPlants.size();
     }
-    public void addPlants(Tanaman tanaman) {
+    public void addPlants(Tanaman tanaman) throws DeckFullException, TanamanAlreadyInDeckException {
         if (listPlants.size() >= MaxDeckSize) {
-            System.out.println("Deck penuh. Tidak bisa menambah tanaman lagi.");
-            return;
+            throw new DeckFullException("Deck penuh. Tidak bisa menambah tanaman lagi.");
         }
 
         if (listPlants.contains(tanaman)) {
-            System.out.println("Tanaman sudah ada di dalam deck.");
-            return;
+            throw new TanamanAlreadyInDeckException("Tanaman sudah ada di dalam deck.");
         }
 
         listPlants.add(tanaman);
         System.out.println(tanaman.getNamaTanaman() + " berhasil ditambahkan ke deck.");
     }
 
-    public void swapPlants(int pos1, int pos2) {
+    public void swapPlants(int pos1, int pos2) throws InvalidPositionException {
         if (pos1 < 0 || pos1 >= listPlants.size() || pos2 < 0 || pos2 >= listPlants.size()) {
-            System.out.println("Posisi tidak valid.");
-            return;
+            throw new InvalidPositionException("Posisi tidak valid.");
         }
 
         Tanaman temp = listPlants.get(pos1);
@@ -39,10 +37,9 @@ public class Deck {
         System.out.println("Tanaman berhasil ditukar posisinya.");
     }
 
-    public Tanaman removePlants(int pos) {
+    public Tanaman removePlants(int pos) throws InvalidPositionException {
         if (pos < 0 || pos >= listPlants.size())  {
-            System.out.println("Posisi tidak valid.");
-            return null;
+            throw new InvalidPositionException("Posisi tidak valid.");
         }
 
         Tanaman removedTanamanDeck = listPlants.remove(pos);
@@ -50,10 +47,10 @@ public class Deck {
         return removedTanamanDeck;
     }
 
-    public void displayDeckPlants() {
+    public void displayDeckPlants() throws EmptyDeckException {
         System.out.println("-----------------");
         if (listPlants.isEmpty()) {
-            System.out.println("Deck kosong.");
+            throw new EmptyDeckException("Deck kosong.");
         }
         else{
             System.out.println("Isi deck tanaman:");
@@ -62,5 +59,30 @@ public class Deck {
             }
         }
         System.out.println("-----------------");
+    }
+}
+
+// Deklarasi kelas-kelas exception di luar kelas Deck
+class DeckFullException extends Exception {
+    public DeckFullException(String message) {
+        super(message);
+    }
+}
+
+class TanamanAlreadyInDeckException extends Exception {
+    public TanamanAlreadyInDeckException(String message) {
+        super(message);
+    }
+}
+
+class InvalidPositionException extends Exception {
+    public InvalidPositionException(String message) {
+        super(message);
+    }
+}
+
+class EmptyDeckException extends Exception {
+    public EmptyDeckException(String message) {
+        super(message);
     }
 }
