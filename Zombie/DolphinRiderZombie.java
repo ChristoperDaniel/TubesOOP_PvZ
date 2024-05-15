@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class DolphinRiderZombie extends Zombie implements ZombieWithAbility {
     public DolphinRiderZombie() {

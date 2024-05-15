@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class BucketheadZombie extends Zombie implements ZombieWithItem {
     public BucketheadZombie() {

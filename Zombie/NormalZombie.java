@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class NormalZombie extends Zombie {
     public NormalZombie() {

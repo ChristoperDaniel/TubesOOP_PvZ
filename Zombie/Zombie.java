@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public abstract class Zombie {
     protected String namaZombieString;

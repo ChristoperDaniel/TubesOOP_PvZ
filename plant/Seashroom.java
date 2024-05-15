@@ -1,6 +1,7 @@
-public class Jalapeno extends Tanaman implements TanamanPenyerang{
-    public Jalapeno() {
-        super("Jalapeno", 125, 100, 5000, 0, -1, 30);
+package plant;
+public class Seashroom extends Tanaman{
+    public Seashroom() {
+        super("Seashroom", 0, 100, 20, 5, -1, 10,false);
     }
 
     @Override
