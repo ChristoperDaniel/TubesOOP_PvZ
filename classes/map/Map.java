@@ -16,6 +16,7 @@ public class Map {
         private boolean isTileAvail;
         private String symbol;
 
+
         public Tile(boolean isAreaSpawn, boolean isAreaRumput, boolean isAreaRumah, boolean isTileAvail) {
             this.isAreaSpawn = isAreaSpawn;
             this.isAreaRumput = isAreaRumput;

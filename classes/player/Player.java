@@ -1,11 +1,21 @@
 package classes.player;
+import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import plant.*;
+import classes.objects.*;
 
 public class Player {
     private String namaLengkap;
-
+    private ScheduledExecutorService scheduler;
     // Constructor
     public Player(String namaLengkap) {
         this.namaLengkap = namaLengkap;
+        this.scheduler = Executors.newScheduledThreadPool(1);
+
     }
 
     // mendapatkan nama lengkap
@@ -19,10 +29,32 @@ public class Player {
     }
 
     // menanam tanaman
-    public void menanam() {
+    public void menanam(Deck deck) {
         // Implementasi logika menanam tanaman
         //soon
-    }
+            Scanner scanner = new Scanner(System.in);
+            while (true) { // loop ini bisa diganti sesuai kondisi permainan Anda
+                System.out.println("Tanaman yang tersedia:");
+                List<Tanaman> availableTanamans = deck.getAvailableTanamans();
+                for (Tanaman tanaman : availableTanamans) {
+                    System.out.println(tanaman.getNamaTanaman());
+                }
+    
+                System.out.println("Pilih tanaman untuk ditanam (atau ketik 'exit' untuk keluar):");
+                String pilihan = scanner.nextLine();
+                if (pilihan.equalsIgnoreCase("exit")) {
+                    break;
+                }
+    
+                Tanaman tanaman = deck.getTanamanByName(pilihan);
+                if (tanaman != null && !tanaman.isOnCooldown()) {
+                    tanaman.startCooldown(scheduler);
+                    System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai.");
+                } else {
+                    System.out.println("Tanaman tidak tersedia atau sedang dalam cooldown.");
+                }
+            }
+        }
 
     // menggali tanaman
     public void menggali() {

@@ -1,3 +1,9 @@
+package plant;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import zombie.*;
+import interfaces.*;
+
 public class Tanaman extends Aquatic{
     private String namaTanaman;
     private int costTanaman;
@@ -6,10 +12,12 @@ public class Tanaman extends Aquatic{
     private int attack_speedTanaman;
     private int rangeTanaman;
     private int cooldownTanaman;
+    private boolean isOnCooldown = false;
     
     
     // konstruktor
-    public Tanaman(String namaTanaman, int costTanaman, int healthTanaman, int attack_damageTanaman, int attack_speedTanaman, int rangeTanaman, int cooldownTanaman){
+    public Tanaman(String namaTanaman, int costTanaman, int healthTanaman, int attack_damageTanaman, int attack_speedTanaman, int rangeTanaman, int cooldownTanaman, boolean isaquatic){
+        super(isaquatic);
         this.namaTanaman = namaTanaman;
         this.costTanaman = costTanaman;
         this.healthTanaman = healthTanaman;
@@ -43,5 +51,13 @@ public class Tanaman extends Aquatic{
     }
     public int getCooldownTanaman(){
         return cooldownTanaman;
+    }
+    public boolean isOnCooldown() {
+        return isOnCooldown;
+    }
+    
+    public void startCooldown(ScheduledExecutorService scheduler) {
+        isOnCooldown = true;
+        scheduler.schedule(() -> isOnCooldown = false, cooldownTanaman, TimeUnit.SECONDS);
     }
 }

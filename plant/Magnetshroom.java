@@ -1,8 +1,8 @@
-package classes.map;
+package plant;
 
 public class Magnetshroom extends Tanaman{
     public Magnetshroom() {
-        super("Magnetshroom", 100, 100, 0, 10, -1, 20);
+        super("Magnetshroom", 100, 100, 0, 10, -1, 20, false);
     }
 
     public void removeItem(Zombie zombie){

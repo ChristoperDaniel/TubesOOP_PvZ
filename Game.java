@@ -7,8 +7,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import classes.objects.Deck;
+import classes.objects.Inventory;
 import classes.objects.Sun;
 import classes.player.Player;
+import zombie.BucketheadZombie;
+import zombie.ConeheadZombie;
+import zombie.DolphinRiderZombie;
+import zombie.JackInTheBoxZombie;
 
 public class Game {
     private String statusGame;
@@ -24,43 +30,17 @@ public class Game {
     private Random random;
     private ScheduledExecutorService executor;
     private volatile int currentTime;
-    private List<Zombie> listofAllZombies = new ArrayList<>(List.of(
-        new Sunflower(),
-        new Peashooter(),
-        new SnowPea(),
-        new Seashroom(),
-        new Squash(),
-        new TangleKelp(),
-        new Jalapeno(),
-        new Wallnut(),
-        new Lilypad(),
-        new Magnetshroom()
-        // jangan lupa bikin jadi zombie
-    ));
-    private List<Zombie> listofLandZombies = new ArrayList<>(List.of(
-        new Sunflower(),
-        new Peashooter(),
-        new SnowPea(),
-        new Seashroom(),
-        new Squash(),
-        new TangleKelp(),
-        new Jalapeno(),
-        new Wallnut(),
-        new Lilypad(),
-        new Magnetshroom()
-        // jangan lupa bikin jadi zombie
-    ));
     private List<Zombie> listofWaterZombies = new ArrayList<>(List.of(
-        new Sunflower(),
-        new Peashooter(),
-        new SnowPea(),
-        new Seashroom(),
+
+        new BucketheadZombie(),
+        new ConeheadZombie(),
+        new DolphinRiderZombie(),
+        new JackInTheBoxZombie(),
         new Squash(),
         new TangleKelp(),
         new Jalapeno(),
         new Wallnut(),
         new Lilypad(),
-        new Magnetshroom()
         // jangan lupa bikin jadi zombie
     ));
 
@@ -139,6 +119,7 @@ public class Game {
             switch (choice) {
                 case 1:
                     isChoosing = false;
+                    startGame();
                     break;
                 case 2:
                     help();
@@ -152,18 +133,17 @@ public class Game {
                     for (int i = 0; i < listofAllZombies.size(); i++) {
                         System.out.println((i + 1) + ". " + listofAllZombies.get(i).getNamaZombie());
                     }
-                    }
                     System.out.println("-----------------");
                     //pokonya nanti ini bakal diisi list zombie
                     break;
-                case 5 :
-                    isChoosing = false;
-                    System.exit(0); // Keluar dari program
-                    break;
+                case 5:
+                    System.exit(0);
+                    break;  
                 default:
                     System.out.println("Pilihan tidak valid.");
                     break;
             }
+        }
     }
 
     public void startGame() {
@@ -220,7 +200,7 @@ public class Game {
                     break;
                 case 7:
                     isChoosing = false;
-                    System.exit(0);
+                    enterGame();
                     break;
                 default:
                     System.out.println("Pilihan tidak valid.");
@@ -404,7 +384,9 @@ public class Game {
                 case 5:
                     // Quit Game
                     stopGame(); // Menghentikan permainan
-                    inventory.setInventory(new Inventory().getInventory());
+                    inventory = new Inventory();
+                    plantDeck = new Deck();
+                    MulaiGame();
                     break;
                 case 6:
                     // Help

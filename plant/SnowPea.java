@@ -1,6 +1,10 @@
-public class TangleKelp extends Tanaman{
-    public TangleKelp() {
-        super("Tangle Kelp", 25, 100, 5000, 0, 1, 20);
+package plant;
+public class SnowPea extends Tanaman{
+    private SlowingEffect slowingEffect;
+
+    public Snowpea() {
+        super("Snow Pea", 175, 100, 25, 4, -1, 10,false );
+        this.slowingEffect = new SlowingEffect(0.5f, 3000);
     }
 
     @Override
@@ -10,5 +14,6 @@ public class TangleKelp extends Tanaman{
             // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
             zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
         }
+        zombie.applySlowEffect(slowingEffect);
     }
 }

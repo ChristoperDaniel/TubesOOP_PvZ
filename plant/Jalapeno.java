@@ -1,9 +1,7 @@
-public class SnowPea extends Tanaman{
-    private SlowingEffect slowingEffect;
-
-    public Snowpea() {
-        super("Snow Pea", 175, 100, 25, 4, -1, 10, );
-        this.slowingEffect = new SlowingEffect(0.5f, 3000);
+package plant;
+public class Jalapeno extends Tanaman implements TanamanPenyerang{
+    public Jalapeno() {
+        super("Jalapeno", 125, 100, 5000, 0, -1, 30, false);
     }
 
     @Override
@@ -13,6 +11,5 @@ public class SnowPea extends Tanaman{
             // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
             zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
         }
-        zombie.applySlowEffect(slowingEffect);
     }
 }

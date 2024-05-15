@@ -1,6 +1,7 @@
-public class Jalapeno extends Tanaman implements TanamanPenyerang{
-    public Jalapeno() {
-        super("Jalapeno", 125, 100, 5000, 0, -1, 30);
+package plant;
+public class TangleKelp extends Tanaman{
+    public TangleKelp() {
+        super("Tangle Kelp", 25, 100, 5000, 0, 1, 20, false);
     }
 
     @Override

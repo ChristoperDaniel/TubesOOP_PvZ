@@ -1,6 +1,7 @@
-public class Peashooter extends Tanaman{
-    public Peashooter() {
-        super("Peashooter", 100, 100, 25, 4, -1, 10);
+package plant;
+public class Seashroom extends Tanaman{
+    public Seashroom() {
+        super("Seashroom", 0, 100, 20, 5, -1, 10,false);
     }
 
     @Override

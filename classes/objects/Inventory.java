@@ -1,5 +1,8 @@
+package classes.objects;
 import java.util.ArrayList;
 import java.util.List;
+
+import plant.*;
 
 public class Inventory {
     private List<Tanaman> inventory = new ArrayList<>(List.of(

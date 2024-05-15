@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class PoleVaultingZombie extends Zombie implements ZombieWithAbility {
     public PoleVaultingZombie() {
