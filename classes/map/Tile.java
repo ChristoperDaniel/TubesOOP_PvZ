@@ -1,7 +1,7 @@
 package classes.map;
 
-import zombie.*;
 import plant.*;
+import Zombie.Zombie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Tile {
     public void setX(int x){
         this.x = x;
     }
-    public void getY(int y){
+    public void setY(int y){
         this.y = y;
     }
     public String getIdentifier() {
