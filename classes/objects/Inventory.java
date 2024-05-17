@@ -24,10 +24,6 @@ public class Inventory {
         return inventory;
     }
 
-    public void setInventory(List<Tanaman> inventory) {
-        this.inventory = inventory;
-    }
-
     public void addPlantsInventory(Tanaman tanaman) {
         if (inventory.size() >= MaxInventorySize) {
             System.out.println("Inventory sudah penuh.");

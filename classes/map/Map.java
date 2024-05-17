@@ -89,12 +89,12 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null) {
             if (isWaterTile(row, col)) {
-                if (!(current_Tile.getTanaman().contains(Lilypad))) {
+                if (!(current_Tile.getTanaman().contains(new Lilypad()))) {
                     System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
                     return;
                 }
             }
-            if (current_Tile.getTanaman() == null || current_Tile.getTanaman() instanceof LilyPad) {
+            if (current_Tile.getTanaman() == null || current_Tile.getTanaman() instanceof LilyPad()) {
                 current_Tile.addTanaman(tanaman);
             } else {
                 System.out.println("Tile sudah ditempati oleh tanaman lain.");

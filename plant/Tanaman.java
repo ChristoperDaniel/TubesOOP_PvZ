@@ -1,11 +1,6 @@
 package plant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-<<<<<<< HEAD
-=======
-import interfaces.*;
->>>>>>> ca5e2c9bd9a640bc405ef790bab6ef902de49145
-
 public class Tanaman extends Aquatic{
     private String namaTanaman;
     private int costTanaman;

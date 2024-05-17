@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import classes.map.*;
 import classes.objects.*;
 import classes.player.*;
-import interfaces.*;
 import plant.*;
 import zombie.*;
 
@@ -17,17 +15,15 @@ public class Game {
     private String statusGame;
     private Player player;
     private volatile Map map;
-    private Deck plantDeck;
+    private volatile Deck plantDeck;
     private Inventory inventory;
-    private Zombie zombie;
-    private int time;
-    private Sun sun;
+    private volatile int time;
+    private volatile Sun sun;
     private volatile boolean isDayTime;
     private volatile boolean gameOver;
-    private Random random;
     private ScheduledExecutorService executor;
     private volatile int currentTime;
-    private List<Zombie> listofAllZombies = new ArrayList<>(List.of(
+    private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
         new NormalZombie(),
         new BucketheadZombie(),
         new ConeheadZombie(),
@@ -49,7 +45,6 @@ public class Game {
         time = 0;
         isDayTime = true;
         sun = new Sun();
-        random = new Random();
     }
 
     public String getStatusGame() {
@@ -95,9 +90,6 @@ public class Game {
     public void MulaiGame() {
         Scanner scanner = new Scanner(System.in);
         boolean isChoosing = true;
-        int index;
-        int pos1; 
-        int pos2;
 
         System.out.println("Selamat datang di Game Michael vs. Lalapan");
         while (isChoosing ) {
@@ -139,6 +131,7 @@ public class Game {
                     break;
             }
         }
+        scanner.close();
     }
 
     public void startGame() {
@@ -207,108 +200,6 @@ public class Game {
     }
 
     public void enterGame() {
-
-        /* 
-        System.out.println("Permainan dimulai!");
-        sun.displaySun();
-        plantDeck.displayDeckPlants();
-        displayMenuEnter();
-        map.displayMap();
-
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-        scheduler.scheduleAtFixedRate(() -> {
-            if (isDayTime) {
-                int interval = random.nextInt(6) + 5; // Interval antara 5 - 10 detik
-                TimeUnit.SECONDS.sleep(interval); // Tunggu interval
-                sun.addSun(); // Player mendapatkan 25 Sun setiap interval waktu antara 5 - 10 detik
-                Random random = new Random();
-                if (random.nextDouble() < 0.3) {
-                    int seconds = (int) (System.currentTimeMillis() / 1000) % 200; // Menghitung detik saat ini
-                    if (seconds >= 20 && seconds < 160) { // Zombie hanya muncul pada detik ke 20 sampai 160
-                        spawnZombie();
-                    }
-                }
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-
-        Random rand = new Random();
-        int sunInterval = rand.nextInt(6) + 5;
-        scheduler.scheduleAtFixedRate(() -> {
-            if (isDayTime) {
-                sun.addSun();
-            }
-        }, sunInterval, sunInterval, TimeUnit.SECONDS);
-
-        scheduler.scheduleAtFixedRate(() -> {
-            int seconds = (int) (System.currentTimeMillis() / 1000) % 200; // Menghitung detik saat ini
-            if (seconds == 100) { // Pergantian dari pagi ke malam pada detik ke-100
-                isDayTime = false;
-                System.out.println("Pagi berganti menjadi malam!");
-                map.setFlag(true); // Mengaktifkan flag
-            } else if (seconds == 0) { // Pergantian dari malam ke pagi pada detik ke-0
-                isDayTime = true;
-                System.out.println("Malam berganti menjadi pagi!");
-                map.setFlag(false); // Menonaktifkan flag
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-
-        ScheduledExecutorService zombieClearScheduler = Executors.newScheduledThreadPool(1);
-        zombieClearScheduler.schedule(() -> {
-            if (map.isZombieClear() || waktu >= 161) {
-                if (map.isZombieClear()) {
-                    System.out.println("Semua zombie telah dihabisi!");
-                } else {
-                    System.out.println("Waktu habis! Masih ada zombie yang tersisa.");
-                }
-                setStatusGame(false);
-                scheduler.shutdown();
-                zombieClearScheduler.shutdown();
-            }
-        }, 200, TimeUnit.SECONDS);
-
-        Scanner scanner = new Scanner(System.in);
-        while (statusGame) {
-            System.out.print("Pilih aksi: ");
-            int choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1:
-                    // Menanam tanaman
-                    System.out.println("Tanaman apa yang ingin Anda tanam?");
-                    plantDeck.displayDeckPlants();
-                    int plantChoice = scanner.nextInt();
-                    map.plantPlant(plantChoice);
-                    map.displayMap();
-                    break;
-                case 2:
-                    // Menggali tanaman
-                    System.out.println("Pilih posisi tanaman yang ingin digali:");
-                    map.displayMap();
-                    int pos = scanner.nextInt();
-                    map.removePlant(pos);
-                    map.displayMap();
-                    break;
-                case 3:
-                    // Tampilkan deck
-                    plantDeck.displayDeckPlants();
-                    break;
-                case 4:
-                    // Tampilkan peta
-                    map.displayMap();
-                    break;
-                case 5:
-                    // Keluar dari permainan
-                    setStatusGame(false);
-                    break;
-                case 6:
-                    // Menampilkan bantuan
-                    displayHelp();
-                    break;
-                default:
-                    System.out.println("Pilihan tidak valid!");
-            }
-        }*/
 
         executor = Executors.newScheduledThreadPool(5); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
@@ -470,6 +361,7 @@ public class Game {
         Game game = new Game();
         game.displayMenuUtama();
     }
+
 }
 
 
