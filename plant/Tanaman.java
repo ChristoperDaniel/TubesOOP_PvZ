@@ -1,6 +1,8 @@
 package plant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import interfaces.*;
+
 public class Tanaman extends Aquatic{
     private String namaTanaman;
     private int costTanaman;
@@ -9,6 +11,8 @@ public class Tanaman extends Aquatic{
     private int attack_speedTanaman;
     private int rangeTanaman;
     private int cooldownTanaman;
+    private int x;
+    private int y;
     private boolean isOnCooldown = false;
     
     
@@ -22,6 +26,8 @@ public class Tanaman extends Aquatic{
         this.attack_speedTanaman = attack_speedTanaman;
         this.rangeTanaman = rangeTanaman;
         this.cooldownTanaman = cooldownTanaman;
+        this.x = x;
+        this.y = y;
     }
     
     // method
@@ -48,6 +54,18 @@ public class Tanaman extends Aquatic{
     }
     public int getCooldownTanaman(){
         return cooldownTanaman;
+    }
+    public int getX(){
+        return x;
+    }
+    public void setX(int x){
+        this.x = x;
+    }
+    public int getY(){
+        return y;
+    }
+    public void setY(int y){
+        this.y = y;
     }
     public boolean isOnCooldown() {
         return isOnCooldown;
