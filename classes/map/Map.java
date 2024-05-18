@@ -97,7 +97,10 @@ public class Map {
                         benar = false;
                     }
                 } else if (tanaman.getNamaTanaman() != "Lilypad"){
-                    if(current_Tile.getTanaman() == null || !isLilypadAvail(row, col)){
+                    if (current_Tile.getTanaman() == null && (tanaman.getNamaTanaman() == "Seashroom" || tanaman.getNamaTanaman() == "Tangle Kelp")){
+                        current_Tile.addTanaman(tanaman);
+                    }
+                    else if(current_Tile.getTanaman() == null || !isLilypadAvail(row, col)){
                         System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
                         benar = false;
                     } else if (isLilypadAvail(row, col)){
@@ -118,8 +121,46 @@ public class Map {
                 }
             }
             if (benar){
+                //set row col
                 tanaman.setRow(row);
                 tanaman.setCol(col);
+
+                //set symbol
+                switch (tanaman.getNamaTanaman()){
+                    case "Sunflower":
+                        current_Tile.setDisplayName("SF");
+                        break;
+                    case "Jalapeno":
+                        current_Tile.setDisplayName("JP");
+                        break;
+                    case "Lilypad":
+                        current_Tile.setDisplayName("LP");
+                        break;
+                    case "Magnetshroom":
+                        current_Tile.setDisplayName("MS");
+                        break;
+                    case "Peashooter":
+                        current_Tile.setDisplayName("PS");
+                        break;
+                    case "Seashroom":
+                        current_Tile.setDisplayName("SS");
+                        break;
+                    case "SnowPea":
+                        current_Tile.setDisplayName("SP");
+                        break;
+                    case "Squash":
+                        current_Tile.setDisplayName("SQ");
+                        break;
+                    case "TangleKelp":
+                        current_Tile.setDisplayName("TK");
+                        break;
+                    case "Wallnut":
+                        current_Tile.setDisplayName("WN");
+                        break;
+                    default:
+                        System.out.println("Jenis tanaman tidak dikenali.");
+                        return;
+                }
                 current_Tile.setDisplayName(tanaman.getNamaTanaman());
             }
 
