@@ -1,7 +1,7 @@
 package classes.map;
 
 import plant.*;
-import Zombie.Zombie;
+import zombie.*;;
 
 import java.util.ArrayList;
 import java.util.List;

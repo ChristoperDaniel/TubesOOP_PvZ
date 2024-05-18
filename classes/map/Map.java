@@ -5,7 +5,6 @@ import zombie.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.random.*;
 
 import plant.*;
 
@@ -120,22 +119,13 @@ public class Map {
     // Menempatkan zombie pada tile 
     public void placeZombie(int row, int col, List<Zombie> listofZombies) {
         double randomValue = Math.random();
-        Random random;
+        Random random = new Random();
         if (randomValue <= 0.3) {
             int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
             Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
-            int randomRow = random.nextInt(Map.HEIGHT); // Pilih baris secara acak
-            int randomCol = Map.WIDTH - 1; // Pilih kolom di sisi kanan map
-                    System.out.println("Zombie " + zombieType.getNamaZombie() + " muncul pada baris " + (randomRow + 1) + " dan kolom " + (randomCol + 1) + "!");
-                    map.spawnZombie(zombieType, randomRow, randomCol); // Spawnya dengan baris dan kolom yang dipilih secara acak
-                    zombieCount++;
-                    map.attackPlant(zombieType);
-                }
-        Tile current_Tile = getTile(row, col);
-        if (current_Tile != null) {
-            current_Tile.addZombie(zombie);
-        } else {
-            System.out.println("Tile tidak tersedia untuk menempatkan zombie.");
+            int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
+            int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
+            tiles[randomRow][randomCol].addZombie(zombieType); // Spawn dengan baris dan kolom yang dipilih secara acak
         }
     }
     /*
