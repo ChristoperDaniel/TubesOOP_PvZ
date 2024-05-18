@@ -1,14 +1,25 @@
-public class Squash extends Tanaman{
+public class Squash extends Tanaman implements Serangan {
     public Squash() {
         super("Squash", 50, 100, 5000, 0, 1, 20);
     }
 
     @Override
-    public void attackPlant(Zombie zombie, Tiles tiles) {
-        // Mengecek apakah zombie berada pada row yang sama dengan tanaman
-        if (zombie.getPosition().getRow() == tiles.getRow()) {
-            // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
-            zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
+    public void serang(Map map, int x, int y) {
+        if (statusTanaman()) {
+            List<Tile> baris = map.getBaris(y);
+            for (Tile tiles : baris) {
+                // Memeriksa apakah ada zombie di baris ini
+                if (!tiles.getZombies().isEmpty()) {
+                    // Ambil zombie terdepan
+                    Zombie zombieTerdepan = tiles.getZombies().get(0);
+                    // Serang zombie terdepan
+                    zombieTerdepan.setHealthZombie(zombieTerdepan.getHealthZombie() - this.getAttackDamageTanaman());
+                    // Hancurkan zombie jika sudah mati
+                    if (zombieTerdepan.getHealthZombie() <= 0) {
+                        tiles.removeZombie(zombieTerdepan);
+                    }
+                }
+            }
         }
     }
 }

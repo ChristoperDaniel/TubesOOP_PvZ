@@ -5,7 +5,9 @@ public class Tanaman extends Aquatic{
     private int attack_damageTanaman;
     private int attack_speedTanaman;
     private int rangeTanaman;
-    private int cooldownTanaman
+    private int cooldownTanaman;
+    private int x;
+    private int y;
     
     
     // konstruktor
@@ -17,6 +19,8 @@ public class Tanaman extends Aquatic{
         this.attack_speedTanaman = attack_speedTanaman;
         this.rangeTanaman = rangeTanaman;
         this.cooldownTanaman = cooldownTanaman;
+        this.x = x;
+        this.y = y;
     }
     
     // method
@@ -43,5 +47,17 @@ public class Tanaman extends Aquatic{
     }
     public int getCooldownTanaman(){
         return cooldownTanaman;
+    }
+    public int getX(){
+        return x;
+    }
+    public void setX(int x){
+        this.x = x;
+    }
+    public int getY(){
+        return Y;
+    }
+    public void setY(int y){
+        this.y = y;
     }
 }

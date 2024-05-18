@@ -1,14 +1,18 @@
-public class Jalapeno extends Tanaman implements TanamanPenyerang{
+public class Jalapeno extends Tanaman implements Serangan {
     public Jalapeno() {
-        super("Jalapeno", 125, 100, 5000, 0, -1, 30);
+        super("Jalapeno", 125, 100, 5000, 0, 2, 30);
     }
 
     @Override
-    public void attackPlant(Zombie zombie, Tiles tiles) {
-        // Mengecek apakah zombie berada pada row yang sama dengan tanaman
-        if (zombie.getPosition().getRow() == tiles.getRow()) {
-            // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
-            zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
+    public void serang(Map map, int x, int y) {
+        List<Tile> baris = map.getBaris(y);
+        for (Tile tiles : baris) {
+            if (!tiles.getZombies().isEmpty()) {
+                // Membunuh semua zombie di baris ini
+                for (Zombie zombie : tiles.getZombies()) {
+                    tiles.removeZombie(zombie);
+                }
+            }
         }
     }
 }
