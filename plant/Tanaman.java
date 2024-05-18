@@ -1,10 +1,7 @@
 package plant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-<<<<<<< HEAD
-=======
 import interfaces.*;
->>>>>>> ca5e2c9bd9a640bc405ef790bab6ef902de49145
 
 public class Tanaman extends Aquatic{
     private String namaTanaman;
@@ -14,12 +11,9 @@ public class Tanaman extends Aquatic{
     private int attack_speedTanaman;
     private int rangeTanaman;
     private int cooldownTanaman;
-<<<<<<< HEAD:Tanaman/Tanaman.java
     private int x;
     private int y;
-=======
     private boolean isOnCooldown = false;
->>>>>>> 359b7a517f538a8384c0f4d6760c88bcc68dede2:plant/Tanaman.java
     
     
     // konstruktor
