@@ -1,3 +1,11 @@
+package plant;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+<<<<<<< HEAD
+=======
+import interfaces.*;
+>>>>>>> ca5e2c9bd9a640bc405ef790bab6ef902de49145
+
 public class Tanaman extends Aquatic{
     private String namaTanaman;
     private int costTanaman;
@@ -6,12 +14,17 @@ public class Tanaman extends Aquatic{
     private int attack_speedTanaman;
     private int rangeTanaman;
     private int cooldownTanaman;
+<<<<<<< HEAD:Tanaman/Tanaman.java
     private int x;
     private int y;
+=======
+    private boolean isOnCooldown = false;
+>>>>>>> 359b7a517f538a8384c0f4d6760c88bcc68dede2:plant/Tanaman.java
     
     
     // konstruktor
-    public Tanaman(String namaTanaman, int costTanaman, int healthTanaman, int attack_damageTanaman, int attack_speedTanaman, int rangeTanaman, int cooldownTanaman){
+    public Tanaman(String namaTanaman, int costTanaman, int healthTanaman, int attack_damageTanaman, int attack_speedTanaman, int rangeTanaman, int cooldownTanaman, boolean isaquatic){
+        super(isaquatic);
         this.namaTanaman = namaTanaman;
         this.costTanaman = costTanaman;
         this.healthTanaman = healthTanaman;
@@ -48,6 +61,7 @@ public class Tanaman extends Aquatic{
     public int getCooldownTanaman(){
         return cooldownTanaman;
     }
+<<<<<<< HEAD:Tanaman/Tanaman.java
     public int getX(){
         return x;
     }
@@ -59,5 +73,14 @@ public class Tanaman extends Aquatic{
     }
     public void setY(int y){
         this.y = y;
+=======
+    public boolean isOnCooldown() {
+        return isOnCooldown;
+    }
+    
+    public void startCooldown(ScheduledExecutorService scheduler) {
+        isOnCooldown = true;
+        scheduler.schedule(() -> isOnCooldown = false, cooldownTanaman, TimeUnit.SECONDS);
+>>>>>>> 359b7a517f538a8384c0f4d6760c88bcc68dede2:plant/Tanaman.java
     }
 }

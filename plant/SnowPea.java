@@ -1,6 +1,11 @@
-public class Seashroom extends Tanaman implements Serangan{
-    public Seashroom() {
-        super("Seashroom", 0, 100, 20, 5, -1, 10);
+public class Snowpea extends Tanaman implements Serangan{
+package plant;
+public class SnowPea extends Tanaman{
+    private SlowingEffect slowingEffect;
+
+    public Snowpea() {
+        super("Snow Pea", 175, 100, 25, 4, -1, 10,false );
+        this.slowingEffect = new SlowingEffect(0.5f, 3000);
     }
 
     @Override

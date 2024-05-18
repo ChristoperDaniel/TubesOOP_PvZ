@@ -1,6 +1,8 @@
-public class Squash extends Tanaman implements Serangan {
-    public Squash() {
-        super("Squash", 50, 100, 5000, 0, 1, 20);
+public class TangleKelp extends Tanaman implements Serangan {
+package plant;
+public class TangleKelp extends Tanaman{
+    public TangleKelp() {
+        super("Tangle Kelp", 25, 100, 5000, 0, 1, 20, false);
     }
 
     @Override

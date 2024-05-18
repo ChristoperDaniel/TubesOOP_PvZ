@@ -1,10 +1,31 @@
+package classes.objects;
+
 import java.util.ArrayList;
 import java.util.List;
+import plant.*;
 
 public class Deck {
     private static final int MaxDeckSize = 6;
     private List<Tanaman> listPlants = new ArrayList<>();
 
+    public List<Tanaman> getAvailableTanamans() {
+        List<Tanaman> availableTanamans = new ArrayList<>();
+        for (Tanaman tanaman : listPlants) {
+            if (!tanaman.isOnCooldown()) {
+                availableTanamans.add(tanaman);
+            }
+        }
+        return availableTanamans;
+    }
+    
+    public Tanaman getTanamanByName(String nama) {
+        for (Tanaman tanaman : listPlants) {
+            if (tanaman.getNamaTanaman().equalsIgnoreCase(nama)) {
+                return tanaman;
+            }
+        }
+        return null; // jika tanaman tidak ditemukan
+    }
     public int getMaxDeckSize(){
         return MaxDeckSize;
     }

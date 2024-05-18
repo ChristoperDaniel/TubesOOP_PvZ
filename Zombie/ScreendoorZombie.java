@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class ScreendoorZombie extends Zombie implements ZombieWithItem{
     public ScreendoorZombie() {

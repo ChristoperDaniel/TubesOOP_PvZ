@@ -1,17 +1,22 @@
-package Zombie;
+package zombie;
 
-public abstract class Zombie {
-    protected String namaZombieString;
-    protected int healthZombie;
-    protected int attack_damageZombie;
-    protected int attack_speedZombie;
-    protected int speedZombie;
-    protected int rangeZombie;
-    protected boolean is_item_removedZombie;
-    protected boolean is_ability_used;
-    protected boolean is_get_slowedZombie;
+import classes.map.*;
+import plant.Aquatic;
+import plant.Tanaman;
 
-    public Zombie(String namaZombieString, int healthZombie, int attack_damageZombie, int attack_speedZombie, int speedZombie, int rangeZombie) {
+public abstract class Zombie extends Aquatic {
+    private String namaZombieString;
+    private int healthZombie;
+    private int attack_damageZombie;
+    private int attack_speedZombie;
+    private int speedZombie;
+    private int rangeZombie;
+    private boolean is_item_removedZombie;
+    private boolean is_ability_used;
+    private boolean is_get_slowedZombie;
+
+    public Zombie(String namaZombieString, int healthZombie, int attack_damageZombie, int attack_speedZombie, int speedZombie, int rangeZombie, boolean isaquatic) {
+        super(isaquatic);
         this.namaZombieString = namaZombieString;
         this.healthZombie = healthZombie;
         this.attack_damageZombie = attack_damageZombie;
@@ -61,5 +66,19 @@ public abstract class Zombie {
     public void SetIsGetSlowedZombie(boolean is_get_slowedZombie) {
         this.is_get_slowedZombie = is_get_slowedZombie;
     }
-    public abstract void attackZombie();
+    public boolean getIsAbilityUsed() {
+        return is_ability_used;
+    }
+    public void setIsAbilityUsed(boolean is_ability_used) {
+        this.is_ability_used = is_ability_used;
+    }
+    public void slowedZombie(boolean is_get_slowedZombie) {
+        if (is_get_slowedZombie) {
+            setSpeedZombie(getSpeedZombie() + 5);
+            setAttackSpeedZombie(getAttackSpeedZombie() + 1);
+        }
+    }
+    public abstract void moveZombie(Tile tile, Map map);
+    public abstract void attackZombie(Tile tile, Map map, Tanaman tanaman);
+
 }

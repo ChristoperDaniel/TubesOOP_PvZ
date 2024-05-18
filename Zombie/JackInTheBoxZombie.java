@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class JackInTheBoxZombie extends Zombie implements ZombieWithAbility {
     public JackInTheBoxZombie() {

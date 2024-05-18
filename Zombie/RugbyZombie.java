@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 public class RugbyZombie extends Zombie implements ZombieWithItem {
     public RugbyZombie() {

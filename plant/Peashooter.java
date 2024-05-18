@@ -1,12 +1,14 @@
-public class Snowpea extends Tanaman implements Serangan{
-    private SlowingEffect slowingEffect;
-
-    public Snowpea() {
-        super("Snow Pea", 175, 100, 25, 4, -1, 10, );
-        this.slowingEffect = new SlowingEffect(0.5f, 3000);
+public class Peashooter extends Tanaman implements Serangan{
+package plant;
+import zombie.*;
+import classes.map.*;
+public class Peashooter extends Tanaman{
+    public Peashooter() {
+        super("Peashooter", 100, 100, 25, 4, -1, 10, false);
     }
 
     @Override
+<<<<<<< HEAD:Tanaman/Peashooter.java
     public void serang(Map map, int x, int y) {
         if (statusTanaman()) {
             int detikgames = 200;
@@ -27,6 +29,13 @@ public class Snowpea extends Tanaman implements Serangan{
                 }
                 i++;
             }
+=======
+    public void attackPlant(Zombie zombie, int x, int y) {
+        // Mengecek apakah zombie berada pada row yang sama dengan tanaman
+                if (zombie.get.getRow() == tiles.getRow()) {
+            // Menyerang zombie dengan mengurangi health sesuai dengan attack damage tanaman
+            zombie.setHealthZombie(zombie.getHealthZombie() - this.getAttackDamageTanaman());
+>>>>>>> 359b7a517f538a8384c0f4d6760c88bcc68dede2:plant/Peashooter.java
         }
     }
 }
