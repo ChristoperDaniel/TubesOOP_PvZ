@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -50,6 +51,8 @@ public class Game {
         new DolphinRiderZombie(null)
         // jangan lupa bikin jadi zombie
     ));
+    private Random random = new Random(); // Menambahkan Random instance
+    private int nextSunInterval = getRandomSunInterval(); // Interval acak pertama
 
     public Game() {
         statusGame = "Paused";
@@ -125,10 +128,8 @@ public class Game {
                     break;
                 case 2:
                     help();
-                    break;
                 case 3:
                     inventory.displayInventory();
-                    break;
                 case 4:
                     System.out.println("-----------------");
                     System.out.println("Isi deck tanaman:");
@@ -136,8 +137,6 @@ public class Game {
                         System.out.println((i + 1) + ". " + listofAllZombies.get(i).getNamaZombie());
                     }
                     System.out.println("-----------------");
-                    //pokonya nanti ini bakal diisi list zombie
-                    break;
                 case 5:
                     System.exit(0);
                     break;  
@@ -173,41 +172,34 @@ public class Game {
             switch (choice) {
                 case 1:
                     inventory.displayInventory();
-                    break;
                 case 2:
                     plantDeck.displayDeckPlants();
-                    break;
                 case 3:
                     System.out.print("Masukkan nomor tanaman dari inventory yang ingin Anda tambahkan ke deck: ");
                     index = Integer.parseInt(scanner.nextLine())-1;
                     plantDeck.addPlants(inventory.removePlantsInventory(index));
-                    break;
                 case 4:
                     System.out.print("Masukkan nomor tanaman dari deck yang ingin Anda hapus: ");   
                     index = Integer.parseInt(scanner.nextLine())-1; 
                     inventory.addPlantsInventory(plantDeck.removePlants(index));
-                    break;
                 case 5:
                     System.out.print("Masukkan nomor tanaman yang ingin Anda tukar posisinya di deck: ");
                     pos1 = Integer.parseInt(scanner.nextLine()); 
                     System.out.print("Masukkan nomor tanaman di deck yang ingin Anda tukar posisinya dengan: ");
                     pos2 = Integer.parseInt(scanner.nextLine()); 
                     plantDeck.swapPlants(pos1-1,pos2-1);
-                    break;
                 case 6:
                     System.out.print("Masukkan nomor tanaman yang ingin Anda tukar posisinya di inventory: ");
                     pos1 = Integer.parseInt(scanner.nextLine()); 
                     System.out.print("Masukkan nomor tanaman di inventory yang ingin Anda tukar posisinya dengan: ");
                     pos2 = Integer.parseInt(scanner.nextLine()); 
                     plantDeck.swapPlants(pos1-1,pos2-1);
-                    break;
                 case 7:
                     isChoosing = false;
                     enterGame();
                     break;
                 default:
                     System.out.println("Pilihan tidak valid.");
-                    break;
             }
         }
         scanner.close();
@@ -225,11 +217,16 @@ public class Game {
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
     }
 
+    private int getRandomSunInterval() {
+        return random.nextInt(6) + 5; // Menghasilkan interval acak antara 5-10 detik
+    }
+
     private void updateSun() {
-            if (!gameOver && isDayTime && currentTime % 3 == 0 && currentTime <= 100) {
-                sun.addSun();;
-                System.out.println("Sun has fallen from the sky! You've gained 25 sun. Current Time: " + currentTime);
-            }
+        if (!gameOver && isDayTime && currentTime % nextSunInterval == 0 && currentTime <= 100) {
+            sun.addSun(); // Menambahkan 25 Sun
+            System.out.println("Sun has fallen from the sky! You've gained 25 sun. Current Time: " + currentTime);
+            nextSunInterval = getRandomSunInterval(); // Mengatur ulang interval acak berikutnya
+        }
     }
 
     private void updateCurrentTime() {
@@ -261,6 +258,9 @@ public class Game {
 
     private void handleUserInput() {
         Scanner scanner = new Scanner(System.in);
+        boolean salah = false;
+        int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
+        int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
         while (!gameOver) { // Loop sampai permainan selesai
             displayMenuEnter();
             int choice = scanner.nextInt();
@@ -268,9 +268,6 @@ public class Game {
                 case 1:
                     // Menanam Tanaman
                     // Implementasi
-                    boolean salah = false;
-                    int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
-                    int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
                     try {
                         System.out.print("Masukkan baris untuk menanam tanaman (0-" + (Map.total_rows - 1) + "): ");
                         row = Integer.parseInt(scanner.nextLine());
@@ -295,16 +292,33 @@ public class Game {
                 case 2:
                     // Menggali Tanaman
                     // Implementasi
-                    player.menggali();
-                    break;
+                    try {
+                        System.out.print("Masukkan baris untuk menggali tanaman (0-" + (Map.total_rows - 1) + "): ");
+                        row = Integer.parseInt(scanner.nextLine());
+                        if (row < 0 || row >= Map.total_rows) {
+                            System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
+                            salah = true;
+                        }
+                        System.out.print("Masukkan kolom untuk menggali tanaman (0-" + (Map.total_columns - 1) + "): ");
+                        column = Integer.parseInt(scanner.nextLine());
+                        if (column < 0 || column >= Map.total_columns) {
+                            System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
+                            salah = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input harus berupa angka.");
+                        salah = true;
+                    }
+                    if (salah) {
+                        continue;
+                    }
+                    player.menggali(map,row,column);
                 case 3:
                     // Display Deck
                     plantDeck.displayDeckPlants();
-                    break;
                 case 4:
                     // Display Map
                     map.displayMap();
-                    break;
                 case 5:
                     // Quit Game
                     stopGame(); // Menghentikan permainan

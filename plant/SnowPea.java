@@ -1,6 +1,5 @@
-public class Snowpea extends Tanaman implements Serangan{
 package plant;
-public class SnowPea extends Tanaman{
+public class Snowpea extends Tanaman implements Serangan{
     private SlowingEffect slowingEffect;
 
     public Snowpea() {

@@ -1,6 +1,6 @@
 package classes.objects;
 public class Sun{
-    private int totalSun = 25;
+    private int totalSun = 50;
 
     // menambahkan sun sebanyak 25
     public void addSun() {
@@ -17,18 +17,15 @@ public class Sun{
         System.out.println("Total Sun: " + totalSun);
     }
 
-    // get totalSun
-    public int get_totalSun() {
-        return totalSun;
-    }
-
     // mengatur totalSun sebanyak nilai
-    public void setSun(int nilai) {
+    public void addCustomSun(int nilai) {
         totalSun += nilai;
     }
 
     // menginisialisasi totalSun
-    public void initializeSun() {
-        totalSun = 25;
+    public int gettotalSun() {
+        return totalSun;
     }
+
+
 }
