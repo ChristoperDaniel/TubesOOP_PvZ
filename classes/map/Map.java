@@ -170,7 +170,7 @@ public class Map {
         for (int row = 0; row < total_rows; row++) {
             for (int col = 0; col < total_columns; col++) {
                 Tile tile = tiles[row][col];
-                System.out.print("[" + (tile.getDisplayName()) + "]");
+                System.out.print("[" + (tile.getDisplayName()) + "]" + " ");
             }
             System.out.println();
         }
