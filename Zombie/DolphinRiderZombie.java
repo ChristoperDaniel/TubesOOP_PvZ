@@ -57,8 +57,12 @@ public class DolphinRiderZombie extends Zombie implements ZombieWithAbility {
                     }
                 }
             }
+            else {
+                moveZombie(tile, map);
+            }
         }
     }
+
     @Override
     public void moveZombie(Tile tile, Map map) {
         int x = tile.getX();
