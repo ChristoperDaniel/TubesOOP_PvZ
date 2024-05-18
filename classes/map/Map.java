@@ -138,6 +138,14 @@ public class Map {
             System.out.println("Tile tidak tersedia untuk menempatkan zombie.");
         }
     }
+    /*
+        Random rand = new Random();
+        for (int row = 0; row < rows; row++) {
+            if (rand.nextDouble() < 0.3) {
+                map[row][columns - 1].addZombie();
+            }
+        }
+     */
 
     // Menghapus tanaman dari tile
     public void removeTanaman(int row, int col, Tanaman tanaman) {
