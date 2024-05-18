@@ -1,7 +1,6 @@
 package Zombie;
 
 import classes.map.*;
-import classes.map.Tile;
 import interfaces.ZombieWithItem;
 import plant.Tanaman;
 

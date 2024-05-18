@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tile {
-    private String displayName;
+    private String displayName = "_";
     private List<Tanaman> plants;
     private List<Zombie> zombies;
     private int x;
@@ -35,11 +35,11 @@ public class Tile {
     public void setY(int y){
         this.y = y;
     }
-    public String getIdentifier() {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setIdentifier(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
