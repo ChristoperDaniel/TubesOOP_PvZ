@@ -5,6 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.List;
 import plant.*;
 import classes.objects.*;
+import classes.map.*;
 
 public class Player {
     private ScheduledExecutorService scheduler;
@@ -15,7 +16,7 @@ public class Player {
     }
 
     // menanam tanaman
-    public void menanam(Deck deck) {
+    public void menanam(Deck deck, int row, int col, Map map) {
         // Implementasi logika menanam tanaman
         //soon
             Scanner scanner = new Scanner(System.in);
@@ -34,6 +35,7 @@ public class Player {
     
                 Tanaman tanaman = deck.getTanamanByName(pilihan);
                 if (tanaman != null && !tanaman.isOnCooldown()) {
+                    map.placeTanaman(row, col, tanaman);
                     tanaman.startCooldown(scheduler);
                     System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai.");
                 } else {

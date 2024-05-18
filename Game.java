@@ -25,14 +25,29 @@ public class Game {
     private volatile int currentTime;
     private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
         new NormalZombie(),
-        new BucketheadZombie(),
+        new BucketheadZombie(null),
         new ConeheadZombie(),
-        new DolphinRiderZombie(),
+        new DolphinRiderZombie(null),
         new JackInTheBoxZombie(),
         new PeashooterZombie(),
         new PoleVaultingZombie(),
         new RugbyZombie(),
         new ScreendoorZombie()
+        // jangan lupa bikin jadi zombie
+    ));
+    private List<Zombie> listofLandZombies = new ArrayList<>(List.of(
+        new NormalZombie(),
+        new BucketheadZombie(null),
+        new ConeheadZombie(),
+        new JackInTheBoxZombie(),
+        new PeashooterZombie(),
+        new PoleVaultingZombie(),
+        new RugbyZombie(),
+        new ScreendoorZombie()
+        // jangan lupa bikin jadi zombie
+    ));
+    private List<Zombie> listofWaterZombies = new ArrayList<>(List.of(
+        new DolphinRiderZombie(null)
         // jangan lupa bikin jadi zombie
     ));
 
@@ -253,8 +268,30 @@ public class Game {
                 case 1:
                     // Menanam Tanaman
                     // Implementasi
-                    player.menanam(plantDeck);
-                    break;
+                    boolean salah = false;
+                    int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
+                    int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
+                    try {
+                        System.out.print("Masukkan baris untuk menanam tanaman (0-" + (Map.total_rows - 1) + "): ");
+                        row = Integer.parseInt(scanner.nextLine());
+                        if (row < 0 || row >= Map.total_rows) {
+                            System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
+                            salah = true;
+                        }
+                        System.out.print("Masukkan kolom untuk menanam tanaman (0-" + (Map.total_columns - 1) + "): ");
+                        column = Integer.parseInt(scanner.nextLine());
+                        if (column < 0 || column >= Map.total_columns) {
+                            System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
+                            salah = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input harus berupa angka.");
+                        salah = true;
+                    }
+                    if (salah) {
+                        continue;
+                    }
+                    player.menanam(plantDeck, row, column, map);
                 case 2:
                     // Menggali Tanaman
                     // Implementasi
