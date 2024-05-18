@@ -261,6 +261,7 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null) {
             current_Tile.removeZombie(zombie);
+            current_Tile.setDisplayName("_");
         }
     }
 
