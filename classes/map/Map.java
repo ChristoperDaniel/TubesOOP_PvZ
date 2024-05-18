@@ -86,6 +86,7 @@ public class Map {
     // Menempatkan tanaman pada tile tertentu
     public void placeTanaman(int row, int col, Tanaman tanaman) {
         Tile current_Tile = getTile(row, col);
+        boolean benar = true;
         if (current_Tile != null) {
             if (isWaterTile(row, col)) {
                 if(tanaman.getNamaTanaman() == "Lilypad"){
@@ -93,10 +94,12 @@ public class Map {
                         current_Tile.addTanaman(tanaman);
                     } else {
                         System.out.println("Lilypad sudah terpasang.");
+                        benar = false;
                     }
                 } else if (tanaman.getNamaTanaman() != "Lilypad"){
                     if(current_Tile.getTanaman() == null || !isLilypadAvail(row, col)){
                         System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
+                        benar = false;
                     } else if (isLilypadAvail(row, col)){
                         current_Tile.addTanaman(tanaman);
                     }
@@ -104,13 +107,19 @@ public class Map {
             } else if (!isWaterTile(row, col)){
                 if(tanaman.getNamaTanaman() == "Lilypad" && current_Tile.getTanaman() == null){
                     System.out.println("Lilypad hanya bisa terpasang di air");
+                    benar = false;
                 } else if(tanaman.getNamaTanaman() != "Lilypad"){
                     if(current_Tile.getTanaman() == null){
                         current_Tile.addTanaman(tanaman);
                     } else {
                         System.out.println("Tile sudah ditempati tanaman lain.");
+                        benar = false;
                     }
                 }
+            }
+            if (benar){
+                tanaman.setRow(row);
+                tanaman.setCol(col);
             }
         } else {
             System.out.println("Tile tidak tersedia.");
