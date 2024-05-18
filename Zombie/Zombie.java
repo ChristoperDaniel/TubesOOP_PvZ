@@ -1,4 +1,4 @@
-package zombie;
+package Zombie;
 
 import classes.map.*;
 import plant.Aquatic;
