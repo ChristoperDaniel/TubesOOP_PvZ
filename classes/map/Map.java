@@ -120,7 +120,9 @@ public class Map {
             if (benar){
                 tanaman.setRow(row);
                 tanaman.setCol(col);
+                current_Tile.setDisplayName(tanaman.getNamaTanaman());
             }
+
         } else {
             System.out.println("Tile tidak tersedia.");
         }
@@ -151,6 +153,7 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null && current_Tile.getTanaman() != null) {
             current_Tile.removeTanaman(tanaman);
+            current_Tile.setDisplayName("_");
         }
     }
 
@@ -167,7 +170,7 @@ public class Map {
         for (int row = 0; row < total_rows; row++) {
             for (int col = 0; col < total_columns; col++) {
                 Tile tile = tiles[row][col];
-                System.out.print("[" + (tile.getTanaman() != null ? "T" : " ") + (!tile.getZombies().isEmpty() ? "Z" : " ") + "]");
+                System.out.print("[" + (tile.getDisplayName()) + "]");
             }
             System.out.println();
         }
@@ -296,6 +299,7 @@ public class Map {
             System.out.println();
         }
     }
+
 
 
 
