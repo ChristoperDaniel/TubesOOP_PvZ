@@ -54,16 +54,16 @@ public class Tanaman extends Aquatic{
     public int getCooldownTanaman(){
         return cooldownTanaman;
     }
-    public int getRow(){
+    public int getRowPlant(){
         return row;
     }
-    public void setRow(int row){
+    public void setRowPlant(int row){
         this.row = row;
     }
-    public int getCol(){
+    public int getColPlant(){
         return col;
     }
-    public void setCol(int col){
+    public void setColPlant(int col){
         this.col = col;
     }
     public boolean isOnCooldown() {

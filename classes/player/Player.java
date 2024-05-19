@@ -40,7 +40,7 @@ public class Player {
                     map.placeTanaman(row, col, tanaman);
                     sun.reduceSun(tanaman.getCostTanaman());
                     tanaman.startCooldown(scheduler);
-                    System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + getSunPoints());
+                    System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
                 } else if (!canAfford(tanaman.getCostTanaman())) {
                     System.out.println("Tidak cukup sun untuk menanam " + tanaman.getNamaTanaman());
                 } else {

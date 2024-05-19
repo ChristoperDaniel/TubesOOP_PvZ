@@ -25,34 +25,21 @@ public class Game {
     private ScheduledExecutorService executor;
     private volatile int currentTime;
     private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
-        new NormalZombie(),
+        new NormalZombie(null),
         new BucketheadZombie(null),
-        new ConeheadZombie(),
+        new ConeheadZombie(null),
         new DolphinRiderZombie(null),
-        new JackInTheBoxZombie(),
-        new PeashooterZombie(),
-        new PoleVaultingZombie(),
-        new RugbyZombie(),
-        new ScreendoorZombie()
-        // jangan lupa bikin jadi zombie
-    ));
-    private List<Zombie> listofLandZombies = new ArrayList<>(List.of(
-        new NormalZombie(),
-        new BucketheadZombie(null),
-        new ConeheadZombie(),
-        new JackInTheBoxZombie(),
-        new PeashooterZombie(),
-        new PoleVaultingZombie(),
-        new RugbyZombie(),
-        new ScreendoorZombie()
-        // jangan lupa bikin jadi zombie
-    ));
-    private List<Zombie> listofWaterZombies = new ArrayList<>(List.of(
-        new DolphinRiderZombie(null)
+        new JackInTheBoxZombie(null),
+        new PeashooterZombie(null),
+        new PoleVaultingZombie(null),
+        new RugbyZombie(null),
+        new ScreendoorZombie(null),
+        new DuckyTubeZombie(null)
         // jangan lupa bikin jadi zombie
     ));
     private Random random = new Random(); // Menambahkan Random instance
     private int nextSunInterval = getRandomSunInterval(); // Interval acak pertama
+    private int maxZombies = 10;
 
     public Game() {
         statusGame = "Paused";
@@ -208,12 +195,14 @@ public class Game {
 
     public void enterGame() {
 
-        executor = Executors.newScheduledThreadPool(5); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
+        executor = Executors.newScheduledThreadPool(7); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
         executor.scheduleAtFixedRate(this::updateSun, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::gameLoop, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
         executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
+        executor.scheduleAtFixedRate(this::checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
     }
 
@@ -233,6 +222,11 @@ public class Game {
         currentTime++;
         if (currentTime > 200) {
             stopGame();
+        }
+    }
+    private void spawnZombies() {
+        if (map.getTotalZombies() < maxZombies) {
+            map.placeZombie(listofAllZombies);
         }
     }
 
@@ -322,19 +316,21 @@ public class Game {
                 case 5:
                     // Quit Game
                     stopGame(); // Menghentikan permainan
-                    inventory = new Inventory();
-                    plantDeck = new Deck();
-                    MulaiGame();
+                    gameBaru();
                     break;
                 case 6:
                     // Help
                     help();
-                    break;
                 default:
                     System.out.println("Invalid choice!");
             }
         }
         scanner.close();
+    }
+
+    private void gameBaru() {
+        Game newGame = new Game();
+        newGame.MulaiGame();
     }
 
     private void stopGame() {
@@ -383,6 +379,19 @@ public class Game {
     public void changeTimeOfDay() {
         if (time >= 100){
             isDayTime = !isDayTime;
+        }
+    }
+
+    private void checkWinOrLose() {
+        if (!gameOver) {
+            // Cek kondisi menang atau kalah
+            if (map.getTotalZombies() == 0 && currentTime >= 161) {
+                System.out.println("Anda menang! Semua zombie telah dikalahkan.");
+                stopGame();
+            } else if (map.isZombieReachedFirstColumn()) {
+                System.out.println("Anda kalah! Satu zombie telah mencapai kolom pertama.");
+                stopGame();
+            }
         }
     }
 

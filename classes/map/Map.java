@@ -74,6 +74,16 @@ public class Map {
         }
     }
 
+    // Metode untuk memeriksa apakah zombie telah mencapai rumah pengguna
+    public boolean isZombieReachedFirstColumn() {
+        for (int i = 0; i < Map.total_rows; i++) {
+            if (isZombieAvail(i,0)) {
+                return true; // Ada zombie yang mencapai kolom pertama
+            }
+        }
+        return false; // Tidak ada zombie yang mencapai kolom pertama
+    }
+
     // Metode untuk memeriksa apakah tile adalah air
     private boolean isWaterTile(int row, int col) {
         return (row == 2 || row == 3) && (col >= 1 && col <= 9);
@@ -133,8 +143,8 @@ public class Map {
             }
             if (benar){
                 //set row col
-                tanaman.setRow(row);
-                tanaman.setCol(col);
+                tanaman.setRowPlant(row);
+                tanaman.setColPlant(col);
 
                 //set symbol
                 switch (tanaman.getNamaTanaman()){
@@ -180,7 +190,15 @@ public class Map {
         }
     }
 
-
+    public int getTotalZombies() {
+        int count = 0;
+        for (int i = 0; i < total_rows; i++) {
+            for (int j = 0; j < total_columns; j++) {
+                count += tiles[i][j].getZombies().size();
+            }
+        }
+        return count;
+    }
 
     // Menempatkan zombie pada tile 
     public void placeZombie(List<Zombie> listofZombies) {
@@ -205,6 +223,9 @@ public class Map {
             }
 
             current_Tile = tiles[randomRow][randomCol];
+            zombieType.setRowZombie(randomRow);
+            zombieType.setColZombie(randomCol);
+
 
             //set symbol
             switch (zombieType.getNamaZombie()){
