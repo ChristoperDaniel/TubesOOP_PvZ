@@ -26,7 +26,7 @@ public class Game {
     private volatile boolean gameOver;
     private volatile Set<Tile> plantTilesWithThreads;
     private volatile Set<Tile> zombieTilesWithThreads;
-    private ScheduledExecutorService executor;
+    private volatile ScheduledExecutorService executor;
     private volatile int currentTime;
     private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
         new NormalZombie(null),
@@ -115,28 +115,31 @@ public class Game {
                 continue;
             }
 
-            if (choice == 1){
+            switch (choice) {
+                case 1:
                     isChoosing = false;
-            }
-            else if (choice == 2){
+                    break;
+                case 2:
                     help();
-            }
-            else if (choice == 3){
+                    break;
+                case 3:
                     inventory.displayInventory();
-            }
-            else if (choice == 4){
+                    break;
+                case 4:
                     System.out.println("-----------------");
                     System.out.println("Isi deck tanaman:");
                     for (int i = 0; i < listofAllZombies.size(); i++) {
                         System.out.println((i + 1) + ". " + listofAllZombies.get(i).getNamaZombie());
                     }
                     System.out.println("-----------------");
-            }
-            else if (choice == 5){
+                    break;
+                case 5:
                     System.exit(0);
-            }
-            else{
+                    break;
+                default:
                     System.out.println("Pilihan tidak valid.");
+                    break;
+
             }
         }
         scanner.close();
@@ -164,44 +167,46 @@ public class Game {
                 continue;
             }
 
-            if (choice == 1){
+            switch (choice) {
+                case 1:
                     inventory.displayInventory();
-            }
-            else if (choice == 2){
+                    break;
+                case 2:
                     plantDeck.displayDeckPlants();
-            }
-            else if (choice == 3){
+                    break;
+                case 3:
                     System.out.print("Masukkan nomor tanaman dari inventory yang ingin Anda tambahkan ke deck: ");
                     index = Integer.parseInt(scanner.nextLine())-1;
                     plantDeck.addPlants(inventory.removePlantsInventory(index));
-            }
-            else if (choice == 4){
+                    break;
+                case 4:
                     System.out.print("Masukkan nomor tanaman dari deck yang ingin Anda hapus: ");   
                     index = Integer.parseInt(scanner.nextLine())-1; 
                     inventory.addPlantsInventory(plantDeck.removePlants(index));
-            }
-            else if (choice == 5){
+                    break;
+                case 5:
                     System.out.print("Masukkan nomor tanaman yang ingin Anda tukar posisinya di deck: ");
                     pos1 = Integer.parseInt(scanner.nextLine()); 
                     System.out.print("Masukkan nomor tanaman di deck yang ingin Anda tukar posisinya dengan: ");
                     pos2 = Integer.parseInt(scanner.nextLine()); 
                     plantDeck.swapPlants(pos1-1,pos2-1);
-            }
-            else if (choice == 6){
+                    break;
+                case 6:
                     System.out.print("Masukkan nomor tanaman yang ingin Anda tukar posisinya di inventory: ");
                     pos1 = Integer.parseInt(scanner.nextLine()); 
                     System.out.print("Masukkan nomor tanaman di inventory yang ingin Anda tukar posisinya dengan: ");
                     pos2 = Integer.parseInt(scanner.nextLine()); 
                     plantDeck.swapPlants(pos1-1,pos2-1);
-            }
-            else if (choice == 7){
+                    break;
+                case 7:
                     isChoosing = false;
                     if (plantDeck.getSize() != plantDeck.getMaxDeckSize()){
                         System.out.println("Isi deck belum full. Silahkan melengkapi deck terlebih dahulu sebelum memasuki game");
                     }
-            }
-            else{
-                System.out.println("Pilihan tidak valid.");
+                    break;
+                default :
+                    System.out.println("Pilihan tidak valid.");
+                    break;
             }
         }
         scanner.close();
@@ -212,7 +217,6 @@ public class Game {
         executor = Executors.newScheduledThreadPool(8); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
         executor.scheduleAtFixedRate(this::updateSun, 0, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(this::gameLoop, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
         executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
@@ -262,26 +266,6 @@ public class Game {
         }
     }
 
-    private void gameLoop() {
-        if (!gameOver) {
-            perang();
-            /*map.removeDeadEntities();
-            if (currentTime >= 160 && currentTime <= 200) {
-            if (map.isZombieAtColumn(0)) {
-                System.out.println("Game Over! Zombies have breached your defenses!");
-                stopGame();
-            }
-            if (map.allZombiesDefeated()) {
-                System.out.println("Congratulations! You've defeated all zombies!");
-                stopGame();
-            } else {
-                System.out.println("Game Over! Zombies have breached your defenses!");
-                stopGame();
-            }
-            }*/
-        }
-    }
-
     private void handleUserInput() {
         Scanner scanner = new Scanner(System.in);
         boolean salah = false;
@@ -290,7 +274,8 @@ public class Game {
         while (!gameOver || !executor.isShutdown()) { // Loop sampai permainan selesai
             displayMenuEnter();
             int choice = scanner.nextInt();
-            if (choice == 1){
+            switch (choice) {
+                case 1:
                     // Menanam Tanaman
                     // Implementasi
                     try {
@@ -314,8 +299,8 @@ public class Game {
                         continue;
                     }
                     player.menanam(plantDeck, row, column, map);
-            }
-            else if (choice == 2){
+                    break;
+                case 2:
                     // Menggali Tanaman
                     // Implementasi
                     try {
@@ -339,26 +324,26 @@ public class Game {
                         continue;
                     }
                     player.menggali(map,row,column);
-            }
-            else if (choice == 3){
+                    break;
+                case 3:
                     // Display Deck
                     plantDeck.displayDeckPlants();
-            }
-            else if (choice == 4){
+                    break;
+                case 4:
                     // Display Map
                     map.displayMap();
-            }
-            else if (choice == 5){
+                    break;
+                case 5:
                     // Quit Game
                     stopGame(); // Menghentikan permainan
                     break;
-            }
-            else if (choice == 6){
+                case 6:
                     // Help
                     help();
-            }
-            else{
+                    break;
+                default:
                     System.out.println("Invalid choice!");
+                    break;
             }
         }
         scanner.close();
