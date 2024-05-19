@@ -43,7 +43,7 @@ public class Game {
     ));
     private Random random = new Random(); // Menambahkan Random instance
     private int nextSunInterval = getRandomSunInterval(); // Interval acak pertama
-    private int maxZombies = 10;
+    private int maxZombies;
 
     public Game() {
         statusGame = "Paused";
@@ -56,6 +56,7 @@ public class Game {
         sun = new Sun();
         plantTilesWithThreads = new HashSet<>();
         zombieTilesWithThreads = new HashSet<>();
+        maxZombies = 10;
     }
 
     public String getStatusGame() {
@@ -208,7 +209,7 @@ public class Game {
     }
 
     public void enterGame() {
-        executor = Executors.newScheduledThreadPool(7); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
+        executor = Executors.newScheduledThreadPool(8); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
         executor.scheduleAtFixedRate(this::updateSun, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::gameLoop, 0, 1, TimeUnit.SECONDS);
@@ -216,7 +217,9 @@ public class Game {
         executor.scheduleAtFixedRate(this::spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
         executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
         executor.scheduleAtFixedRate(this::checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
+        executor.scheduleAtFixedRate(this::implementFlag, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
+        executor.submit(this::perang);
 
         try {
             while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
@@ -251,8 +254,10 @@ public class Game {
     }
     private void spawnZombies() {
         if (!gameOver || !executor.isShutdown()){
-            if (map.getTotalZombies() < maxZombies) {
-                map.placeZombie(listofAllZombies);
+            if (currentTime >= 20 && currentTime <=149){
+                if (map.getTotalZombies() < maxZombies) {
+                    map.placeZombie(listofAllZombies);
+                }
             }
         }
     }
@@ -381,7 +386,7 @@ public class Game {
                     // Jalankan aksi untuk setiap tanaman di tile
                     if (!plantTilesWithThreads.contains(tile)) {
                         for (Tanaman plant : tile.getTanaman()) {
-                            PlantAction plantAction = new PlantAction(plant, tile);
+                            PlantAction plantAction = new PlantAction(plant,tile,map);
                             Thread plantThread = new Thread(plantAction);
                             plantThread.start();
                         }
@@ -391,7 +396,7 @@ public class Game {
                     // Jalankan aksi untuk setiap zombie di tile
                     if (!zombieTilesWithThreads.contains(tile)) {
                         for (Zombie zombie : tile.getZombies()) {
-                            ZombieAction zombieAction = new ZombieAction(zombie, tile);
+                            ZombieAction zombieAction = new ZombieAction(zombie, tile, map);
                             Thread zombieThread = new Thread(zombieAction);
                             zombieThread.start();
                         }
@@ -442,8 +447,13 @@ public class Game {
     }
 
     public void implementFlag() {
-        if (time == 100){
-            map.Flag();
+        if (!gameOver || !executor.isShutdown()){
+            if (currentTime >= 150 && currentTime <=160){
+                maxZombies = 25;
+                if (map.getTotalZombies() < maxZombies) {
+                    map.Flag(listofAllZombies);;
+                }
+            }
         }
     }
 
