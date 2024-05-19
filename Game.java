@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +24,8 @@ public class Game {
     private volatile Sun sun;
     private volatile boolean isDayTime;
     private volatile boolean gameOver;
+    private volatile Set<Tile> plantTilesWithThreads;
+    private volatile Set<Tile> zombieTilesWithThreads;
     private ScheduledExecutorService executor;
     private volatile int currentTime;
     private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
@@ -50,6 +54,8 @@ public class Game {
         time = 0;
         isDayTime = true;
         sun = new Sun();
+        plantTilesWithThreads = new HashSet<>();
+        zombieTilesWithThreads = new HashSet<>();
     }
 
     public String getStatusGame() {
@@ -108,31 +114,32 @@ public class Game {
                 continue;
             }
 
-            switch (choice) {
-                case 1:
+            if (choice == 1){
                     isChoosing = false;
-                    startGame();
-                    break;
-                case 2:
+            }
+            else if (choice == 2){
                     help();
-                case 3:
+            }
+            else if (choice == 3){
                     inventory.displayInventory();
-                case 4:
+            }
+            else if (choice == 4){
                     System.out.println("-----------------");
                     System.out.println("Isi deck tanaman:");
                     for (int i = 0; i < listofAllZombies.size(); i++) {
                         System.out.println((i + 1) + ". " + listofAllZombies.get(i).getNamaZombie());
                     }
                     System.out.println("-----------------");
-                case 5:
+            }
+            else if (choice == 5){
                     System.exit(0);
-                    break;  
-                default:
+            }
+            else{
                     System.out.println("Pilihan tidak valid.");
-                    break;
             }
         }
         scanner.close();
+        startGame();
     }
 
     public void startGame() {
@@ -156,45 +163,51 @@ public class Game {
                 continue;
             }
 
-            switch (choice) {
-                case 1:
+            if (choice == 1){
                     inventory.displayInventory();
-                case 2:
+            }
+            else if (choice == 2){
                     plantDeck.displayDeckPlants();
-                case 3:
+            }
+            else if (choice == 3){
                     System.out.print("Masukkan nomor tanaman dari inventory yang ingin Anda tambahkan ke deck: ");
                     index = Integer.parseInt(scanner.nextLine())-1;
                     plantDeck.addPlants(inventory.removePlantsInventory(index));
-                case 4:
+            }
+            else if (choice == 4){
                     System.out.print("Masukkan nomor tanaman dari deck yang ingin Anda hapus: ");   
                     index = Integer.parseInt(scanner.nextLine())-1; 
                     inventory.addPlantsInventory(plantDeck.removePlants(index));
-                case 5:
+            }
+            else if (choice == 5){
                     System.out.print("Masukkan nomor tanaman yang ingin Anda tukar posisinya di deck: ");
                     pos1 = Integer.parseInt(scanner.nextLine()); 
                     System.out.print("Masukkan nomor tanaman di deck yang ingin Anda tukar posisinya dengan: ");
                     pos2 = Integer.parseInt(scanner.nextLine()); 
                     plantDeck.swapPlants(pos1-1,pos2-1);
-                case 6:
+            }
+            else if (choice == 6){
                     System.out.print("Masukkan nomor tanaman yang ingin Anda tukar posisinya di inventory: ");
                     pos1 = Integer.parseInt(scanner.nextLine()); 
                     System.out.print("Masukkan nomor tanaman di inventory yang ingin Anda tukar posisinya dengan: ");
                     pos2 = Integer.parseInt(scanner.nextLine()); 
                     plantDeck.swapPlants(pos1-1,pos2-1);
-                case 7:
+            }
+            else if (choice == 7){
                     isChoosing = false;
-                    enterGame();
-                    break;
-                default:
-                    System.out.println("Pilihan tidak valid.");
+                    if (plantDeck.getSize() != plantDeck.getMaxDeckSize()){
+                        System.out.println("Isi deck belum full. Silahkan melengkapi deck terlebih dahulu sebelum memasuki game");
+                    }
+            }
+            else{
+                System.out.println("Pilihan tidak valid.");
             }
         }
         scanner.close();
-
+        enterGame();
     }
 
     public void enterGame() {
-
         executor = Executors.newScheduledThreadPool(7); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
         executor.scheduleAtFixedRate(this::updateSun, 0, 1, TimeUnit.SECONDS);
@@ -204,6 +217,16 @@ public class Game {
         executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
         executor.scheduleAtFixedRate(this::checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
+
+        try {
+            while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+                // Looping until executor is properly terminated
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    
+        gameBaru();
     }
 
     private int getRandomSunInterval() {
@@ -211,7 +234,7 @@ public class Game {
     }
 
     private void updateSun() {
-        if (!gameOver && isDayTime && currentTime % nextSunInterval == 0 && currentTime <= 100) {
+        if ((!gameOver || !executor.isShutdown()) && isDayTime && currentTime % nextSunInterval == 0 && currentTime <= 100) {
             sun.addSun(); // Menambahkan 25 Sun
             System.out.println("Sun has fallen from the sky! You've gained 25 sun. Current Time: " + currentTime);
             nextSunInterval = getRandomSunInterval(); // Mengatur ulang interval acak berikutnya
@@ -219,14 +242,18 @@ public class Game {
     }
 
     private void updateCurrentTime() {
-        currentTime++;
-        if (currentTime > 200) {
-            stopGame();
+        if (!gameOver || !executor.isShutdown()){
+            currentTime++;
+            if (currentTime > 200) {
+                stopGame();
+            }
         }
     }
     private void spawnZombies() {
-        if (map.getTotalZombies() < maxZombies) {
-            map.placeZombie(listofAllZombies);
+        if (!gameOver || !executor.isShutdown()){
+            if (map.getTotalZombies() < maxZombies) {
+                map.placeZombie(listofAllZombies);
+            }
         }
     }
 
@@ -255,11 +282,10 @@ public class Game {
         boolean salah = false;
         int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
         int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
-        while (!gameOver) { // Loop sampai permainan selesai
+        while (!gameOver || !executor.isShutdown()) { // Loop sampai permainan selesai
             displayMenuEnter();
             int choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
+            if (choice == 1){
                     // Menanam Tanaman
                     // Implementasi
                     try {
@@ -283,7 +309,8 @@ public class Game {
                         continue;
                     }
                     player.menanam(plantDeck, row, column, map);
-                case 2:
+            }
+            else if (choice == 2){
                     // Menggali Tanaman
                     // Implementasi
                     try {
@@ -307,21 +334,25 @@ public class Game {
                         continue;
                     }
                     player.menggali(map,row,column);
-                case 3:
+            }
+            else if (choice == 3){
                     // Display Deck
                     plantDeck.displayDeckPlants();
-                case 4:
+            }
+            else if (choice == 4){
                     // Display Map
                     map.displayMap();
-                case 5:
+            }
+            else if (choice == 5){
                     // Quit Game
                     stopGame(); // Menghentikan permainan
-                    gameBaru();
                     break;
-                case 6:
+            }
+            else if (choice == 6){
                     // Help
                     help();
-                default:
+            }
+            else{
                     System.out.println("Invalid choice!");
             }
         }
@@ -334,64 +365,64 @@ public class Game {
     }
 
     private void stopGame() {
-        gameOver = true;
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdownNow();
+        }
+        gameOver = true; // Ensure gameOver is set to true
+        System.out.println("Game has been stopped.");
     }
 
     private void perang() {
-        /*if (!gameOver) {
-            for (int lane = 0; lane < Map.HEIGHT; lane++) {
-                List<Tanaman> tanamanLane = map.getTanamanLane(lane);
-                List<Zombie> zombieLane = map.getZombieLane(lane);
+        while (!gameOver) {
+            for (int row = 0; row < Map.total_rows; row++) {
+                for (int col = 0; col < Map.total_columns; col++) {
+                    Tile tile = map.getTile(row, col);
 
-                synchronized (tanamanLane) {
-                    for (Tanaman tanaman : tanamanLane) {
-                        synchronized (zombieLane) {
-                            if (!zombieLane.isEmpty()) {
-                                int rand = new Random().nextInt(zombieLane.size());
-                                Zombie zombie = zombieLane.get(rand);
-                                tanaman.serang(zombie);
-                                if (!zombie.masihHidup()) {
-                                    System.out.println(zombie.getNama() + " has been defeated!");
-                                }
-                            }
+                    // Jalankan aksi untuk setiap tanaman di tile
+                    if (!plantTilesWithThreads.contains(tile)) {
+                        for (Tanaman plant : tile.getTanaman()) {
+                            PlantAction plantAction = new PlantAction(plant, tile);
+                            Thread plantThread = new Thread(plantAction);
+                            plantThread.start();
                         }
+                        plantTilesWithThreads.add(tile);
                     }
-                }
 
-                synchronized (zombieLane) {
-                    for (Zombie zombie : zombieLane) {
-                        synchronized (tanamanLane) {
-                            if (!tanamanLane.isEmpty()) {
-                                int rand = new Random().nextInt(tanamanLane.size());
-                                Tanaman tanaman = tanamanLane.get(rand);
-                                zombie.serang(tanaman);
-                                if (!tanaman.masihHidup()) {
-                                    System.out.println(tanaman.getNama() + " has been defeated!");
-                                }
-                            }
+                    // Jalankan aksi untuk setiap zombie di tile
+                    if (!zombieTilesWithThreads.contains(tile)) {
+                        for (Zombie zombie : tile.getZombies()) {
+                            ZombieAction zombieAction = new ZombieAction(zombie, tile);
+                            Thread zombieThread = new Thread(zombieAction);
+                            zombieThread.start();
                         }
+                        zombieTilesWithThreads.add(tile);
                     }
                 }
             }
-        }*/
+        }
     }
 
     public void changeTimeOfDay() {
-        if (time >= 100){
-            isDayTime = !isDayTime;
+        if (!gameOver || !executor.isShutdown()){
+            if (time > 100){
+                isDayTime = !isDayTime;
+            }
         }
     }
 
     private void checkWinOrLose() {
-        if (!gameOver) {
+        if (!gameOver || !executor.isShutdown()) {
             // Cek kondisi menang atau kalah
             if (map.getTotalZombies() == 0 && currentTime >= 161) {
                 System.out.println("Anda menang! Semua zombie telah dikalahkan.");
                 stopGame();
             } else if (map.isZombieReachedFirstColumn()) {
-                System.out.println("Anda kalah! Satu zombie telah mencapai kolom pertama.");
+                System.out.println("Anda kalah! Zombie menang");
                 stopGame();
             }
+        }
+        else{
+            System.out.println("Anda kalah! Zombie menang");
         }
     }
 
