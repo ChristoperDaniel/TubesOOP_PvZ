@@ -282,6 +282,70 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null) {
             current_Tile.removeZombie(zombie);
+            current_Tile.setDisplayName("_");
+        }
+    }
+
+    public void Flag(List<Zombie> listofZombies){
+        Tile current_Tile;
+        double randomValue = Math.random();
+        Random random = new Random();
+
+        if (randomValue <= 0.5) {
+            int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
+            Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
+            int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
+            int randomCol = Map.total_columns; // Pilih kolom di sisi kanan map
+
+            if(isRumputTile(randomRow, randomCol)){
+                if(zombieType.getNamaZombie() != "DuckyTubeZombie" || zombieType.getNamaZombie() != "DolphinRiderZombie"){
+                    tiles[randomRow][randomCol].addZombie(zombieType);
+                }
+            } else if (isWaterTile(randomRow, randomCol)){
+                if(zombieType.getNamaZombie() == "DuckyTubeZombie" || zombieType.getNamaZombie() == "DolphinRiderZombie"){
+                    tiles[randomRow][randomCol].addZombie(zombieType);
+                }
+            }
+
+            current_Tile = tiles[randomRow][randomCol];
+
+            //set symbol
+            switch (zombieType.getNamaZombie()){
+                case "NormalZombie":
+                    current_Tile.setDisplayName("NMz");
+                    break;
+                case "ConeheadZombie":
+                    current_Tile.setDisplayName("CHz");
+                    break;
+                case "BucketheadZombie":
+                    current_Tile.setDisplayName("BHz");
+                    break;
+                case "PoleVaultingZombie":
+                    current_Tile.setDisplayName("PVz");
+                    break;
+                case "DuckyTubeZombie":
+                    current_Tile.setDisplayName("DTz");
+                    break;
+                case "DolphinRiderZombie":
+                    current_Tile.setDisplayName("DRz");
+                    break;
+                case "PeashooterZombie":
+                    current_Tile.setDisplayName("PSz");
+                    break;
+                case "ScreendoorZombie":
+                    current_Tile.setDisplayName("SDz");
+                    break;
+                case "JackInTheBoxZombie":
+                    current_Tile.setDisplayName("JBz");
+                    break;
+                case "RugbyZombie":
+                    current_Tile.setDisplayName("RGz");
+                    break;
+                default:
+                    System.out.println("Jenis zombie tidak dikenali.");
+                    return;
+            }
+            current_Tile.setDisplayName(zombieType.getNamaZombie());
         }
     }
 
