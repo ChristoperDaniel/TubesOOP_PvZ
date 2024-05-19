@@ -1,4 +1,4 @@
-package Zombie;
+package zombie;
 
 import classes.map.*;
 import interfaces.ZombieWithAbility;
