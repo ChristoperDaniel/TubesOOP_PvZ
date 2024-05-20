@@ -29,10 +29,10 @@ public class BucketheadZombie extends Zombie implements ZombieWithItem {
         int y = getColZombie();
         Tile xy = map.getTile(x, y);
         int dmg = getAttackDamageZombie();
-        int atkspd = getAttackSpeedZombie();
+        int atkspd = getAttackSpeedZombie() * 1000;
         List<Tanaman> planted = xy.getTanaman();
 
-        executorService.scheduleAtFixedRate(() ->{
+        executorService.scheduleAtFixedRate(() -> {
             for (Tanaman t : planted) {
                 t.setHealthTanaman(t.getHealthTanaman() - dmg);
                 if (t.getHealthTanaman() <= 0) {
@@ -40,14 +40,14 @@ public class BucketheadZombie extends Zombie implements ZombieWithItem {
                     executorService.shutdown();
                 }
             }
-        } , 0, atkspd, TimeUnit.SECONDS);
+        } , 0, atkspd, TimeUnit.MILLISECONDS);
     }
     
     @Override
     public void moveZombie (Map map) {
         int x = getRowZombie();
         int y = getColZombie();
-        int spd = getSpeedZombie();
+        int spd = getSpeedZombie() * 1000;
 
         executorService.scheduleAtFixedRate(() ->{
             for (int i = y; i > 0; i--) {
@@ -59,7 +59,7 @@ public class BucketheadZombie extends Zombie implements ZombieWithItem {
                     break;
                 }
             }
-        } , 0, spd, TimeUnit.SECONDS);
+        } , 0, spd, TimeUnit.MILLISECONDS);
     }
 }
 
