@@ -5,7 +5,7 @@ import zombie.Zombie;
 
 public class Jalapeno extends Tanaman implements TanamanPenyerang{
     public Jalapeno() {
-        super("Jalapeno", 125, 100, 5000, 0, -1, 30, false);
+        super("Jalapeno", 125, 100, 50000, 0, -1, 30, false);
     }
     public void attackPlant(Zombie zombie, Map[][] tiles){
 
@@ -28,7 +28,7 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
                             tiles.removeZombie(zombie);
                         }
                     }
-                    setHealthTanaman(0);
+                    plant.setHealthTanaman(0);
                 }
             }
         } 
