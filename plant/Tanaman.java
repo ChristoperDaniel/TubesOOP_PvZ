@@ -69,7 +69,11 @@ public class Tanaman extends Aquatic{
     public boolean isOnCooldown() {
         return isOnCooldown;
     }
-    
+    public void setIsLilyPadAvail(boolean nilai){
+        if ((nilai == true) && (namaTanaman != "Lilypad")){
+            healthTanaman += (new Lilypad()).getHealthTanaman();
+        }
+    }
     public void startCooldown(ScheduledExecutorService scheduler) {
         isOnCooldown = true;
         scheduler.schedule(() -> isOnCooldown = false, cooldownTanaman, TimeUnit.SECONDS);

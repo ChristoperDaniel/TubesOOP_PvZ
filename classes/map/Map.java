@@ -121,10 +121,12 @@ public class Map {
                     if (current_Tile.getTanaman() == null && (tanaman.getNamaTanaman() == "Seashroom" || tanaman.getNamaTanaman() == "Tangle Kelp")){
                         current_Tile.addTanaman(tanaman);
                     }
-                    else if(current_Tile.getTanaman() == null || !isLilypadAvail(row, col)){
+                    else if((current_Tile.getTanaman() == null || !isLilypadAvail(row, col)) && (!(tanaman.getAquatic()))){
                         System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
                         benar = false;
-                    } else if (isLilypadAvail(row, col)){
+                    } else if ((isLilypadAvail(row, col)) && (!(tanaman.getAquatic()))){
+                        tanaman.setIsLilyPadAvail(true);
+                        current_Tile.removeTanaman(current_Tile.getTanaman().get(0));
                         current_Tile.addTanaman(tanaman);
                     }
                 }
