@@ -158,7 +158,7 @@ public class Game {
         int pos2;
         System.out.println("Sebelum memulai permainan, silahkan mengatur deck yang akan dipakai untuk melindungi rumah dari serangan zombie\n");
 
-        while (isChoosing && (plantDeck.getSize() != plantDeck.getMaxDeckSize())) {
+        while (isChoosing || (plantDeck.getSize() != plantDeck.getMaxDeckSize())) {
             displayMenuStart();
             System.out.print("Pilih opsi: ");
             int choice = 0;
@@ -216,18 +216,18 @@ public class Game {
     }
 
     public void enterGame() {
-        executor = Executors.newScheduledThreadPool(8); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
+        executor = Executors.newScheduledThreadPool(4); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
-        executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
+        //executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(timeThread, 0, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
+        //executor.scheduleAtFixedRate(changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
-        executor.scheduleAtFixedRate(updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
-        executor.scheduleAtFixedRate(this::checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
+        executor.scheduleAtFixedRate(updateCurrentTime, 0, 1, TimeUnit.MILLISECONDS); // Memperbarui currentTime
+        //executor.scheduleAtFixedRate(checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
         //executor.submit(this::perang);
 
-        try {
+        /*try {
             while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
                 // Looping until executor is properly terminated
             }
@@ -235,7 +235,7 @@ public class Game {
             Thread.currentThread().interrupt();
         }
     
-        gameBaru();
+        gameBaru();*/
     }
 
     private int getRandomSunInterval() {
@@ -288,7 +288,7 @@ public class Game {
                 }
             }
         }
-    }
+    };
 
     private void handleUserInput() {
         Scanner scanner = new Scanner(System.in);
@@ -428,6 +428,7 @@ public class Game {
                 }
             }
         }
+    };
     Runnable checkWinOrLose = new Runnable(){
         @Override
         public void run(){
@@ -445,7 +446,7 @@ public class Game {
                 System.out.println("Anda kalah! Zombie menang");
             }
         }
-    }
+    };
 
     private void checkWinOrLose() {
         if (!gameOver || !executor.isShutdown()) {
@@ -484,7 +485,6 @@ public class Game {
         game.MulaiGame();
     }
 
-    }
 }
 
 

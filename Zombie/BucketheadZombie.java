@@ -15,26 +15,3 @@ public class BucketheadZombie extends Zombie implements ZombieWithItem {
         }
     }
 }
-
-/*
-    public void attackZombie(Tanaman tanaman, int x, int y) {
-        Tile currentTile = getTile();
-        int y = currentTile.getY();
-        int damage = this.getAttackDamageZombie();
-        int atkspeed = this.getAttackSpeedZombie();
-
-        executorService.scheduleAtFixedRate(() -> {
-            for (Character owner : currentTile.getOwners()) {
-                if (owner instanceof Tanaman && ((Tanaman) owner).getTile().getY() == y) {
-                    owner.setHealthTanaman(damage);
-                }
-            }
-        }   , 0, atkspeed, TimeUnit.SECONDS); 
-    }
-
-    public void reduceStat() {
-        if (is_item_removedZombie) {
-            setHealthZombie( getHealthZombie() - 100);
-        }
-    }
-*/

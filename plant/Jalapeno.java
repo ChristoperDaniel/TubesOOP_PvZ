@@ -1,23 +1,16 @@
 package plant;
-
-<<<<<<< HEAD
-import classes.map.Map;
+import classes.map.*;
 import zombie.Zombie;
+import java.util.List;
 
-public class Jalapeno extends Tanaman{
-=======
-public class Jalapeno extends Tanaman implements TanamanPenyerang{
->>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
+public class Jalapeno extends Tanaman {
     public Jalapeno() {
-        super("Jalapeno", 125, 100, 50000, 0, -1, 30, false);
+        super("Jalapeno", 125, 100, 50000, 0, 2, 30, false);
     }
-    public void attackPlant(Zombie zombie, Map tiles){
-
-    }
-<<<<<<< HEAD
     /* 
 =======
 
+<<<<<<< HEAD
 >>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
     @Override
     public void attackPlant(Tile tile, Map map) {
@@ -39,9 +32,23 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
                 }
             }
         } 
-<<<<<<< HEAD
     }*/
-=======
-    }
->>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
+    // @Override
+    // public void attackPlant(Tile tile, Map map) {
+
+    //     while (getHealthTanaman() > 0) {
+    //         synchronized (tile) {
+    //             List<Tile> baris = map.getRow(tile.getY());
+    //             for (Tile tiles : baris ) {
+    //                 if (!tiles.getZombies().isEmpty()) {
+    //                 // Membunuh semua zombie di baris ini
+    //                     for (Zombie zombie : tiles.getZombies()) {
+    //                         tiles.removeZombie(zombie);
+    //                     }
+    //                 }
+    //                 setHealthTanaman(0);
+    //             }
+    //         }
+    //     } 
+    // }
 }

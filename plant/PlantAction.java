@@ -1,12 +1,12 @@
 package plant;
 
 import classes.map.*;
+import classes.objects.*;
+import interfaces.ZombieWithAbility;
 import zombie.DolphinRiderZombie;
 import zombie.JackInTheBoxZombie;
 import zombie.PoleVaultingZombie;
 import zombie.Zombie;
-import classes.objects.*;
-import interfaces.ZombieWithAbility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +35,6 @@ public class PlantAction implements Runnable {
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
-                List<TanamanPenyerang> plantack = new ArrayList<>();
-                plantack.add(new Peashooter());
-                plantack.add(new SnowPea());
                 if (plant.getRangeTanaman() == -1){
                     if (plant.getNamaTanaman() == "Jalapeno"){
                         List<Tile> baris = map.getRow(tile.getY());
