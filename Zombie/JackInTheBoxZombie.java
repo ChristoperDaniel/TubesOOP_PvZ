@@ -7,7 +7,7 @@ import java.util.List;
 
 public class JackInTheBoxZombie extends Zombie implements ZombieWithAbility {
     public JackInTheBoxZombie(Tile tile) {
-        super("JackInTheBoxZombie", 300, 5000, 1000,  10000, 1, false);
+        super("JackInTheBoxZombie", 300, 5000, 1000,  10000, 1, true, false);
     }
 
     @Override

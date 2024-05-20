@@ -2,7 +2,7 @@ package plant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Tanaman extends Aquatic{
+public class Tanaman extends Aquatic {
     private String namaTanaman;
     private int costTanaman;
     private int healthTanaman;
