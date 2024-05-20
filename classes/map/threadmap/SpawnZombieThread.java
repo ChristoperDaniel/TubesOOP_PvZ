@@ -1,4 +1,6 @@
-package classes.map;
+package classes.map.threadmap;
+
+import classes.map.Map;
 
 public class SpawnZombieThread implements Runnable {
     private Map map;
