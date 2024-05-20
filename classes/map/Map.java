@@ -1,12 +1,14 @@
 package classes.map;
 
-import zombie.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import classes.map.threadmap.SpawnZombieThread;
 import plant.*;
+import zombie.*;
 
 public class Map {
     public static int total_rows = 6;
@@ -208,7 +210,7 @@ public class Map {
         }
         return count;
     }
-    volatile static List<Zombie> listofZombies = new ArrayList<>(List.of(
+    public volatile static List<Zombie> listofZombies = new ArrayList<>(List.of(
         new NormalZombie(null),
         new BucketheadZombie(null),
         new ConeheadZombie(null),
@@ -222,7 +224,6 @@ public class Map {
         // jangan lupa bikin jadi zombie
     ));
     
-    //taro place zombie disini, sementara dipindahin
     public void placeZombie(List<Zombie> listofZombies) {
         Tile current_Tile;
         double randomValue = Math.random();
