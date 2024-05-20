@@ -33,7 +33,11 @@ public class Deck {
         return listPlants.size();
     }
     public void addPlants(Tanaman tanaman) {
-        if (listPlants.size() >= MaxDeckSize) {
+        if (tanaman == null) {
+            System.out.println("Tanaman tidak valid.");
+            return;
+        }
+        if (listPlants.size() > MaxDeckSize) {
             System.out.println("Deck penuh. Tidak bisa menambah tanaman lagi.");
             return;
         }

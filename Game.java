@@ -158,7 +158,7 @@ public class Game {
         int pos2;
         System.out.println("Sebelum memulai permainan, silahkan mengatur deck yang akan dipakai untuk melindungi rumah dari serangan zombie\n");
 
-        while (isChoosing || (plantDeck.getSize() != plantDeck.getMaxDeckSize())) {
+        while (isChoosing) {
             displayMenuStart();
             System.out.print("Pilih opsi: ");
             int choice = 0;
@@ -178,9 +178,14 @@ public class Game {
                     plantDeck.displayDeckPlants();
                     break;
                 case 3:
-                    System.out.print("Masukkan nomor tanaman dari inventory yang ingin Anda tambahkan ke deck: ");
-                    index = Integer.parseInt(scanner.nextLine())-1;
-                    plantDeck.addPlants(inventory.removePlantsInventory(index));
+                    if (plantDeck.getSize() < plantDeck.getMaxDeckSize()){
+                        System.out.print("Masukkan nomor tanaman dari inventory yang ingin Anda tambahkan ke deck: ");
+                        index = Integer.parseInt(scanner.nextLine())-1;
+                        plantDeck.addPlants(inventory.removePlantsInventory(index));
+                    }
+                    else{
+                        System.out.println("Deck sudah penuh");
+                    }
                     break;
                 case 4:
                     System.out.print("Masukkan nomor tanaman dari deck yang ingin Anda hapus: ");   
