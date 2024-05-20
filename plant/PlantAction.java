@@ -1,8 +1,12 @@
 package plant;
 
 import classes.map.*;
+import zombie.DolphinRiderZombie;
+import zombie.JackInTheBoxZombie;
+import zombie.PoleVaultingZombie;
 import zombie.Zombie;
 import classes.objects.*;
+import interfaces.ZombieWithAbility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,10 @@ public class PlantAction implements Runnable {
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
+                List<ZombieWithAbility> zability = new ArrayList<>();
+                zability.add(new DolphinRiderZombie(tile));
+                zability.add(new PoleVaultingZombie(tile));
+                zability.add(new JackInTheBoxZombie(tile));
                 if (plant.getRangeTanaman() == -1){
                     if (plant.getNamaTanaman() == "Jalapeno"){
                         List<Tile> baris = map.getRow(tile.getY());
