@@ -372,7 +372,7 @@ public class Game {
                     // Jalankan aksi untuk setiap tanaman di tile
                     if (!plantTilesWithThreads.contains(tile)) {
                         for (Tanaman plant : tile.getTanaman()) {
-                            PlantAction plantAction = new PlantAction(plant,tile,map);
+                            PlantAction plantAction = new PlantAction(plant,tile,map,sun);
                             Thread plantThread = new Thread(plantAction);
                             plantThread.start();
                             plantThreads.add(plantThread);

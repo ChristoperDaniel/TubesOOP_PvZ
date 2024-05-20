@@ -2,9 +2,11 @@ package plant;
 
 import classes.map.*;
 import zombie.Zombie;
+import classes.objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -13,17 +15,19 @@ public class PlantAction implements Runnable {
     private Tile tile;
     private Map map;
     private int row;
+    private Sun sun;
+    private ScheduledExecutorService executorService;
 
-    public PlantAction(Tanaman plant, Tile tile, Map map) {
+    public PlantAction(Tanaman plant, Tile tile, Map map, Sun sun) {
         this.plant = plant;
         this.tile = tile;
         this.map = map;
         this.row = tile.getY();  // Simpan baris untuk memudahkan akses nanti
+        this.executorService = Executors.newScheduledThreadPool(1);
     }
 
     @Override
     public void run() {
-        ScheduledExecutorService executorService;
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
@@ -38,10 +42,9 @@ public class PlantAction implements Runnable {
                                 }
                             }
                         }
+                        plant.setHealthTanaman(0);
                     }
-                
-                    else if (plant.get){}
-                    else{
+                    else if (plant.getNamaTanaman() == "Peashooter"){
                         executorService.scheduleAtFixedRate(() ->{
                             List<Zombie> kosong = new ArrayList<>();
                             List<Tile> baris = map.getRow(tile.getY());
@@ -59,10 +62,23 @@ public class PlantAction implements Runnable {
                         } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
                     }
                 }
-                else if (plant.getRangeTanaman() == 1){
-                    
+                else if (plant.getRangeTanaman() == 0){
+                    if (plant.getNamaTanaman() == "Sunflower"){
+                        Sunflower sunflower = (Sunflower) plant; 
+                        executorService.scheduleAtFixedRate(() ->{
+                            sun.addCustomSun(sunflower.generateSun());
+                        } , 0, 3, TimeUnit.SECONDS);
+                    }
                 }
-            }
+                else if (plant.getRangeTanaman() == 1){
+                    if (plant.getNamaTanaman() == "Squash"){
+                        List<Tile> baris = new ArrayList<>(List.of(
+                            map.getTile(plant.getRowPlant(), plant.getColPlant() + 1),
+                            map.getTile(plant.getRowPlant(), plant.getColPlant() - 1)
+                        ));
+                        plant.setHealthTanaman(0);
+                    }
+                }
         }
 
             // Menunggu sebelum melakukan aksi berikutnya
