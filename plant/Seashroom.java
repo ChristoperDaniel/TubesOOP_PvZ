@@ -1,10 +1,9 @@
-public class Seashroom extends Tanaman implements Serangan{
 package plant;
 public class Seashroom extends Tanaman{
     public Seashroom() {
         super("Seashroom", 0, 100, 20, 5, -1, 10,false);
     }
-
+/*
     @Override
     public void serang(Map map, int x, int y) {
         if (statusTanaman()) {
@@ -28,4 +27,5 @@ public class Seashroom extends Tanaman{
             }
         }
     }
+    */
 }

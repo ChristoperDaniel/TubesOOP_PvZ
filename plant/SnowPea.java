@@ -1,17 +1,18 @@
 package plant;
-public class Snowpea extends Tanaman implements Serangan{
-    private SlowingEffect slowingEffect;
+public class SnowPea extends Tanaman{
+    //private SlowingEffect slowingEffect;
 
-    public Snowpea() {
+    public SnowPea() {
         super("Snow Pea", 175, 100, 25, 4, -1, 10,false );
-        this.slowingEffect = new SlowingEffect(0.5f, 3000);
+        /*this.slowingEffect = new SlowingEffect(0.5f, 3000);*/
     }
-
+/*
     @Override
     public void serang(Map map, int x, int y) {
         if (statusTanaman()) {
             int detikgames = 200;
             int i = 0;
+            private ScheduledExecutorService executorService;
             while (i <= detikgames) {
                 List<Zombie> kosong = new ArrayList<>();
                 List<Tile> baris = map.getBaris(y);
@@ -30,4 +31,5 @@ public class Snowpea extends Tanaman implements Serangan{
             }
         }
     }
+*/
 }

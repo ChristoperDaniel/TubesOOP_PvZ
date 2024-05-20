@@ -20,7 +20,7 @@ public class ZombieAction implements Runnable {
     @Override
     public void run() {
         // Lakukan aksi zombie dalam loop
-        while (!(zombie.getHealthZombie() <=0)) {
+        while (zombie.getHealthZombie() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
                 // Cek apakah ada tanaman di tile yang sama dengan posisi zombie

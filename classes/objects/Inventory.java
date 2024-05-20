@@ -8,7 +8,7 @@ public class Inventory {
     private List<Tanaman> inventory = new ArrayList<>(List.of(
         new Sunflower(),
         new Peashooter(),
-        new Snowpea(),
+        new SnowPea(),
         new Seashroom(),
         new Squash(),
         new TangleKelp(),

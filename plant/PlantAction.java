@@ -2,7 +2,11 @@ package plant;
 
 import classes.map.*;
 import zombie.Zombie;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PlantAction implements Runnable {
     private Tanaman plant;
@@ -19,18 +23,27 @@ public class PlantAction implements Runnable {
 
     @Override
     public void run() {
+        private ScheduledExecutorService executorService;
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
-                // Cek apakah ada zombie di tile paling kanan di baris ini
-                Tile rightMostTile = map.getTile(row, Map.total_columns - 1);
-                List<Zombie> zombies = rightMostTile.getZombies();
-
-                if (zombies != null && !zombies.isEmpty()) {
-                    // Jika ada zombie di tile paling kanan, serang zombie tersebut
-                    plant.attack(tile, map, zombies.get(0)); // atau zombies.get(zombies.size() - 1) untuk zombie terakhir
+                if (plant.getRangeTanaman() == -1){
+                    executorService.scheduleAtFixedRate(() ->{
+                        List<Zombie> kosong = new ArrayList<>();
+                        List<Tile> baris = map.getBaris(y);
+                        for (Tile tiles : baris) {
+                            if (!tiles.getZombies().isEmpty()) {
+                                    // Ambil zombie terdepan
+                                Zombie zombieTerdepan = tiles.getZombies().get(0);
+                                    // Serang setiap attack_speedTanaman detik sekali
+                                zombieTerdepan.setHealthZombie(zombieTerdepan.getHe((althZombie() - this.getAttackDamageTanaman());
+                                if (zombieTerdepan.getHealthZombie() <= 0) {
+                                        tiles.removeZombie(zombieTerdepan);
+                                }
+                    } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
                 }
             }
+        }
 
             // Menunggu sebelum melakukan aksi berikutnya
             try {

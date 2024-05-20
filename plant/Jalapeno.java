@@ -1,13 +1,17 @@
-public class Jalapeno extends Tanaman implements Serangan {
-    public Jalapeno() {
-        super("Jalapeno", 125, 100, 5000, 0, 2, 30);
 package plant;
+
+import classes.map.Map;
+import zombie.Zombie;
+
 public class Jalapeno extends Tanaman implements TanamanPenyerang{
     public Jalapeno() {
         super("Jalapeno", 125, 100, 5000, 0, -1, 30, false);
     }
+    public void attackPlant(Zombie zombie, Map[][] tiles){
 
-    @Override
+    }
+
+    /*@Override
     public void serang(Map map, int x, int y) {
         List<Tile> baris = map.getBaris(y);
         for (Tile tiles : baris) {
@@ -18,5 +22,5 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
                 }
             }
         }
-    }
+    }*/
 }

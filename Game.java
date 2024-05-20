@@ -28,6 +28,8 @@ public class Game {
     private volatile Set<Tile> zombieTilesWithThreads;
     private volatile ScheduledExecutorService executor;
     private volatile int currentTime;
+    private List<Thread> plantThreads = new ArrayList<>();
+    private List<Thread> zombieThreads = new ArrayList<>();
     private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
         new NormalZombie(null),
         new BucketheadZombie(null),
@@ -374,6 +376,7 @@ public class Game {
                             PlantAction plantAction = new PlantAction(plant,tile,map);
                             Thread plantThread = new Thread(plantAction);
                             plantThread.start();
+                            plantThreads.add(plantThread);
                         }
                         plantTilesWithThreads.add(tile);
                     }
@@ -384,6 +387,7 @@ public class Game {
                             ZombieAction zombieAction = new ZombieAction(zombie, tile, map);
                             Thread zombieThread = new Thread(zombieAction);
                             zombieThread.start();
+                            zombieThreads.add(zombieThread);
                         }
                         zombieTilesWithThreads.add(tile);
                     }

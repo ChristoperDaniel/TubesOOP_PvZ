@@ -1,10 +1,10 @@
-public class TangleKelp extends Tanaman implements Serangan {
+
 package plant;
-public class TangleKelp extends Tanaman{
+public class TangleKelp extends Tanaman {
     public TangleKelp() {
         super("Tangle Kelp", 25, 100, 5000, 0, 1, 20, false);
     }
-
+/*
     @Override
     public void serang(Map map, int x, int y) {
         if (statusTanaman()) {
@@ -24,4 +24,5 @@ public class TangleKelp extends Tanaman{
             }
         }
     }
+*/
 }

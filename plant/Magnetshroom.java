@@ -7,8 +7,8 @@ public class Magnetshroom extends Tanaman{
     }
 
     public void removeItem(Zombie zombie){
-        if (!zombie.is_item_removedZombie) {
-            zombie.is_item_removedZombie = true;
+        if (!zombie.getIsItemRemovedZombie()) {
+            zombie.setIsItemRemovedZombie(true);
         }   
     }
 }
