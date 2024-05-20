@@ -11,7 +11,7 @@ public class Magnetshroom extends Tanaman implements TanamanPenyerang{
             zombie.setIsItemRemovedZombie(true);
         }   
     }
-
+/*
     @Override
     public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
@@ -35,5 +35,5 @@ public class Magnetshroom extends Tanaman implements TanamanPenyerang{
                 }
             }
         } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
-    }
+    } */
 }

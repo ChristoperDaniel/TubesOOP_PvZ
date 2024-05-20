@@ -10,7 +10,7 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
     public void attackPlant(Zombie zombie, Map[][] tiles){
 
     }
-
+/*
     @Override
     public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
@@ -32,4 +32,5 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
             }
         } 
     }
+    */
 }
