@@ -25,41 +25,37 @@ public class BucketheadZombie extends Zombie implements ZombieWithItem {
 
     @Override
     public void attackZombie(Tile tile, Map map, Tanaman tanaman) {
-        int x = tile.getX();
-        int y = tile.getY();
+        int x = getRowZombie();
+        int y = getColZombie();
         Tile xy = map.getTile(x, y);
         int dmg = getAttackDamageZombie();
         int atkspd = getAttackSpeedZombie();
+        List<Tanaman> planted = xy.getTanaman();
 
         executorService.scheduleAtFixedRate(() ->{
-            List<Tanaman> planted = xy.getTanaman();
-            if (planted != null) {
-                for (Tanaman t : planted) {
-                    t.setHealthTanaman(t.getHealthTanaman() - dmg);
-                    if (t.getHealthTanaman() <= 0) {
-                        xy.removeTanaman(t);
-                    }
+            for (Tanaman t : planted) {
+                t.setHealthTanaman(t.getHealthTanaman() - dmg);
+                if (t.getHealthTanaman() <= 0) {
+                    xy.removeTanaman(t);
+                    executorService.shutdown();
                 }
-            }
-            else {
-                moveZombie(tile, map);
             }
         } , 0, atkspd, TimeUnit.SECONDS);
     }
     
     @Override
-    public void moveZombie (Tile tile, Map map) {
-        int x = tile.getX();
-        int y = tile.getY();
-        Tile xy = map.getTile(x, y);
+    public void moveZombie (Map map) {
+        int x = getRowZombie();
+        int y = getColZombie();
         int spd = getSpeedZombie();
 
         executorService.scheduleAtFixedRate(() ->{
             for (int i = y; i > 0; i--) {
-                if (!(map.isTanamanAvail(x, y) == true)) {
-                    xy.setY(i - 1);
+                if (!(map.isTanamanAvail(x, i) == true)) {
+                    setRowZombie(i);
                 }
                 else {
+                    executorService.shutdown();
                     break;
                 }
             }

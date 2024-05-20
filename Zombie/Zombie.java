@@ -95,7 +95,7 @@ public abstract class Zombie extends Aquatic {
             setAttackSpeedZombie(getAttackSpeedZombie() + 1);
         }
     }
-    public abstract void moveZombie(Tile tile, Map map);
+    public abstract void moveZombie(Map map);
     public abstract void attackZombie(Tile tile, Map map, Tanaman tanaman);
 
 }
