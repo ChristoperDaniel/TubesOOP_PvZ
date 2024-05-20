@@ -15,13 +15,18 @@ public class SnowPea extends Tanaman {
         Map map;
         int row;
         int x = getColPlant();
+<<<<<<< HEAD
         int a = getColZombie();
         /*
+=======
+
+>>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
         executorService.scheduleAtFixedRate(() ->{
             List<Zombie> kosong = new ArrayList<>();
             List<Tile> baris = map.getRow(tile.getY());
             for (Tile tiles : baris) {
                 if (!tiles.getZombies().isEmpty()) {
+                    int a = getColZombie();
                     if (a >= x){
                         for (Zombie zombie : tiles.getZombies()){
                             tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());

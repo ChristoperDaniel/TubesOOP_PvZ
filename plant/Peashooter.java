@@ -1,6 +1,24 @@
 package plant;
+<<<<<<< HEAD
 import zombie.*;
 public class Peashooter extends Tanaman {
+=======
+import classes.map.*;
+import zombie.DolphinRiderZombie;
+import zombie.JackInTheBoxZombie;
+import zombie.PoleVaultingZombie;
+import zombie.Zombie;
+import classes.objects.*;
+import interfaces.ZombieWithAbility;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class Peashooter extends Tanaman implements TanamanPenyerang{
+>>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
     public Peashooter() {
         super("Peashooter", 100, 100, 25, 4, -1, 10, false);
     }

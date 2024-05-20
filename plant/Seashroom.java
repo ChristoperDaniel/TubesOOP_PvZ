@@ -1,5 +1,23 @@
 package plant;
+<<<<<<< HEAD
 public class Seashroom extends Tanaman {
+=======
+import classes.map.*;
+import zombie.DolphinRiderZombie;
+import zombie.JackInTheBoxZombie;
+import zombie.PoleVaultingZombie;
+import zombie.Zombie;
+import classes.objects.*;
+import interfaces.ZombieWithAbility;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class Seashroom extends Tanaman implements TanamanPenyerang{
+>>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
     public Seashroom() {
         super("Seashroom", 0, 100, 20, 5, -1, 10,true);
     }
@@ -11,13 +29,13 @@ public class Seashroom extends Tanaman {
         Map map;
         int row;
         int x = getColPlant();
-        int a = getColZombie();
 
         executorService.scheduleAtFixedRate(() ->{
             List<Zombie> kosong = new ArrayList<>();
             List<Tile> baris = map.getRow(tile.getY());
             for (Tile tiles : baris) {
                 if (!tiles.getZombies().isEmpty()) {
+                    int a = getColZombie();
                     if (a >= x){
                         for (Zombie zombie : tiles.getZombies()){
                             tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());

@@ -1,5 +1,10 @@
 package plant;
+<<<<<<< HEAD
 public class Squash extends Tanaman {
+=======
+
+public class Squash extends Tanaman implements TanamanPenyerang{
+>>>>>>> 8d3d6166ffabac5e7fdebc75dec0674c8cd5ca1b
     public Squash() {
         super("Squash", 50, 100, 5000, 0, 1, 20,false);
     }
@@ -11,7 +16,6 @@ public class Squash extends Tanaman {
         Map map;
         int row;
         int x = getColPlant();
-        int a = getColZombie();
 
         while (plant.getHealthTanaman() > 0) {
             synchronized (tile) {
@@ -19,6 +23,7 @@ public class Squash extends Tanaman {
                 List<Tile> baris = map.getRow(tile.getY());
                 for (Tile tiles : baris) {
                     if (!tiles.getZombies().isEmpty()) {
+                        int a = getColZombie();
                         if (x == a - 1){
                             for (Zombie zombie : tiles.getZombies()){
                                 tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());

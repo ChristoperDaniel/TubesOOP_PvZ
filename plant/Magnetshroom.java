@@ -1,5 +1,4 @@
 package plant;
-import zombie.*;
 
 public class Magnetshroom extends Tanaman {
     public Magnetshroom() {

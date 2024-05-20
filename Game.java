@@ -220,9 +220,9 @@ public class Game {
 
         executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(timeThread, 0, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(this::changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(this::spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
-        executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
+        executor.scheduleAtFixedRate(changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
+        executor.scheduleAtFixedRate(updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
         executor.scheduleAtFixedRate(this::checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
         //executor.submit(this::perang);
@@ -253,7 +253,7 @@ public class Game {
         }
     };
 
-    currentTimeMillies(); // buat update current tme bisa pake ini
+    //currentTimeMillies(); // buat update current tme bisa pake ini
 
     Runnable updateCurrentTime = new Runnable(){
         @Override
@@ -277,11 +277,14 @@ public class Game {
     //         }
     //     }
     // }
-    private void spawnZombies() {
-        if (!gameOver || !executor.isShutdown()){
-            if (currentTime >= 20 && currentTime <=149){
-                if (map.getTotalZombies() < maxZombies) {
-                    map.placeZombie(listofAllZombies);
+    Runnable spawnZombies = new Runnable(){
+        @Override
+        public void run(){
+            if (!gameOver || !executor.isShutdown()){
+                if (currentTime >= 20 && currentTime <=149){
+                    if (map.getTotalZombies() < maxZombies) {
+                        map.placeZombie(listofAllZombies);
+                    }
                 }
             }
         }
@@ -416,11 +419,30 @@ public class Game {
             }
         }
     }
-
-    public void changeTimeOfDay() {
-        if (!gameOver || !executor.isShutdown()){
-            if (time > 100){
-                isDayTime = !isDayTime;
+    Runnable changeTimeOfDay = new Runnable(){
+        @Override
+        public void run(){
+            if (!gameOver || !executor.isShutdown()){
+                if (time > 100){
+                    isDayTime = !isDayTime;
+                }
+            }
+        }
+    Runnable checkWinOrLose = new Runnable(){
+        @Override
+        public void run(){
+            if (!gameOver || !executor.isShutdown()) {
+                // Cek kondisi menang atau kalah
+                if (map.getTotalZombies() == 0 && currentTime >= 161) {
+                    System.out.println("Anda menang! Semua zombie telah dikalahkan.");
+                    stopGame();
+                } else if (map.isZombieReachedFirstColumn()) {
+                    System.out.println("Anda kalah! Zombie menang");
+                    stopGame();
+                }
+            }
+            else{
+                System.out.println("Anda kalah! Zombie menang");
             }
         }
     }
@@ -456,23 +478,13 @@ public class Game {
         System.out.println("6. Pilih 'Help' untuk melihat menu bantuan ini lagi.");
     }
 
-    public void implementFlag() {
-        if (!gameOver || !executor.isShutdown()){
-            if (currentTime >= 150 && currentTime <=160){
-                maxZombies = 25;
-                if (map.getTotalZombies() < maxZombies) {
-                    map.Flag(listofAllZombies);;
-                }
-            }
-        }
-    }
-
     public static void main(String[] args) {
         System.out.println("Selamat datang di Michael ");
         Game game = new Game();
         game.MulaiGame();
     }
 
+    }
 }
 
 
