@@ -7,35 +7,35 @@ public class SnowPea extends Tanaman implements TanamanPenyerang{
         super("Snow Pea", 175, 100, 25, 4, -1, 10,false);
         /*this.slowingEffect = new SlowingEffect(0.5f, 3000);*/
     }
-
-    @Override
-    public void attackPlant(Tile tile, Map map) {
-        Tanaman plant;
-        Tile tile;
-        Map map;
-        int row;
-        int x = getColPlant();
-
-        executorService.scheduleAtFixedRate(() ->{
-            List<Zombie> kosong = new ArrayList<>();
-            List<Tile> baris = map.getRow(tile.getY());
-            for (Tile tiles : baris) {
-                if (!tiles.getZombies().isEmpty()) {
-                    int a = getColZombie();
-                    if (a >= x){
-                        for (Zombie zombie : tiles.getZombies()){
-                            tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
-                            SetIsGetSlowed(true);
-                            if (tiles.getHealthZombie() <= 0) {
-                                tiles.removeZombie(zombie);
-                            }
-                        }
-                    }
-                }
-            }
-        } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
-    }
 }
+//     @Override
+//     public void attackPlant(Tile tile, Map map) {
+//         Tanaman plant;
+//         Tile tile;
+//         Map map;
+//         int row;
+//         int x = getColPlant();
+
+//         executorService.scheduleAtFixedRate(() ->{
+//             List<Zombie> kosong = new ArrayList<>();
+//             List<Tile> baris = map.getRow(tile.getY());
+//             for (Tile tiles : baris) {
+//                 if (!tiles.getZombies().isEmpty()) {
+//                     int a = getColZombie();
+//                     if (a >= x){
+//                         for (Zombie zombie : tiles.getZombies()){
+//                             tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+//                             SetIsGetSlowed(true);
+//                             if (tiles.getHealthZombie() <= 0) {
+//                                 tiles.removeZombie(zombie);
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
+//     }
+// }
 /*
     @Override
     public void serang(Map map, int x, int y) {
