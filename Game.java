@@ -18,7 +18,7 @@ import plant.*;
 import zombie.*;
 
 public class Game {
-    private String statusGame;
+    private boolean statusGame;
     private Player player;
     private volatile Map map;
     private volatile Deck plantDeck;
@@ -51,7 +51,7 @@ public class Game {
     private int maxZombies;
 
     public Game() {
-        statusGame = "Paused";
+        statusGame = false;
         player = new Player();
         map = new Map();
         plantDeck = new Deck();
@@ -64,11 +64,11 @@ public class Game {
         maxZombies = 10;
     }
 
-    public String getStatusGame() {
+    public boolean getStatusGame() {
         return statusGame;
     }
 
-    public void setStatusGame(String statusGame) { //pokonya disini parameter tuh zombienya dah clear semua ato belom gitu
+    public void setStatusGame(boolean statusGame) { //pokonya disini parameter tuh zombienya dah clear semua ato belom gitu
         this.statusGame = statusGame; //Win or lose
     } 
 
@@ -224,6 +224,7 @@ public class Game {
     }
 
     public void enterGame() {
+        
         executor = Executors.newScheduledThreadPool(1); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
         statusGame = "Mulai";
         //executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
