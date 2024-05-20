@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import classes.map.threadmap.GameStatusThread;
 import classes.map.threadmap.SpawnZombieThread;
 import plant.*;
 import zombie.*;
@@ -351,13 +352,13 @@ public class Map {
     public static void main(String[] args) {
         Map maps = new Map();
         SpawnZombieThread zombieSpawner = new SpawnZombieThread(maps);
-        Thread thread = new Thread(zombieSpawner);
-        thread.start();
+        GameStatusThread gameStatus = new GameStatusThread(maps);
+        Thread thread1 = new Thread(zombieSpawner);
+        Thread thread2 = new Thread(gameStatus);
+        thread1.start();
+        thread2.start();
         
-        // Penanganan untuk menghentikan thread saat program berakhir
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            zombieSpawner.stop();
-        }));
+        
 
         /*System.out.println("Map:");
         Map maps = new Map();
