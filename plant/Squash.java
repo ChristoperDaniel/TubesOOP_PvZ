@@ -1,55 +1,55 @@
 package plant;
 
+
 public class Squash extends Tanaman implements TanamanPenyerang{
     public Squash() {
         super("Squash", 50, 100, 5000, 0, 1, 20,false);
     }
 
-    @Override
-    public void attackPlant(Tile tile, Map map){
-        Tanaman plant;
-        Tile tile;
-        Map map;
-        int row;
-        int x = getColPlant();
+//     @Override
+//     public void attackPlant(Tile tile, Map map){
+//         Tanaman plant;
+//         Tile tile;
+//         Map map;
+//         int row;
+//         int x = getColPlant();
 
-        while (plant.getHealthTanaman() > 0) {
-            synchronized (tile) {
-                List<Zombie> kosong = new ArrayList<>();
-                List<Tile> baris = map.getRow(tile.getY());
-                for (Tile tiles : baris) {
-                    if (!tiles.getZombies().isEmpty()) {
-                        int a = getColZombie();
-                        if (x == a - 1){
-                            for (Zombie zombie : tiles.getZombies()){
-                                tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
-                                if (tiles.getHealthZombie() <= 0) {
-                                    tiles.removeZombie(zombie);
-                                }
-                            }
-                        }
-                        else if (x == a){
-                            for (Zombie zombie : tiles.getZombies()){
-                                tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
-                                if (tiles.getHealthZombie() <= 0) {
-                                    tiles.removeZombie(zombie);
-                                }
-                            }
-                        }
-                        else if (x == a + 1){
-                            for (Zombie zombie : tiles.getZombies()){
-                                tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
-                                if (tiles.getHealthZombie() <= 0) {
-                                    tiles.removeZombie(zombie);
-                                }
-                            }
-                        }
-                    }   
-                }
-            }
-        }
-    }
-}
+//         while (plant.getHealthTanaman() > 0) {
+//             synchronized (tile) {
+                
+//                 for (Tile tiles : baris) {
+//                     if (!tiles.getZombies().isEmpty()) {
+//                         int a = getColZombie();
+//                         if (x == a - 1){
+//                             for (Zombie zombie : tiles.getZombies()){
+//                                 tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+//                                 if (tiles.getHealthZombie() <= 0) {
+//                                     tiles.removeZombie(zombie);
+//                                 }
+//                             }
+//                         }
+//                         else if (x == a){
+//                             for (Zombie zombie : tiles.getZombies()){
+//                                 tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+//                                 if (tiles.getHealthZombie() <= 0) {
+//                                     tiles.removeZombie(zombie);
+//                                 }
+//                             }
+//                         }
+//                         else if (x == a + 1){
+//                             for (Zombie zombie : tiles.getZombies()){
+//                                 tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+//                                 if (tiles.getHealthZombie() <= 0) {
+//                                     tiles.removeZombie(zombie);
+//                                 }
+//                             }
+//                         }
+//                     }   
+//                 }
+//             }
+//         }
+//     }
+// }
 /*
     @Override
     public void serang(Map map, int x, int y) {
