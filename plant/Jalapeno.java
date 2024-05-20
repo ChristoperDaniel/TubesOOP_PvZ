@@ -12,13 +12,12 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
     }
 
     @Override
-    public void attackPlant(Tile tile, Map map, Zombie zombie) {
+    public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
         Tile tile;
         Map map;
         int row;
 
-        ScheduledExecutorService executorService;
         while (plant.getHealthTanaman() > 0) {
             synchronized (tile) {
                 for (Tile tiles : baris) {

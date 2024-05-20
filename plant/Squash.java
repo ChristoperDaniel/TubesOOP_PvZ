@@ -1,17 +1,20 @@
 package plant;
-public class Squash extends Tanaman {
+public class Squash extends Tanaman implements TanamanPenyerang{
     public Squash() {
         super("Squash", 50, 100, 5000, 0, 1, 20,false);
     }
 
     @Override
-    public void attackPlant(Tile tile, Map map, Zombie zombie) {
+    public void attackPlant(Tile tile, Map map){
         Tanaman plant;
         Tile tile;
         Map map;
         int row;
+        int x = getColPlant();
+        int a = getColZombie();
 
         synchronized (tile) {
+            
             boolean benar = false;
             List<Tile> baris = new ArrayList<>(List.of(
                 map.getTile(plant.getRowPlant(), plant.getColPlant() + 1),

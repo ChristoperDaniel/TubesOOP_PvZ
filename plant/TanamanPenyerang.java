@@ -8,5 +8,5 @@ import zombie.*;
 import classes.map.Map;
 
 public interface TanamanPenyerang {
-    public void attackPlant(Zombie zombie, Map[][] tiles);
+    public void attackPlant(Tile tile, Map map);
 }

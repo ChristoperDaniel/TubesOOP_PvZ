@@ -1,7 +1,7 @@
 package plant;
 import zombie.*;
 
-public class SnowPea extends Tanaman{
+public class SnowPea extends Tanaman implements TanamanPenyerang{
     //private SlowingEffect slowingEffect;
 
     public SnowPea() {
@@ -10,24 +10,27 @@ public class SnowPea extends Tanaman{
     }
 
     @Override
-    public void attackPlant(Tile tile, Map map, Zombie zombie) {
+    public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
         Tile tile;
         Map map;
         int row;
+        int x = getColPlant();
+        int a = getColZombie();
 
         executorService.scheduleAtFixedRate(() ->{
             List<Zombie> kosong = new ArrayList<>();
             List<Tile> baris = map.getRow(tile.getY());
             for (Tile tiles : baris) {
                 if (!tiles.getZombies().isEmpty()) {
-                    // Ambil zombie terdepan
-                    Zombie zombieTerdepan = tiles.getZombies().get(0);
-                    // Serang setiap attack_speedTanaman detik sekali
-                    zombieTerdepan.setHealthZombie(zombieTerdepan.getHealthZombie() - plant.getAttackDamageTanaman());
-                    SetIsGetSlowed(true);
-                    if (zombieTerdepan.getHealthZombie() <= 0) {
-                            tiles.removeZombie(zombieTerdepan);
+                    if (a >= x){
+                        for (Zombie zombie : tiles.getZombies()){
+                            tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+                            SetIsGetSlowed(true);
+                            if (tiles.getHealthZombie() <= 0) {
+                                tiles.removeZombie(zombie);
+                            }
+                        }
                     }
                 }
             }

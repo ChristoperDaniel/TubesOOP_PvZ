@@ -1,7 +1,7 @@
 package plant;
 import zombie.*;
 
-public class Magnetshroom extends Tanaman{
+public class Magnetshroom extends Tanaman implements TanamanPenyerang{
     public Magnetshroom() {
         super("Magnetshroom", 100, 100, 0, 10, -1, 20, false);
     }
@@ -13,21 +13,25 @@ public class Magnetshroom extends Tanaman{
     }
 
     @Override
-    public void attackPlant(Tile tile, Map map, Zombie zombie) {
+    public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
         Tile tile;
         Map map;
         int row;
+        int x = getColPlant();
+        int a = getColZombie();
 
         executorService.scheduleAtFixedRate(() ->{
             List<Zombie> kosong = new ArrayList<>();
             List<Tile> baris = map.getRow(tile.getY());
             for (Tile tiles : baris) {
-                if (!tiles.getZombies().isEmpty()) {
-                    // Ambil zombie terdepan
-                    Zombie zombieTerdepan = tiles.getZombies().get(0);
-                    // Mengambil item pada zombie terdepan
-                    tiles.removeItem(zombieTerdepan);
+                if (!tiles.getZombies().isEmpty() && !tiles.getZombies().getIsItemRemovedZombie()) {
+                    if (a >= x){
+                        for (Zombie zombie : tiles.getZombies()){
+                            // Mengambil item pada zombie terdepan
+                            tiles.removeItem(zombieTerdepan);
+                        }
+                    }
                 }
             }
         } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
