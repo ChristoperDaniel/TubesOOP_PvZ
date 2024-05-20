@@ -5,7 +5,7 @@ package plant;
  */
 
 import zombie.*;
-import classes.map.Map;
+import classes.map.*;
 
 public interface TanamanPenyerang {
     public void attackPlant(Tile tile, Map map);

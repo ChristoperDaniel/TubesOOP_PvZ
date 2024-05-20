@@ -218,14 +218,14 @@ public class Game {
     public void enterGame() {
         executor = Executors.newScheduledThreadPool(8); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
 
-        executor.scheduleAtFixedRate(this::updateSun, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(timeThread, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(this::spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
         executor.scheduleAtFixedRate(this::updateCurrentTime, 0, 1, TimeUnit.SECONDS); // Memperbarui currentTime
         executor.scheduleAtFixedRate(this::checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
-        executor.scheduleAtFixedRate(this::implementFlag, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
-        executor.submit(this::perang);
+        //executor.submit(this::perang);
 
         try {
             while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
@@ -242,22 +242,41 @@ public class Game {
         return random.nextInt(6) + 5; // Menghasilkan interval acak antara 5-10 detik
     }
 
-    private void updateSun() {
-        if ((!gameOver || !executor.isShutdown()) && isDayTime && currentTime % nextSunInterval == 0 && currentTime <= 100) {
-            sun.addSun(); // Menambahkan 25 Sun
-            System.out.println("Sun has fallen from the sky! You've gained 25 sun. Current Time: " + currentTime);
-            nextSunInterval = getRandomSunInterval(); // Mengatur ulang interval acak berikutnya
-        }
-    }
-
-    private void updateCurrentTime() {
-        if (!gameOver || !executor.isShutdown()){
-            currentTime++;
-            if (currentTime > 200) {
-                stopGame();
+    Runnable updateSun = new Runnable() {
+        @Override
+        public void run(){
+            if ((!gameOver || !executor.isShutdown()) && isDayTime && currentTime % nextSunInterval == 0 && currentTime <= 100) {
+                sun.addSun(); // Menambahkan 25 Sun
+                //System.out.println("Sun has fallen from the sky! You've gained 25 sun. Current Time: " + currentTime);
+                nextSunInterval = getRandomSunInterval(); // Mengatur ulang interval acak berikutnya
             }
         }
-    }
+    };
+
+    currentTimeMillies(); // buat update current tme bisa pake ini
+
+    Runnable updateCurrentTime = new Runnable(){
+        @Override
+        public void run(){
+            
+        }
+    };
+
+    Runnable timeThread = new Runnable(){
+        @Override
+        public void run(){
+            time++;
+        }
+    };
+
+    // private void updateCurrentTime() {
+    //     if (!gameOver || !executor.isShutdown()){
+    //         currentTime++;
+    //         if (currentTime > 200) {
+    //             stopGame();
+    //         }
+    //     }
+    // }
     private void spawnZombies() {
         if (!gameOver || !executor.isShutdown()){
             if (currentTime >= 20 && currentTime <=149){
@@ -274,21 +293,24 @@ public class Game {
         int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
         int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
         while (!gameOver || !executor.isShutdown()) { // Loop sampai permainan selesai
+            map.displayMap();
             displayMenuEnter();
+            System.out.println("Masukin input : ");
             int choice = scanner.nextInt();
+            System.out.println("");
             switch (choice) {
                 case 1:
                     // Menanam Tanaman
                     // Implementasi
                     try {
                         System.out.print("Masukkan baris untuk menanam tanaman (0-" + (Map.total_rows - 1) + "): ");
-                        row = Integer.parseInt(scanner.nextLine());
+                        row = scanner.nextInt();
                         if (row < 0 || row >= Map.total_rows) {
                             System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
                             salah = true;
                         }
                         System.out.print("Masukkan kolom untuk menanam tanaman (0-" + (Map.total_columns - 1) + "): ");
-                        column = Integer.parseInt(scanner.nextLine());
+                        column = scanner.nextInt();
                         if (column < 0 || column >= Map.total_columns) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
                             salah = true;
@@ -307,13 +329,13 @@ public class Game {
                     // Implementasi
                     try {
                         System.out.print("Masukkan baris untuk menggali tanaman (0-" + (Map.total_rows - 1) + "): ");
-                        row = Integer.parseInt(scanner.nextLine());
+                        row = scanner.nextInt();
                         if (row < 0 || row >= Map.total_rows) {
                             System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
                             salah = true;
                         }
                         System.out.print("Masukkan kolom untuk menggali tanaman (0-" + (Map.total_columns - 1) + "): ");
-                        column = Integer.parseInt(scanner.nextLine());
+                        column = scanner.nextInt();
                         if (column < 0 || column >= Map.total_columns) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
                             salah = true;

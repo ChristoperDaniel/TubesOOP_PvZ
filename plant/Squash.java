@@ -1,9 +1,9 @@
 package plant;
-public class Squash extends Tanaman implements TanamanPenyerang{
+public class Squash extends Tanaman {
     public Squash() {
         super("Squash", 50, 100, 5000, 0, 1, 20,false);
     }
-
+/*
     @Override
     public void attackPlant(Tile tile, Map map){
         Tanaman plant;
@@ -48,7 +48,7 @@ public class Squash extends Tanaman implements TanamanPenyerang{
             }
         }
     }
-}
+}*/
 /*
     @Override
     public void serang(Map map, int x, int y) {

@@ -1,13 +1,13 @@
 package plant;
 
-public class SnowPea extends Tanaman implements TanamanPenyerang{
+public class SnowPea extends Tanaman {
     //private SlowingEffect slowingEffect;
 
     public SnowPea() {
         super("Snow Pea", 175, 100, 25, 4, -1, 10,false);
         /*this.slowingEffect = new SlowingEffect(0.5f, 3000);*/
     }
-
+/*
     @Override
     public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
@@ -16,7 +16,7 @@ public class SnowPea extends Tanaman implements TanamanPenyerang{
         int row;
         int x = getColPlant();
         int a = getColZombie();
-
+        /*
         executorService.scheduleAtFixedRate(() ->{
             List<Zombie> kosong = new ArrayList<>();
             List<Tile> baris = map.getRow(tile.getY());
@@ -34,7 +34,7 @@ public class SnowPea extends Tanaman implements TanamanPenyerang{
                 }
             }
         } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
-    }
+    }*/
 }
 /*
     @Override

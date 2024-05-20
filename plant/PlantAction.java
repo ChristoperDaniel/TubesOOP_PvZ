@@ -38,7 +38,6 @@ public class PlantAction implements Runnable {
                 List<TanamanPenyerang> plantack = new ArrayList<>();
                 plantack.add(new Peashooter());
                 plantack.add(new SnowPea());
-                plantack.add(new JackInTheBoxZombie(tile));
                 if (plant.getRangeTanaman() == -1){
                     if (plant.getNamaTanaman() == "Jalapeno"){
                         List<Tile> baris = map.getRow(tile.getY());

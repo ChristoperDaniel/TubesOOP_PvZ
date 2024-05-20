@@ -1,7 +1,7 @@
 package plant;
 import zombie.*;
 
-public class Magnetshroom extends Tanaman implements TanamanPenyerang{
+public class Magnetshroom extends Tanaman {
     public Magnetshroom() {
         super("Magnetshroom", 100, 100, 0, 10, -1, 20, false);
     }

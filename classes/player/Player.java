@@ -26,7 +26,6 @@ public class Player {
             for (Tanaman tanaman : availableTanamans) {
                 System.out.println(tanaman.getNamaTanaman() + " (Cost: " + tanaman.getCostTanaman() + " sun)");
             }
-    
             System.out.println("Sun Anda saat ini: " + sun.gettotalSun());
             System.out.println("Pilih tanaman untuk ditanam (atau ketik 'exit' untuk keluar):");
             String pilihan = scanner.nextLine();

@@ -1,9 +1,9 @@
 package plant;
-public class Seashroom extends Tanaman implements TanamanPenyerang{
+public class Seashroom extends Tanaman {
     public Seashroom() {
         super("Seashroom", 0, 100, 20, 5, -1, 10,true);
     }
-    
+    /*
     @Override
     public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
@@ -29,7 +29,7 @@ public class Seashroom extends Tanaman implements TanamanPenyerang{
                 }
             }
         } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
-    }
+    }*/
 }
 /*
     @Override

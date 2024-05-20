@@ -3,14 +3,14 @@ package plant;
 import classes.map.Map;
 import zombie.Zombie;
 
-public class Jalapeno extends Tanaman implements TanamanPenyerang{
+public class Jalapeno extends Tanaman{
     public Jalapeno() {
         super("Jalapeno", 125, 100, 50000, 0, -1, 30, false);
     }
-    public void attackPlant(Zombie zombie, Map[][] tiles){
+    public void attackPlant(Zombie zombie, Map tiles){
 
     }
-/*
+    /* 
     @Override
     public void attackPlant(Tile tile, Map map) {
         Tanaman plant;
@@ -31,6 +31,5 @@ public class Jalapeno extends Tanaman implements TanamanPenyerang{
                 }
             }
         } 
-    }
-    */
+    }*/
 }

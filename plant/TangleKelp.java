@@ -1,10 +1,10 @@
 
 package plant;
-public class TangleKelp extends Tanaman implements TanamanPenyerang{
+public class TangleKelp extends Tanaman {
     public TangleKelp() {
         super("Tangle Kelp", 25, 100, 5000, 0, 1, 20, false);
     }
-
+    /*
     @Override
     public void attackPlant(Tile tile, Map map){
         Tanaman plant;
@@ -49,7 +49,7 @@ public class TangleKelp extends Tanaman implements TanamanPenyerang{
             }
         }
     }
-}
+}*/
 /*
     @Override
     public void serang(Map map, int x, int y) {
