@@ -2,18 +2,10 @@ package zombie;
 
 import classes.map.*;
 import interfaces.ZombieWithItem;
-import plant.Tanaman;
-
-import java.util.concurrent.TimeUnit;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class BucketheadZombie extends Zombie implements ZombieWithItem {
-    private ScheduledExecutorService executorService;
     public BucketheadZombie(Tile tile) {
         super("BucketheadZombie", 300, 100, 1,  5, 1, false);
-        executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @Override
@@ -21,45 +13,6 @@ public class BucketheadZombie extends Zombie implements ZombieWithItem {
         if (is_item_removedZombie) {
             setHealthZombie(getHealthZombie() - 100);
         }
-    }
-
-    @Override
-    public void attackZombie(Tile tile, Map map, Tanaman tanaman) {
-        int x = getRowZombie();
-        int y = getColZombie();
-        Tile xy = map.getTile(x, y);
-        int dmg = getAttackDamageZombie();
-        int atkspd = getAttackSpeedZombie() * 1000;
-        List<Tanaman> planted = xy.getTanaman();
-
-        executorService.scheduleAtFixedRate(() -> {
-            for (Tanaman t : planted) {
-                t.setHealthTanaman(t.getHealthTanaman() - dmg);
-                if (t.getHealthTanaman() <= 0) {
-                    xy.removeTanaman(t);
-                    executorService.shutdown();
-                }
-            }
-        } , 0, atkspd, TimeUnit.MILLISECONDS);
-    }
-    
-    @Override
-    public void moveZombie (Map map) {
-        int x = getRowZombie();
-        int y = getColZombie();
-        int spd = getSpeedZombie() * 1000;
-
-        executorService.scheduleAtFixedRate(() ->{
-            for (int i = y; i > 0; i--) {
-                if (!(map.isTanamanAvail(x, i) == true)) {
-                    setRowZombie(i);
-                }
-                else {
-                    executorService.shutdown();
-                    break;
-                }
-            }
-        } , 0, spd, TimeUnit.MILLISECONDS);
     }
 }
 
