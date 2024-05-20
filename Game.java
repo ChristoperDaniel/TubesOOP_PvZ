@@ -383,7 +383,7 @@ public class Game {
                     // Jalankan aksi untuk setiap zombie di tile
                     if (!zombieTilesWithThreads.contains(tile)) {
                         for (Zombie zombie : tile.getZombies()) {
-                            ZombieAction zombieAction = new ZombieAction(zombie, tile, map);
+                            ZombieAction zombieAction = new ZombieAction(false,zombie, tile, map);
                             Thread zombieThread = new Thread(zombieAction);
                             zombieThread.start();
                             zombieThreads.add(zombieThread);

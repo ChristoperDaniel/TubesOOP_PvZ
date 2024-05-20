@@ -121,39 +121,29 @@ public class Map {
                     } else if (!tanaman.getNamaTanaman().equals("Lilypad")) {
                         if (current_Tile.getTanaman().isEmpty() && (tanaman.getNamaTanaman().equals("Seashroom") || tanaman.getNamaTanaman().equals("Tangle Kelp"))){
                             current_Tile.addTanaman(tanaman);
-                        } else if (current_Tile.getTanaman().isEmpty() || !isLilypadAvail(row, col)){
+                        } else if ((current_Tile.getTanaman().isEmpty() || !isLilypadAvail(row, col)) && (!(tanaman.getAquatic()))){
                             System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
                             benar = false;
-                        } else if (isLilypadAvail(row, col)){
+                        } else if (isLilypadAvail(row, col) && (!(tanaman.getAquatic()))){
+                            tanaman.setIsLilyPadAvail(true);
+                            current_Tile.removeTanaman(current_Tile.getTanaman().get(0));
                             current_Tile.addTanaman(tanaman);
                         }
                     }
-                } else if (tanaman.getNamaTanaman() != "Lilypad"){
-                    if (current_Tile.getTanaman() == null && (tanaman.getNamaTanaman() == "Seashroom" || tanaman.getNamaTanaman() == "Tangle Kelp")){
-                        current_Tile.addTanaman(tanaman);
-                    }
-                    else if((current_Tile.getTanaman() == null || !isLilypadAvail(row, col)) && (!(tanaman.getAquatic()))){
-                        System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
+                }
+                else if (!isWaterTile(row, col)){
+                    if(tanaman.getAquatic()){
+                        System.out.println("Tanaman ini hanya bisa terpasang di air");
                         benar = false;
-                    } else if ((isLilypadAvail(row, col)) && (!(tanaman.getAquatic()))){
-                        tanaman.setIsLilyPadAvail(true);
-                        current_Tile.removeTanaman(current_Tile.getTanaman().get(0));
-                        current_Tile.addTanaman(tanaman);
+                    } else if(!tanaman.getAquatic()){
+                        if(current_Tile.getTanaman().isEmpty()){
+                            current_Tile.addTanaman(tanaman);
+                        } else {
+                            System.out.println("Tile sudah ditempati tanaman lain.");
+                            benar = false;
+                        }
                     }
                 }
-            } else if (!isWaterTile(row, col)){
-                if(tanaman.getAquatic() && current_Tile.getTanaman().isEmpty()){
-                    System.out.println("Tanaman ini hanya bisa terpasang di air");
-                    benar = false;
-                } else if(!tanaman.getNamaTanaman().equals("Lilypad")){
-                    if(current_Tile.getTanaman().isEmpty()){
-                        current_Tile.addTanaman(tanaman);
-                    } else {
-                        System.out.println("Tile sudah ditempati tanaman lain.");
-                        benar = false;
-                    }
-                }
-            }
         } else {
             System.out.println("Tile tidak bisa ditanami tanaman.");
             benar = false;
@@ -206,6 +196,7 @@ public class Map {
         else {
             System.out.println("Tile tidak tersedia.");
         }
+    }
     }
 
     public int getTotalZombies() {
