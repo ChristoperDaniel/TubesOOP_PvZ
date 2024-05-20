@@ -5,7 +5,7 @@ import interfaces.ZombieWithItem;
 
 public class BucketheadZombie extends Zombie implements ZombieWithItem {
     public BucketheadZombie(Tile tile) {
-        super("BucketheadZombie", 300, 100, 1,  5, 1, false);
+        super("BucketheadZombie", 300, 100, 1000,  10000, 1, false);
     }
 
     @Override

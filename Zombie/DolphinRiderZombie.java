@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DolphinRiderZombie extends Zombie implements ZombieWithAbility {
     public DolphinRiderZombie(Tile tile) {
-        super("DolphinRiderZombie", 175, 100, 1,  5, 1, true);
+        super("DolphinRiderZombie", 175, 100, 1000,  10000, 1, true);
     }
 
     @Override
