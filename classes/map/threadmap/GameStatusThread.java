@@ -20,7 +20,7 @@ public class GameStatusThread implements Runnable{
 
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = (currentTime - startTime)/1000; //mulai dari 0
-                System.out.println(elapsedTime);
+                
 
                 // Kondisi kemenangan
                 if (elapsedTime > 160 && map.getTotalZombies() == 0) {
@@ -33,7 +33,7 @@ public class GameStatusThread implements Runnable{
                     System.out.println("Anda kalah!");
                     stop();
                 }
-                
+
                 if(elapsedTime == 200 && map.getTotalZombies() != 0){
                     System.out.println("Anda kalah!");
                     stop();
