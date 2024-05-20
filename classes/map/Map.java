@@ -9,8 +9,8 @@ import java.util.Random;
 import plant.*;
 
 public class Map {
-    public static int total_rows = 5;
-    public static int total_columns = 10;
+    public static int total_rows = 6;
+    public static int total_columns = 11;
     /*
     row 0-5; col 0 = rumah
     row 0-5; col 10 = spawn
@@ -26,7 +26,7 @@ public class Map {
         tiles = new Tile[total_rows][total_columns];
         for (int row = 0; row < total_rows; row++) {
             for (int col = 0; col < total_columns; col++) {
-                tiles[row][col] = new Tile("_", row, col);
+                tiles[row][col] = new Tile("___", row, col);
             }
         }
     }
@@ -86,12 +86,12 @@ public class Map {
 
     // Metode untuk memeriksa apakah tile adalah air
     private boolean isWaterTile(int row, int col) {
-        return (row == 2 || row == 3) && (col >= 1 && col <= 9);
+        return (row == 2 || row == 3) && (col > 0 && col < 10);
     }
 
     // Metode untuk memeriksa apakah tile adalah air
     private boolean isRumputTile(int row, int col) {
-        return (row == 0 || row == 1 || row == 4 || row == 5) && (col >= 1 && col <= 9);
+        return (row == 0 || row == 1 || row == 4 || row == 5) && (col > 0 && col < 10);
     }
 
     private boolean isLilypadAvail(int row, int col){
@@ -109,38 +109,44 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         boolean benar = true;
         if (current_Tile != null) {
-            if (isWaterTile(row, col)) {
-                if(tanaman.getNamaTanaman() == "Lilypad"){
-                    if(current_Tile.getTanaman() == null){
-                        current_Tile.addTanaman(tanaman);
-                    } else {
-                        System.out.println("Lilypad sudah terpasang.");
-                        benar = false;
+            if(col > 0 && col < 10){
+                if (isWaterTile(row, col)) {
+                    if(tanaman.getNamaTanaman().equals("Lilypad")){
+                        if(current_Tile.getTanaman().isEmpty()){
+                            current_Tile.addTanaman(tanaman);
+                        } else {
+                            System.out.println("Lilypad sudah terpasang.");
+                            benar = false;
+                        }
+                    } else if (!tanaman.getNamaTanaman().equals("Lilypad")) {
+                        if (current_Tile.getTanaman().isEmpty() && (tanaman.getNamaTanaman().equals("Seashroom") || tanaman.getNamaTanaman().equals("Tangle Kelp"))){
+                            current_Tile.addTanaman(tanaman);
+                        } else if (current_Tile.getTanaman().isEmpty() || !isLilypadAvail(row, col)){
+                            System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
+                            benar = false;
+                        } else if (isLilypadAvail(row, col)){
+                            current_Tile.addTanaman(tanaman);
+                        }
                     }
-                } else if (tanaman.getNamaTanaman() != "Lilypad"){
-                    if (current_Tile.getTanaman() == null && (tanaman.getNamaTanaman() == "Seashroom" || tanaman.getNamaTanaman() == "Tangle Kelp")){
-                        current_Tile.addTanaman(tanaman);
-                    }
-                    else if(current_Tile.getTanaman() == null || !isLilypadAvail(row, col)){
-                        System.out.println("Tidak ada LilyPad, letakkan LilyPad terlebih dahulu.");
+                } else if (!isWaterTile(row, col)){
+                    if(tanaman.getNamaTanaman().equals("Lilypad") && current_Tile.getTanaman().isEmpty()){
+                        System.out.println("Lilypad hanya bisa terpasang di air");
                         benar = false;
-                    } else if (isLilypadAvail(row, col)){
-                        current_Tile.addTanaman(tanaman);
+                    } else if(!tanaman.getNamaTanaman().equals("Lilypad")){
+                        if(current_Tile.getTanaman().isEmpty()){
+                            current_Tile.addTanaman(tanaman);
+                        } else {
+                            System.out.println("Tile sudah ditempati tanaman lain.");
+                            benar = false;
+                        }
                     }
                 }
-            } else if (!isWaterTile(row, col)){
-                if(tanaman.getNamaTanaman() == "Lilypad" && current_Tile.getTanaman() == null){
-                    System.out.println("Lilypad hanya bisa terpasang di air");
-                    benar = false;
-                } else if(tanaman.getNamaTanaman() != "Lilypad"){
-                    if(current_Tile.getTanaman() == null){
-                        current_Tile.addTanaman(tanaman);
-                    } else {
-                        System.out.println("Tile sudah ditempati tanaman lain.");
-                        benar = false;
-                    }
-                }
+            } else {
+                System.out.println("Tile tidak bisa ditanami tanaman.");
+                benar = false;
             }
+            
+
             if (benar){
                 //set row col
                 tanaman.setRowPlant(row);
@@ -149,40 +155,39 @@ public class Map {
                 //set symbol
                 switch (tanaman.getNamaTanaman()){
                     case "Sunflower":
-                        current_Tile.setDisplayName("SF");
+                        current_Tile.setDisplayName("SFt");
                         break;
                     case "Jalapeno":
-                        current_Tile.setDisplayName("JP");
+                        current_Tile.setDisplayName("JPt");
                         break;
                     case "Lilypad":
-                        current_Tile.setDisplayName("LP");
+                        current_Tile.setDisplayName("LPt");
                         break;
                     case "Magnetshroom":
-                        current_Tile.setDisplayName("MS");
+                        current_Tile.setDisplayName("MSt");
                         break;
                     case "Peashooter":
-                        current_Tile.setDisplayName("PS");
+                        current_Tile.setDisplayName("PSt");
                         break;
                     case "Seashroom":
-                        current_Tile.setDisplayName("SS");
+                        current_Tile.setDisplayName("SSt");
                         break;
                     case "SnowPea":
-                        current_Tile.setDisplayName("SP");
+                        current_Tile.setDisplayName("SPt");
                         break;
                     case "Squash":
-                        current_Tile.setDisplayName("SQ");
+                        current_Tile.setDisplayName("SQt");
                         break;
                     case "TangleKelp":
-                        current_Tile.setDisplayName("TK");
+                        current_Tile.setDisplayName("TKt");
                         break;
                     case "Wallnut":
-                        current_Tile.setDisplayName("WN");
+                        current_Tile.setDisplayName("WNt");
                         break;
                     default:
                         System.out.println("Jenis tanaman tidak dikenali.");
                         return;
                 }
-                current_Tile.setDisplayName(tanaman.getNamaTanaman());
             }
 
         } else {
@@ -199,30 +204,43 @@ public class Map {
         }
         return count;
     }
-
+    private volatile static List<Zombie> listofZombies = new ArrayList<>(List.of(
+        new NormalZombie(null),
+        new BucketheadZombie(null),
+        new ConeheadZombie(null),
+        new DolphinRiderZombie(null),
+        new JackInTheBoxZombie(null),
+        new PeashooterZombie(null),
+        new PoleVaultingZombie(null),
+        new RugbyZombie(null),
+        new ScreendoorZombie(null),
+        new DuckyTubeZombie(null)
+        // jangan lupa bikin jadi zombie
+    ));
+    
     // Menempatkan zombie pada tile 
     public void placeZombie(List<Zombie> listofZombies) {
         Tile current_Tile;
         double randomValue = Math.random();
         Random random = new Random();
 
-        if (randomValue <= 0.3) {
+        if (randomValue <= 0.9){
             int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
             Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
             int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
-            int randomCol = Map.total_columns; // Pilih kolom di sisi kanan map
+            int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
+            current_Tile = tiles[randomRow][randomCol];
 
-            if(isRumputTile(randomRow, randomCol)){
-                if(zombieType.getNamaZombie() != "DuckyTubeZombie" || zombieType.getNamaZombie() != "DolphinRiderZombie"){
-                    tiles[randomRow][randomCol].addZombie(zombieType);
+            if(zombieType.getNamaZombie().equals("DuckyTubeZombie") || zombieType.getNamaZombie().equals("DolphinRiderZombie")){    
+                if(isWaterTile(randomRow, randomCol)){
+                    current_Tile.addZombie(zombieType);
                 }
-            } else if (isWaterTile(randomRow, randomCol)){
-                if(zombieType.getNamaZombie() == "DuckyTubeZombie" || zombieType.getNamaZombie() == "DolphinRiderZombie"){
-                    tiles[randomRow][randomCol].addZombie(zombieType);
+            } else if(!zombieType.getNamaZombie().equals("DuckyTubeZombie") && !zombieType.getNamaZombie().equals("DolphinRiderZombie")){
+                if(isRumputTile(randomRow, randomCol)){
+                    current_Tile.addZombie(zombieType);
                 }
             }
-
-            current_Tile = tiles[randomRow][randomCol];
+            
             zombieType.setRowZombie(randomRow);
             zombieType.setColZombie(randomCol);
 
@@ -263,7 +281,6 @@ public class Map {
                     System.out.println("Jenis zombie tidak dikenali.");
                     return;
             }
-            current_Tile.setDisplayName(zombieType.getNamaZombie());
         }
     }
  
@@ -273,7 +290,7 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null && current_Tile.getTanaman() != null) {
             current_Tile.removeTanaman(tanaman);
-            current_Tile.setDisplayName("_");
+            current_Tile.setDisplayName("___");
         }
     }
 
@@ -282,7 +299,7 @@ public class Map {
         Tile current_Tile = getTile(row, col);
         if (current_Tile != null) {
             current_Tile.removeZombie(zombie);
-            current_Tile.setDisplayName("_");
+            current_Tile.setDisplayName("___");
         }
     }
 
@@ -345,7 +362,6 @@ public class Map {
                     System.out.println("Jenis zombie tidak dikenali.");
                     return;
             }
-            current_Tile.setDisplayName(zombieType.getNamaZombie());
         }
     }
 
@@ -360,4 +376,23 @@ public class Map {
         }
     }
 
+    public static void main(String[] args) {
+        /*System.out.println("Map:");
+        Map maps = new Map();
+        maps.displayMap();
+        maps.placeTanaman(0, 2, new Peashooter());
+        System.out.println(maps.tiles[0][2].getTanaman());*/
+
+        System.out.println("Map:");
+        Map maps = new Map();
+        System.out.println("Menanam lilypad ");
+        maps.placeTanaman(2, 5, new Lilypad());
+        maps.displayMap();
+        System.out.println("Menanam peashooter");
+        maps.placeTanaman(2, 5, new Peashooter());
+        maps.displayMap();
+        System.out.println("Panggil zombie");
+        maps.placeZombie(listofZombies);
+        maps.displayMap();
+    }
 }
