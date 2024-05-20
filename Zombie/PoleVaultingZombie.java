@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PoleVaultingZombie extends Zombie implements ZombieWithAbility {
     public PoleVaultingZombie(Tile tile) {
-        super("PoleVaultingZombie", 175, 100, 1,  5, 1, false);
+        super("PoleVaultingZombie", 175, 100, 1000,  10000, 1, false);
     }
 
     @Override

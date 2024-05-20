@@ -113,11 +113,11 @@ public abstract class Zombie extends Aquatic {
     public void setIsAbilityUsed(boolean is_ability_used) {
         this.is_ability_used = is_ability_used;
     }
-    
+
     public void slowedZombie(boolean is_get_slowedZombie) {
         if (is_get_slowedZombie) {
-            setSpeedZombie(getSpeedZombie() + 500);
-            setAttackSpeedZombie(getAttackSpeedZombie() + 1);
+            setSpeedZombie(getSpeedZombie() + 5000);
+            setAttackSpeedZombie(getAttackSpeedZombie() + 500);
         }
     }
     
@@ -126,9 +126,8 @@ public abstract class Zombie extends Aquatic {
         int y = getColZombie();
         Tile xy = map.getTile(x, y);
         int dmg = getAttackDamageZombie();
-        int atkspd = getAttackSpeedZombie() * 1000;
+        int atkspd = getAttackSpeedZombie();
         List<Tanaman> planted = xy.getTanaman();
-
         if (getRangeZombie() == 1) {
             executorService.scheduleAtFixedRate(() -> {
                 for (Tanaman t : planted) {
@@ -142,7 +141,7 @@ public abstract class Zombie extends Aquatic {
         }
 
         else {
-            executorService.scheduleAtFixedRate(() ->{
+            executorService.scheduleAtFixedRate(() -> {
                 for (int i = y; i > 0; i--) {
                     Tile xy1 = map.getTile(x, i);
                     List<Tanaman> planted1 = xy1.getTanaman();
@@ -156,14 +155,14 @@ public abstract class Zombie extends Aquatic {
                         }
                     }
                 }
-            } , 0, atkspd, TimeUnit.SECONDS);
+            } , 0, atkspd, TimeUnit.MILLISECONDS);
         }
     }
 
     public void moveZombie (Map map) {
         int x = getRowZombie();
         int y = getColZombie();
-        int spd = getSpeedZombie() * 1000;
+        int spd = getSpeedZombie();
 
         executorService.scheduleAtFixedRate(() ->{
             for (int i = y; i > 0; i--) {
