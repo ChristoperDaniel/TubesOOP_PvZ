@@ -208,7 +208,7 @@ public class Map {
         }
         return count;
     }
-    private volatile static List<Zombie> listofZombies = new ArrayList<>(List.of(
+    volatile static List<Zombie> listofZombies = new ArrayList<>(List.of(
         new NormalZombie(null),
         new BucketheadZombie(null),
         new ConeheadZombie(null),
@@ -348,8 +348,17 @@ public class Map {
     
 
     public static void main(String[] args) {
+        Map maps = new Map();
+        SpawnZombieThread zombieSpawner = new SpawnZombieThread(maps);
+        Thread thread = new Thread(zombieSpawner);
+        thread.start();
+        
+        // Penanganan untuk menghentikan thread saat program berakhir
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            zombieSpawner.stop();
+        }));
 
-        System.out.println("Map:");
+        /*System.out.println("Map:");
         Map maps = new Map();
         System.out.println("Menanam lilypad ");
         maps.placeTanaman(2, 5, new Lilypad());
@@ -359,6 +368,6 @@ public class Map {
         maps.displayMap();
         System.out.println("Panggil zombie");
         maps.placeZombie(listofZombies);
-        maps.displayMap();
+        maps.displayMap();*/
     }
 }
