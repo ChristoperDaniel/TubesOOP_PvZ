@@ -23,24 +23,44 @@ public class PlantAction implements Runnable {
 
     @Override
     public void run() {
-        private ScheduledExecutorService executorService;
+        ScheduledExecutorService executorService;
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
                 if (plant.getRangeTanaman() == -1){
-                    executorService.scheduleAtFixedRate(() ->{
-                        List<Zombie> kosong = new ArrayList<>();
-                        List<Tile> baris = map.getBaris(y);
+                    if (plant.getNamaTanaman() == "Jalapeno"){
+                        List<Tile> baris = map.getRow(tile.getY());
                         for (Tile tiles : baris) {
                             if (!tiles.getZombies().isEmpty()) {
-                                    // Ambil zombie terdepan
-                                Zombie zombieTerdepan = tiles.getZombies().get(0);
-                                    // Serang setiap attack_speedTanaman detik sekali
-                                zombieTerdepan.setHealthZombie(zombieTerdepan.getHe((althZombie() - this.getAttackDamageTanaman());
-                                if (zombieTerdepan.getHealthZombie() <= 0) {
-                                        tiles.removeZombie(zombieTerdepan);
+                                // Membunuh semua zombie di baris ini
+                                for (Zombie zombie : tiles.getZombies()) {
+                                    tiles.removeZombie(zombie);
                                 }
-                    } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
+                            }
+                        }
+                    }
+                
+                    else if (plant.get){}
+                    else{
+                        executorService.scheduleAtFixedRate(() ->{
+                            List<Zombie> kosong = new ArrayList<>();
+                            List<Tile> baris = map.getRow(tile.getY());
+                            for (Tile tiles : baris) {
+                                if (!tiles.getZombies().isEmpty()) {
+                                        // Ambil zombie terdepan
+                                    Zombie zombieTerdepan = tiles.getZombies().get(0);
+                                        // Serang setiap attack_speedTanaman detik sekali
+                                    zombieTerdepan.setHealthZombie(zombieTerdepan.getHealthZombie() - plant.getAttackDamageTanaman());
+                                    if (zombieTerdepan.getHealthZombie() <= 0) {
+                                            tiles.removeZombie(zombieTerdepan);
+                                    }
+                                }
+                            }
+                        } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
+                    }
+                }
+                else if (plant.getRangeTanaman() == 1){
+                    
                 }
             }
         }

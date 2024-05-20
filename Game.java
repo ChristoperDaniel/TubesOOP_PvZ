@@ -108,10 +108,11 @@ public class Game {
         System.out.println("Selamat datang di Game Michael vs. Lalapan");
         while (isChoosing ) {
             displayMenuUtama();
-            System.out.println("Pilih opsi: ");
+            System.out.print("Pilih opsi: ");
             int choice = 0;
             try {
                 choice = Integer.parseInt(scanner.nextLine());
+                System.out.println("");
             } catch (NumberFormatException e) {
                 System.out.println("Input harus berupa angka.");
                 continue;
@@ -144,7 +145,6 @@ public class Game {
 
             }
         }
-        scanner.close();
         startGame();
     }
 
@@ -160,10 +160,11 @@ public class Game {
 
         while (isChoosing && (plantDeck.getSize() != plantDeck.getMaxDeckSize())) {
             displayMenuStart();
-            System.out.println("Pilih opsi: ");
+            System.out.print("Pilih opsi: ");
             int choice = 0;
             try {
                 choice = Integer.parseInt(scanner.nextLine());
+                System.out.println("");
             } catch (NumberFormatException e) {
                 System.out.println("Input harus berupa angka.");
                 continue;
@@ -211,7 +212,6 @@ public class Game {
                     break;
             }
         }
-        scanner.close();
         enterGame();
     }
 
@@ -348,7 +348,6 @@ public class Game {
                     break;
             }
         }
-        scanner.close();
     }
 
     private void gameBaru() {
@@ -447,9 +446,9 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        System.out.println("Selamat datang di ");
+        System.out.println("Selamat datang di Michael ");
         Game game = new Game();
-        game.displayMenuUtama();
+        game.MulaiGame();
     }
 
 }
