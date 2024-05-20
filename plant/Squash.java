@@ -11,25 +11,28 @@ public class Squash extends Tanaman {
         Map map;
         int row;
 
-        executorService.scheduleAtFixedRate(() ->{
-            List<Zombie> kosong = new ArrayList<>();
-            List<Tile> baris = map.getRow(tile.getY());
-            for (Tile tiles : baris) {
-                if (!tiles.getZombies().isEmpty()) {
-                    
-                    // Mencari column dari zombie dan tanaman
-
-                    // Membunuh satu zombie yang ada di satu column depan tanaman berada
-
-                    // Kalau ga ada di depannya, bunuh satu zombie terdepan yang ada di column yang sama dengan tanaman berada
-                    
-                    // Kalau ga ada di depan atau di column yang sama, bunuh satu zombie terdepan yang ada di satu column setelah tanaman berada
-                    
-                    setHealthTanaman(0);
-                }
+        synchronized (tile) {
+            boolean benar = false;
+            List<Tile> baris = new ArrayList<>(List.of(
+                map.getTile(plant.getRowPlant(), plant.getColPlant() + 1),
+                map.getTile(plant.getRowPlant(), plant.getColPlant() - 1)
+            ));
+            Zombie zombiedepan1 = baris.get(0).getZombies().get(0);
+            Zombie zombiedepan2 = baris.get(1).getZombies().get(0);
+            if (!baris.get(0).getZombies().isEmpty()){
+                zombiedepan1.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
+                benar = true;
             }
-        } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
+            else{
+                zombiedepan2.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
+                benar = true;
+            }
+            if (benar){
+                plant.setHealthTanaman(0);
+            }
+        }
     }
+}
 /*
     @Override
     public void serang(Map map, int x, int y) {

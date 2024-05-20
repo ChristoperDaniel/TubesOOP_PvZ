@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tile {
-    private String displayName = "_";
+    private String displayName;
     private List<Tanaman> plants;
     private List<Zombie> zombies;
     private int x;

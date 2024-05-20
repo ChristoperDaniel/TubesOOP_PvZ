@@ -30,7 +30,7 @@ public class ZombieAction implements Runnable {
                     zombie.attackZombie(tile, map, tanaman.get(tanaman.size()-1));
                 } else {
                     // Jika tidak ada tanaman, bergerak
-                    zombie.moveZombie(tile, map);
+                    zombie.moveZombie(map);
                 }
             }
 
