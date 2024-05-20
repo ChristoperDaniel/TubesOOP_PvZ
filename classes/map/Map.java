@@ -86,12 +86,12 @@ public class Map {
 
     // Metode untuk memeriksa apakah tile adalah air
     private boolean isWaterTile(int row, int col) {
-        return (row == 2 || row == 3) && (col > 0 && col < 10);
+        return (row == 2 || row == 3) && (col > 0 && col < 11);
     }
 
     // Metode untuk memeriksa apakah tile adalah air
     private boolean isRumputTile(int row, int col) {
-        return (row == 0 || row == 1 || row == 4 || row == 5) && (col > 0 && col < 10);
+        return (row == 0 || row == 1 || row == 4 || row == 5) && (col > 0 && col < 11);
     }
 
     private boolean isLilypadAvail(int row, int col){
@@ -222,114 +222,41 @@ public class Map {
         // jangan lupa bikin jadi zombie
     ));
     
+    //taro place zombie disini, sementara dipindahin
     public void placeZombie(List<Zombie> listofZombies) {
         Tile current_Tile;
         double randomValue = Math.random();
         Random random = new Random();
-    
-        if (randomValue <= 0.9) {
+
+        if (randomValue <= 1){
             int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
             Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
             int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
             int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
             current_Tile = tiles[randomRow][randomCol];
-    
-            if (isWaterTile(randomRow, randomCol)) {
-                if (zombieType.getNamaZombie().equals("DuckyTubeZombie") || zombieType.getNamaZombie().equals("DolphinRiderZombie")) {
+            System.out.println(randomRow);
+            System.out.println(randomCol);
+            System.out.println(zombieType.getNamaZombie());
+            
+            if(isWaterTile(randomRow, randomCol) == true){
+                if(zombieType.getNamaZombie().equals("DuckyTubeZombie")){
                     current_Tile.addZombie(zombieType);
-                    setZombieDisplayName(current_Tile, zombieType);
+                } else if (zombieType.getNamaZombie().equals("DolphinRiderZombie")){    
+                    current_Tile.addZombie(zombieType);
+                } else {
+                    return;
                 }
-            } else if (isRumputTile(randomRow, randomCol)) {
-                if (!zombieType.getNamaZombie().equals("DuckyTubeZombie") && !zombieType.getNamaZombie().equals("DolphinRiderZombie")) {
+            } else if(isRumputTile(randomRow, randomCol) == true){        
+                if(!zombieType.getNamaZombie().equals("DuckyTubeZombie") && !zombieType.getNamaZombie().equals("DolphinRiderZombie")){
                     current_Tile.addZombie(zombieType);
-                    setZombieDisplayName(current_Tile, zombieType);
+                } else {
+                    return;
                 }
             }
+            
             zombieType.setRowZombie(randomRow);
             zombieType.setColZombie(randomCol);
-        }
-    }
-    
-    private void setZombieDisplayName(Tile current_Tile, Zombie zombieType) {
-        // set symbol
-        switch (zombieType.getNamaZombie()) {
-            case "NormalZombie":
-                current_Tile.setDisplayName("NMz");
-                break;
-            case "ConeheadZombie":
-                current_Tile.setDisplayName("CHz");
-                break;
-            case "BucketheadZombie":
-                current_Tile.setDisplayName("BHz");
-                break;
-            case "PoleVaultingZombie":
-                current_Tile.setDisplayName("PVz");
-                break;
-            case "DuckyTubeZombie":
-                current_Tile.setDisplayName("DTz");
-                break;
-            case "DolphinRiderZombie":
-                current_Tile.setDisplayName("DRz");
-                break;
-            case "PeashooterZombie":
-                current_Tile.setDisplayName("PSz");
-                break;
-            case "ScreendoorZombie":
-                current_Tile.setDisplayName("SDz");
-                break;
-            case "JackInTheBoxZombie":
-                current_Tile.setDisplayName("JBz");
-                break;
-            case "RugbyZombie":
-                current_Tile.setDisplayName("RGz");
-                break;
-            default:
-                System.out.println("Jenis zombie tidak dikenali.");
-        }
-    }
-    
- 
 
-    // Menghapus tanaman dari tile
-    public void removeTanaman(int row, int col, Tanaman tanaman) {
-        Tile current_Tile = getTile(row, col);
-        if (current_Tile != null && current_Tile.getTanaman() != null) {
-            current_Tile.removeTanaman(tanaman);
-            current_Tile.setDisplayName("___");
-        }
-    }
-
-    // Menghapus zombie dari tile
-    public void removeZombie(int row, int col, Zombie zombie) {
-        Tile current_Tile = getTile(row, col);
-        if (current_Tile != null) {
-            current_Tile.removeZombie(zombie);
-            current_Tile.setDisplayName("___");
-        }
-    }
-
-    public void Flag(List<Zombie> listofZombies){
-        Tile current_Tile;
-        double randomValue = Math.random();
-        Random random = new Random();
-
-        if (randomValue <= 0.5) {
-            int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
-            Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
-            int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
-            int randomCol = Map.total_columns; // Pilih kolom di sisi kanan map
-
-            if(isRumputTile(randomRow, randomCol)){
-                if(zombieType.getNamaZombie() != "DuckyTubeZombie" || zombieType.getNamaZombie() != "DolphinRiderZombie"){
-                    tiles[randomRow][randomCol].addZombie(zombieType);
-                }
-            } else if (isWaterTile(randomRow, randomCol)){
-                if(zombieType.getNamaZombie() == "DuckyTubeZombie" || zombieType.getNamaZombie() == "DolphinRiderZombie"){
-                    tiles[randomRow][randomCol].addZombie(zombieType);
-                }
-            }
-
-            current_Tile = tiles[randomRow][randomCol];
 
             //set symbol
             switch (zombieType.getNamaZombie()){
@@ -369,24 +296,58 @@ public class Map {
             }
         }
     }
+    
+    // Menghapus tanaman dari tile
+    public void removeTanaman(int row, int col, Tanaman tanaman) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null && current_Tile.getTanaman() != null) {
+            current_Tile.removeTanaman(tanaman);
+            current_Tile.setDisplayName("___");
+        }
+    }
+
+    // Menghapus zombie dari tile
+    public void removeZombie(int row, int col, Zombie zombie) {
+        Tile current_Tile = getTile(row, col);
+        if (current_Tile != null) {
+            current_Tile.removeZombie(zombie);
+            current_Tile.setDisplayName("___");
+        }
+    }
 
     // Menampilkan peta
     public void displayMap() {
+        final String RESET = "\u001B[0m";
+        final String ORANGE = "\u001B[38;5;208m";
+        final String RED = "\u001B[31m";
+        final String BLUE = "\u001B[34m";
+        final String GREEN = "\u001B[32m";
+    
         for (int row = 0; row < total_rows; row++) {
             for (int col = 0; col < total_columns; col++) {
                 Tile tile = tiles[row][col];
-                System.out.print("[" + (tile.getDisplayName()) + "]" + " ");
+                String color = RESET;
+    
+                // Determine the color based on the row and column
+                if (row >= 0 && row <= 5 && col == 0) {
+                    color = ORANGE;
+                } else if (row >= 0 && row <= 5 && col == 10) {
+                    color = RED;
+                } else if ((row == 2 || row == 3) && col >= 1 && col <= 9) {
+                    color = BLUE;
+                } else if ((row == 0 || row == 1 || row == 4 || row == 5) && col >= 1 && col <= 9) {
+                    color = GREEN;
+                }
+    
+                // Print the tile with the colored brackets
+                System.out.print(color + "[" + RESET + tile.getDisplayName() + color + "]" + RESET + " ");
             }
             System.out.println();
         }
     }
+    
 
     public static void main(String[] args) {
-        /*System.out.println("Map:");
-        Map maps = new Map();
-        maps.displayMap();
-        maps.placeTanaman(0, 2, new Peashooter());
-        System.out.println(maps.tiles[0][2].getTanaman());*/
 
         System.out.println("Map:");
         Map maps = new Map();
