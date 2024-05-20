@@ -72,11 +72,24 @@ public class PlantAction implements Runnable {
                 }
                 else if (plant.getRangeTanaman() == 1){
                     if (plant.getNamaTanaman() == "Squash"){
+                        boolean benar = false;
                         List<Tile> baris = new ArrayList<>(List.of(
                             map.getTile(plant.getRowPlant(), plant.getColPlant() + 1),
                             map.getTile(plant.getRowPlant(), plant.getColPlant() - 1)
                         ));
-                        plant.setHealthTanaman(0);
+                        Zombie zombiedepan1 = baris.get(0).getZombies().get(0);
+                        Zombie zombiedepan2 = baris.get(1).getZombies().get(0);
+                        if (!baris.get(0).getZombies().isEmpty()){
+                            zombiedepan1.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
+                            benar = true;
+                        }
+                        else{
+                            zombiedepan2.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
+                            benar = true;
+                        }
+                        if (benar){
+                            plant.setHealthTanaman(0);
+                        }
                     }
                 }
         }
