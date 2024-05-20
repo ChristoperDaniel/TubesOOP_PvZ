@@ -235,9 +235,9 @@ public class Map {
             int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
             int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
             current_Tile = tiles[randomRow][randomCol];
-            System.out.println(randomRow);
-            System.out.println(randomCol);
-            System.out.println(zombieType.getNamaZombie());
+            //System.out.println(randomRow);
+            //System.out.println(randomCol);
+            //System.out.println(zombieType.getNamaZombie());
             
             if(isWaterTile(randomRow, randomCol) == true){
                 if(zombieType.getNamaZombie().equals("DuckyTubeZombie")){
