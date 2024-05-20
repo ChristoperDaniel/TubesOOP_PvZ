@@ -18,7 +18,7 @@ public class SpawnZombieThread implements Runnable {
                 Thread.sleep(1); // Update setiap milisecond
 
                 long currentTime = System.currentTimeMillis();
-                long elapsedTime = currentTime % 60000; // Waktu dalam siklus 60 detik
+                long elapsedTime = currentTime % 10000; // Waktu dalam siklus 60 detik
 
                 // Panggil placeZombie dalam range detik ke 20 hingga 160, setiap 3 detik
                 if (elapsedTime >= 20000 && elapsedTime <= 160000 && elapsedTime % 3000 == 0) {

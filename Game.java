@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import classes.map.*;
+import classes.map.threadmap.SpawnZombieThread;
+import classes.map.threadmap.UpdateSunThread;
 import classes.objects.*;
 import classes.player.*;
 import plant.*;
@@ -221,13 +224,13 @@ public class Game {
     }
 
     public void enterGame() {
-        executor = Executors.newScheduledThreadPool(4); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
-
+        executor = Executors.newScheduledThreadPool(1); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
+        statusGame = "Mulai";
         //executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(timeThread, 0, 1, TimeUnit.SECONDS);
+        //executor.scheduleAtFixedRate(timeThread, 0, 1, TimeUnit.SECONDS);
         //executor.scheduleAtFixedRate(changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
-        executor.scheduleAtFixedRate(updateCurrentTime, 0, 1, TimeUnit.MILLISECONDS); // Memperbarui currentTime
+        //executor.scheduleAtFixedRate(spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
+        //executor.scheduleAtFixedRate(updateCurrentTime, 0, 1, TimeUnit.MILLISECONDS); // Memperbarui currentTime
         //executor.scheduleAtFixedRate(checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
         executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
         //executor.submit(this::perang);
@@ -487,7 +490,24 @@ public class Game {
     public static void main(String[] args) {
         System.out.println("Selamat datang di Michael ");
         Game game = new Game();
-        game.MulaiGame();//
+        game.MulaiGame();
+        Map map = new Map();
+        Sun sun = new Sun();
+        
+        SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map);
+        UpdateSunThread updateSunThread = new UpdateSunThread(sun);
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        
+        executor.execute(spawnZombieThread);
+        executor.execute(updateSunThread);
+
+        // Cara untuk menghentikan thread secara aman
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            spawnZombieThread.stop();
+            updateSunThread.stop();
+            executor.shutdown();
+        }));
     }
 
 }
