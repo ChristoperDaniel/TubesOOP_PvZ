@@ -46,16 +46,17 @@ public class PlantAction implements Runnable {
                     }
                     else if (plant.getNamaTanaman() == "Peashooter"){
                         executorService.scheduleAtFixedRate(() ->{
-                            List<Zombie> kosong = new ArrayList<>();
                             List<Tile> baris = map.getRow(tile.getY());
                             for (Tile tiles : baris) {
-                                if (!tiles.getZombies().isEmpty()) {
-                                        // Ambil zombie terdepan
-                                    Zombie zombieTerdepan = tiles.getZombies().get(0);
-                                        // Serang setiap attack_speedTanaman detik sekali
-                                    zombieTerdepan.setHealthZombie(zombieTerdepan.getHealthZombie() - plant.getAttackDamageTanaman());
-                                    if (zombieTerdepan.getHealthZombie() <= 0) {
-                                            tiles.removeZombie(zombieTerdepan);
+                                if (tiles.getX()>=tile.getX()){
+                                    if (!tiles.getZombies().isEmpty()) {
+                                            // Ambil zombie terdepan
+                                        Zombie zombieTerdepan = tiles.getZombies().get(0);
+                                            // Serang setiap attack_speedTanaman detik sekali
+                                        zombieTerdepan.setHealthZombie(zombieTerdepan.getHealthZombie() - plant.getAttackDamageTanaman());
+                                        if (zombieTerdepan.getHealthZombie() <= 0) {
+                                                tiles.removeZombie(zombieTerdepan);
+                                        }
                                     }
                                 }
                             }

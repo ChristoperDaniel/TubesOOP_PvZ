@@ -71,10 +71,10 @@ public class Deck {
         return removedTanamanDeck;
     }
 
-    public void displayDeckPlants() {
+    public void displayDeckPlants() throws EmptyDeckException {
         System.out.println("-----------------");
         if (listPlants.isEmpty()) {
-            System.out.println("Deck kosong.");
+            throw new EmptyDeckException("Deck kosong.");
         }
         else{
             System.out.println("Isi deck tanaman:");
@@ -83,5 +83,11 @@ public class Deck {
             }
         }
         System.out.println("-----------------");
+    }
+}
+
+class EmptyDeckException extends Exception {
+    public EmptyDeckException(String message) {
+        super(message);
     }
 }
