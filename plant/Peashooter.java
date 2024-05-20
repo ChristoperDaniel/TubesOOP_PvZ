@@ -1,6 +1,6 @@
 package plant;
 import zombie.*;
-public class Peashooter extends Tanaman{
+public class Peashooter extends Tanaman implements TanamanPenyerang{
     public Peashooter() {
         super("Peashooter", 100, 100, 25, 4, -1, 10, false);
     }
