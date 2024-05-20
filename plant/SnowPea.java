@@ -15,13 +15,13 @@ public class SnowPea extends Tanaman implements TanamanPenyerang{
         Map map;
         int row;
         int x = getColPlant();
-        int a = getColZombie();
 
         executorService.scheduleAtFixedRate(() ->{
             List<Zombie> kosong = new ArrayList<>();
             List<Tile> baris = map.getRow(tile.getY());
             for (Tile tiles : baris) {
                 if (!tiles.getZombies().isEmpty()) {
+                    int a = getColZombie();
                     if (a >= x){
                         for (Zombie zombie : tiles.getZombies()){
                             tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
