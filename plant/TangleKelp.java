@@ -1,35 +1,51 @@
 
 package plant;
-public class TangleKelp extends Tanaman {
+public class TangleKelp extends Tanaman implements TanamanPenyerang{
     public TangleKelp() {
         super("Tangle Kelp", 25, 100, 5000, 0, 1, 20, false);
     }
 
     @Override
-    public void attackPlant(Tile tile, Map map, Zombie zombie) {
+    public void attackPlant(Tile tile, Map map){
         Tanaman plant;
         Tile tile;
         Map map;
         int row;
+        int x = getColPlant();
+        int a = getColZombie();
 
-        synchronized (tile) {
-            boolean benar = false;
-            List<Tile> baris = new ArrayList<>(List.of(
-                map.getTile(plant.getRowPlant(), plant.getColPlant() + 1),
-                map.getTile(plant.getRowPlant(), plant.getColPlant() - 1)
-            ));
-            Zombie zombiedepan1 = baris.get(0).getZombies().get(0);
-            Zombie zombiedepan2 = baris.get(1).getZombies().get(0);
-            if (!baris.get(0).getZombies().isEmpty()){
-                zombiedepan1.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
-                benar = true;
-            }
-            else{
-                zombiedepan2.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
-                benar = true;
-            }
-            if (benar){
-                plant.setHealthTanaman(0);
+        while (plant.getHealthTanaman() > 0) {
+            synchronized (tile) {
+                List<Zombie> kosong = new ArrayList<>();
+                List<Tile> baris = map.getRow(tile.getY());
+                for (Tile tiles : baris) {
+                    if (!tiles.getZombies().isEmpty()) {
+                        if (x == a - 1){
+                            for (Zombie zombie : tiles.getZombies()){
+                                tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+                                if (tiles.getHealthZombie() <= 0) {
+                                    tiles.removeZombie(zombie);
+                                }
+                            }
+                        }
+                        else if (x == a){
+                            for (Zombie zombie : tiles.getZombies()){
+                                tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+                                if (tiles.getHealthZombie() <= 0) {
+                                    tiles.removeZombie(zombie);
+                                }
+                            }
+                        }
+                        else if (x == a + 1){
+                            for (Zombie zombie : tiles.getZombies()){
+                                tiles.setHealthZombie(tiles.getHealthZombie() - plant.getAttackDamageTanaman());
+                                if (tiles.getHealthZombie() <= 0) {
+                                    tiles.removeZombie(zombie);
+                                }
+                            }
+                        }
+                    }   
+                }
             }
         }
     }

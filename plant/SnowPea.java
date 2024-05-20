@@ -1,5 +1,4 @@
 package plant;
-import zombie.*;
 
 public class SnowPea extends Tanaman implements TanamanPenyerang{
     //private SlowingEffect slowingEffect;
