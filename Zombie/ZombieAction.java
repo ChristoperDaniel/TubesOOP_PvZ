@@ -34,14 +34,14 @@ public class ZombieAction implements Runnable {
                 zability.add(new JackInTheBoxZombie(tile));
 
                 List<Tanaman> tanaman = tile.getTanaman();
-                if (tanaman != null && zombie.getIsAbilityUsed() == true) {
+                if ((!tanaman.isEmpty()) && zombie.getIsAbilityUsed() == true) {
                     // Jika ada tanaman, serang tanaman
                     for (ZombieWithAbility zombie : zability) {
                         zombie.useAbility(is_Ability_Used, tile, map, tanaman.get(tanaman.size()-1));
                     }
                 }
 
-                else if (tanaman != null && zombie.getIsAbilityUsed() == true) {
+                else if ((!tanaman.isEmpty()) && zombie.getIsAbilityUsed() == false) {
                     // Jika ada tanaman, serang tanaman
                     zombie.attackZombie(tile, map, tanaman.get(tanaman.size()-1));
                 } 
