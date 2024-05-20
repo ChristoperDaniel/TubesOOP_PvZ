@@ -5,7 +5,7 @@ import interfaces.ZombieWithItem;
 
 public class RugbyZombie extends Zombie implements ZombieWithItem {
     public RugbyZombie(Tile tile) {
-        super("RugbyZombie", 500, 100, 1000,  10000, 1, false);
+        super("RugbyZombie", 500, 100, 1000,  10000, 1, false, false);
     }
 
     @Override

@@ -22,7 +22,7 @@ public abstract class Zombie extends Aquatic {
     private int row;
     private int col;
 
-    public Zombie(String namaZombieString, int healthZombie, int attack_damageZombie, int attack_speedZombie, int speedZombie, int rangeZombie, boolean isaquatic) {
+    public Zombie(String namaZombieString, int healthZombie, int attack_damageZombie, int attack_speedZombie, int speedZombie, int rangeZombie, boolean is_item_removedZombie, boolean isaquatic) {
         super(isaquatic);
         this.namaZombieString = namaZombieString;
         this.healthZombie = healthZombie;
@@ -30,7 +30,6 @@ public abstract class Zombie extends Aquatic {
         this.attack_speedZombie = attack_speedZombie;
         this.speedZombie = speedZombie;
         this.rangeZombie = rangeZombie;
-        this.is_item_removedZombie = false;
         this.is_ability_used = false;
         this.is_get_slowedZombie = false;
         this.row = -1;
