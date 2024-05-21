@@ -227,76 +227,78 @@ public class Map {
     
     public void placeZombie(List<Zombie> listofZombies) {
         Tile current_Tile;
-        double randomValue = Math.random();
         Random random = new Random();
-
-        if (randomValue <= 1){
-            int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
-            Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
-            int randomRow = random.nextInt(Map.total_rows); // Pilih baris secara acak
-            int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
-            current_Tile = tiles[randomRow][randomCol];
-            //System.out.println(randomRow);
-            //System.out.println(randomCol);
-            //System.out.println(zombieType.getNamaZombie());
-            
-            if(isWaterTile(randomRow, randomCol) == true){
-                if(zombieType.getNamaZombie().equals("DuckyTubeZombie")){
-                    current_Tile.addZombie(zombieType);
-                } else if (zombieType.getNamaZombie().equals("DolphinRiderZombie")){    
-                    current_Tile.addZombie(zombieType);
-                } else {
-                    return;
+        for(int i = 0; i < total_rows; i++){
+            double randomValue = Math.random();
+            if (randomValue <= 0.3){
+                int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
+                Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
+                int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
+                int randomRow = i;
+                current_Tile = tiles[randomRow][randomCol];
+                //System.out.println(randomRow);
+                //System.out.println(randomCol);
+                //System.out.println(zombieType.getNamaZombie());
+                
+                if(isWaterTile(randomRow, randomCol) == true){
+                    if(zombieType.getNamaZombie().equals("DuckyTubeZombie")){
+                        current_Tile.addZombie(zombieType);
+                    } else if (zombieType.getNamaZombie().equals("DolphinRiderZombie")){    
+                        current_Tile.addZombie(zombieType);
+                    } else {
+                        return;
+                    }
+                } else if(isRumputTile(randomRow, randomCol) == true){        
+                    if(!zombieType.getNamaZombie().equals("DuckyTubeZombie") && !zombieType.getNamaZombie().equals("DolphinRiderZombie")){
+                        current_Tile.addZombie(zombieType);
+                    } else {
+                        return;
+                    }
                 }
-            } else if(isRumputTile(randomRow, randomCol) == true){        
-                if(!zombieType.getNamaZombie().equals("DuckyTubeZombie") && !zombieType.getNamaZombie().equals("DolphinRiderZombie")){
-                    current_Tile.addZombie(zombieType);
-                } else {
-                    return;
+                
+                zombieType.setRowZombie(randomRow);
+                zombieType.setColZombie(randomCol);
+    
+    
+                //set symbol
+                switch (zombieType.getNamaZombie()){
+                    case "NormalZombie":
+                        current_Tile.setDisplayName("NMz");
+                        break;
+                    case "ConeheadZombie":
+                        current_Tile.setDisplayName("CHz");
+                        break;
+                    case "BucketheadZombie":
+                        current_Tile.setDisplayName("BHz");
+                        break;
+                    case "PoleVaultingZombie":
+                        current_Tile.setDisplayName("PVz");
+                        break;
+                    case "DuckyTubeZombie":
+                        current_Tile.setDisplayName("DTz");
+                        break;
+                    case "DolphinRiderZombie":
+                        current_Tile.setDisplayName("DRz");
+                        break;
+                    case "PeashooterZombie":
+                        current_Tile.setDisplayName("PSz");
+                        break;
+                    case "ScreendoorZombie":
+                        current_Tile.setDisplayName("SDz");
+                        break;
+                    case "JackInTheBoxZombie":
+                        current_Tile.setDisplayName("JBz");
+                        break;
+                    case "RugbyZombie":
+                        current_Tile.setDisplayName("RGz");
+                        break;
+                    default:
+                        System.out.println("Jenis zombie tidak dikenali.");
+                        return;
                 }
-            }
-            
-            zombieType.setRowZombie(randomRow);
-            zombieType.setColZombie(randomCol);
-
-
-            //set symbol
-            switch (zombieType.getNamaZombie()){
-                case "NormalZombie":
-                    current_Tile.setDisplayName("NMz");
-                    break;
-                case "ConeheadZombie":
-                    current_Tile.setDisplayName("CHz");
-                    break;
-                case "BucketheadZombie":
-                    current_Tile.setDisplayName("BHz");
-                    break;
-                case "PoleVaultingZombie":
-                    current_Tile.setDisplayName("PVz");
-                    break;
-                case "DuckyTubeZombie":
-                    current_Tile.setDisplayName("DTz");
-                    break;
-                case "DolphinRiderZombie":
-                    current_Tile.setDisplayName("DRz");
-                    break;
-                case "PeashooterZombie":
-                    current_Tile.setDisplayName("PSz");
-                    break;
-                case "ScreendoorZombie":
-                    current_Tile.setDisplayName("SDz");
-                    break;
-                case "JackInTheBoxZombie":
-                    current_Tile.setDisplayName("JBz");
-                    break;
-                case "RugbyZombie":
-                    current_Tile.setDisplayName("RGz");
-                    break;
-                default:
-                    System.out.println("Jenis zombie tidak dikenali.");
-                    return;
             }
         }
+        
     }
     
     // Menghapus tanaman dari tile
