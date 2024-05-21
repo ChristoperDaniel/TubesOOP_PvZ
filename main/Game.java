@@ -1,3 +1,4 @@
+package main;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import classes.map.*;
+import classes.map.threadmap.GameStatusThread;
+import classes.map.threadmap.PerangThread;
 import classes.map.threadmap.SpawnZombieThread;
 import classes.map.threadmap.UpdateSunThread;
 import classes.objects.*;
@@ -47,18 +50,17 @@ public class Game {
         // jangan lupa bikin jadi zombie
     ));
     private Random random = new Random(); // Menambahkan Random instance
-    private int nextSunInterval = getRandomSunInterval(); // Interval acak pertama
     private int maxZombies;
 
-    public Game() {
+    public Game(Map map, Player player, Sun sun) {
         statusGame = false;
-        player = new Player();
         map = new Map();
         plantDeck = new Deck();
         inventory = new Inventory();
         time = 0;
         isDayTime = true;
         sun = new Sun();
+        player = new Player(sun);
         plantTilesWithThreads = new HashSet<>();
         zombieTilesWithThreads = new HashSet<>();
         maxZombies = 10;
@@ -220,63 +222,14 @@ public class Game {
                     break;
             }
         }
-        enterGame();
+        enterGame(map);
     }
 
-    public void enterGame() {
-        
+    public void enterGame(Map map) {
+
         executor = Executors.newScheduledThreadPool(1); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
-        statusGame = "Mulai";
-        //executor.scheduleAtFixedRate(updateSun, 0, 1, TimeUnit.SECONDS);
-        //executor.scheduleAtFixedRate(timeThread, 0, 1, TimeUnit.SECONDS);
-        //executor.scheduleAtFixedRate(changeTimeOfDay, 0, 1, TimeUnit.SECONDS);
-        //executor.scheduleAtFixedRate(spawnZombies, 0, 1, TimeUnit.SECONDS); // Spawn zombie setiap 10 detik
-        //executor.scheduleAtFixedRate(updateCurrentTime, 0, 1, TimeUnit.MILLISECONDS); // Memperbarui currentTime
-        //executor.scheduleAtFixedRate(checkWinOrLose, 0, 1, TimeUnit.SECONDS); 
-        executor.submit(this::handleUserInput); // Memulai thread untuk menangani input pengguna
-        //executor.submit(this::perang);
-
-        /*try {
-            while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-                // Looping until executor is properly terminated
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    
-        gameBaru();*/
+        statusGame = true;
     }
-
-    private int getRandomSunInterval() {
-        return random.nextInt(6) + 5; // Menghasilkan interval acak antara 5-10 detik
-    }
-
-    Runnable updateSun = new Runnable() {
-        @Override
-        public void run(){
-            if ((!gameOver || !executor.isShutdown()) && isDayTime && currentTime % nextSunInterval == 0 && currentTime <= 100) {
-                sun.addSun(); // Menambahkan 25 Sun
-                //System.out.println("Sun has fallen from the sky! You've gained 25 sun. Current Time: " + currentTime);
-                nextSunInterval = getRandomSunInterval(); // Mengatur ulang interval acak berikutnya
-            }
-        }
-    };
-
-    //currentTimeMillies(); // buat update current tme bisa pake ini
-
-    Runnable updateCurrentTime = new Runnable(){
-        @Override
-        public void run(){
-            
-        }
-    };
-
-    Runnable timeThread = new Runnable(){
-        @Override
-        public void run(){
-            time++;
-        }
-    };
 
     // private void updateCurrentTime() {
     //     if (!gameOver || !executor.isShutdown()){
@@ -286,30 +239,26 @@ public class Game {
     //         }
     //     }
     // }
-    Runnable spawnZombies = new Runnable(){
-        @Override
-        public void run(){
-            if (!gameOver || !executor.isShutdown()){
-                if (currentTime >= 20 && currentTime <=149){
-                    if (map.getTotalZombies() < maxZombies) {
-                        map.placeZombie(listofAllZombies);
-                    }
-                }
-            }
-        }
-    };
 
-    private void handleUserInput() {
+    public void handleUserInput(Map map, Player player, Sun sun) {
         Scanner scanner = new Scanner(System.in);
         boolean salah = false;
         int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
         int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
-        while (!gameOver || !executor.isShutdown()) { // Loop sampai permainan selesai
+        while (!gameOver) { // Loop sampai permainan selesai
             map.displayMap();
-            displayMenuEnter();
-            System.out.println("Masukin input : ");
-            int choice = scanner.nextInt();
-            System.out.println("");
+            displayMenuEnter(); 
+
+            // Loop untuk memastikan input pilihan yang valid
+            System.out.print("Pilih opsi: ");
+            int choice = 0;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+                System.out.println("");
+            } catch (NumberFormatException e) {
+                System.out.println("Input harus berupa angka.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     // Menanam Tanaman
@@ -335,6 +284,7 @@ public class Game {
                         continue;
                     }
                     player.menanam(plantDeck, row, column, map);
+                    scanner.nextLine();
                     break;
                 case 2:
                     // Menggali Tanaman
@@ -371,7 +321,7 @@ public class Game {
                     break;
                 case 5:
                     // Quit Game
-                    stopGame(); // Menghentikan permainan
+                    gameOver = true; // Menghentikan permainan
                     break;
                 case 6:
                     // Help
@@ -384,7 +334,7 @@ public class Game {
         }
     }
 
-    private void gameBaru() {
+    /*public void gameBaru() {
         Game newGame = new Game();
         newGame.MulaiGame();
     }
@@ -395,9 +345,9 @@ public class Game {
         }
         gameOver = true; // Ensure gameOver is set to true
         System.out.println("Game has been stopped.");
-    }
+    }*/
 
-    private void perang() {
+    public void perang(Map map) {
         while (!gameOver) {
             for (int row = 0; row < Map.total_rows; row++) {
                 for (int col = 0; col < Map.total_columns; col++) {
@@ -428,7 +378,7 @@ public class Game {
             }
         }
     }
-    Runnable changeTimeOfDay = new Runnable(){
+    /*Runnable changeTimeOfDay = new Runnable(){
         @Override
         public void run(){
             if (!gameOver || !executor.isShutdown()){
@@ -471,12 +421,12 @@ public class Game {
         else{
             System.out.println("Anda kalah! Zombie menang");
         }
-    }
+    }*/
 
     public void quitGame() {
-        statusGame = "Paused";
+        statusGame = false;
         System.out.println("Game dihentikan.");
-    }
+    } 
 
     public void help() {
         System.out.println("Tentang Cara Bermain:");
@@ -488,27 +438,46 @@ public class Game {
         System.out.println("6. Pilih 'Help' untuk melihat menu bantuan ini lagi.");
     }
 
+    public void start(Map map, Player player, Sun sun, Game game) {
+        // Buat thread untuk menjalankan metode perang
+        //PerangThread perangThread = new PerangThread(map,game);
+        //Thread thread = new Thread(perangThread);
+        //1
+        //thread.start();
+
+        // Jalankan handleUserInput di thread utama
+        handleUserInput(map, player, sun);
+    }
+
     public static void main(String[] args) {
-        System.out.println("Selamat datang di Michael ");
-        Game game = new Game();
-        game.MulaiGame();
         Map map = new Map();
         Sun sun = new Sun();
-        
+        Player player = new Player(sun);
+        Game game = new Game(map,player,sun);
+        System.out.println("Selamat datang di Michael vs Lalapan");
+        game.MulaiGame();
         SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map);
         UpdateSunThread updateSunThread = new UpdateSunThread(sun);
+        GameStatusThread gameStatusThread = new GameStatusThread(map);
+        //PerangThread perangThread = new PerangThread(map, game);
 
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         
         executor.execute(spawnZombieThread);
         executor.execute(updateSunThread);
+        executor.execute(gameStatusThread);
 
         // Cara untuk menghentikan thread secara aman
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             spawnZombieThread.stop();
             updateSunThread.stop();
+            gameStatusThread.stop();
             executor.shutdown();
         }));
+        while (game.getStatusGame()){
+            game.start(map,player,sun,game);
+        }
     }
 
 }

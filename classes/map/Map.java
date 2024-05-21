@@ -1,7 +1,6 @@
 package classes.map;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -296,6 +295,9 @@ public class Map {
                     System.out.println("Jenis zombie tidak dikenali.");
                     return;
             }
+            ZombieAction zombieAction = new ZombieAction(zombieType.getIsAbilityUsed(),zombieType,current_Tile,this);
+            Thread zombieThread = new Thread(zombieAction);
+            zombieThread.start();
         }
     }
     

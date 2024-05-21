@@ -11,8 +11,9 @@ public class Player {
     private ScheduledExecutorService scheduler;
     Sun sun;
     // Constructor
-    public Player() {
+    public Player(Sun sun) {
         this.scheduler = Executors.newScheduledThreadPool(1);
+        this.sun = sun;
     }
     public boolean canAfford(int cost) {
         return sun.gettotalSun() >= cost;
@@ -29,9 +30,6 @@ public class Player {
             System.out.println("Sun Anda saat ini: " + sun.gettotalSun());
             System.out.println("Pilih tanaman untuk ditanam (atau ketik 'exit' untuk keluar):");
             String pilihan = scanner.nextLine();
-            if (pilihan.equalsIgnoreCase("exit")) {
-                break;
-            }
     
             Tanaman tanaman = deck.getTanamanByName(pilihan);
             if (tanaman != null) {
@@ -48,8 +46,8 @@ public class Player {
             } else {
                 System.out.println("Tanaman tidak ditemukan.");
             }
+            break;
         }
-        scanner.close();
     }
     
 

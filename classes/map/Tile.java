@@ -61,6 +61,41 @@ public class Tile {
 
     public void addZombie(Zombie zombie) {
         this.zombies.add(zombie);
+        switch (zombie.getNamaZombie()){
+            case "NormalZombie":
+                this.setDisplayName("NMz");
+                break;
+            case "ConeheadZombie":
+                this.setDisplayName("CHz");
+                break;
+            case "BucketheadZombie":
+                this.setDisplayName("BHz");
+                break;
+            case "PoleVaultingZombie":
+                this.setDisplayName("PVz");
+                break;
+            case "DuckyTubeZombie":
+                this.setDisplayName("DTz");
+                break;
+            case "DolphinRiderZombie":
+                this.setDisplayName("DRz");
+                break;
+            case "PeashooterZombie":
+                this.setDisplayName("PSz");
+                break;
+            case "ScreendoorZombie":
+                this.setDisplayName("SDz");
+                break;
+            case "JackInTheBoxZombie":
+                this.setDisplayName("JBz");
+                break;
+            case "RugbyZombie":
+                this.setDisplayName("RGz");
+                break;
+            default:
+                System.out.println("Jenis zombie tidak dikenali.");
+                return;
+        }
     }
 
     public void removeZombie(Zombie zombie) {

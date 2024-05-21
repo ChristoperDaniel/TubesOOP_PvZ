@@ -35,67 +35,14 @@ public class PlantAction implements Runnable {
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
             synchronized (tile) {
-                if (plant.getRangeTanaman() == -1){
-                    if (plant.getNamaTanaman() == "Jalapeno"){
-                        List<Tile> baris = map.getRow(tile.getY());
-                        for (Tile tiles : baris) {
-                            if (!tiles.getZombies().isEmpty()) {
-                                // Membunuh semua zombie di baris ini
-                                for (Zombie zombie : tiles.getZombies()) {
-                                    tiles.removeZombie(zombie);
-                                }
-                            }
-                        }
-                        plant.setHealthTanaman(0);
-                    }
-                    else if (plant.getNamaTanaman() == "Peashooter"){
-                        executorService.scheduleAtFixedRate(() ->{
-                            List<Tile> baris = map.getRow(tile.getY());
-                            for (Tile tiles : baris) {
-                                if (tiles.getX()>=tile.getX()){
-                                    if (!tiles.getZombies().isEmpty()) {
-                                            // Ambil zombie terdepan
-                                        Zombie zombieTerdepan = tiles.getZombies().get(0);
-                                            // Serang setiap attack_speedTanaman detik sekali
-                                        zombieTerdepan.setHealthZombie(zombieTerdepan.getHealthZombie() - plant.getAttackDamageTanaman());
-                                        if (zombieTerdepan.getHealthZombie() <= 0) {
-                                                tiles.removeZombie(zombieTerdepan);
-                                        }
-                                    }
-                                }
-                            }
-                        } , 0, plant.getAttackSpeedTanaman(), TimeUnit.SECONDS);
-                    }
+                if (plant.getNamaTanaman() == "Sunflower"){
+                    Sunflower sunflower = (Sunflower) plant; 
+                    executorService.scheduleAtFixedRate(() ->{
+                        sun.addCustomSun(sunflower.generateSun());
+                    } , 0, 3, TimeUnit.SECONDS);
                 }
-                else if (plant.getRangeTanaman() == 0){
-                    if (plant.getNamaTanaman() == "Sunflower"){
-                        Sunflower sunflower = (Sunflower) plant; 
-                        executorService.scheduleAtFixedRate(() ->{
-                            sun.addCustomSun(sunflower.generateSun());
-                        } , 0, 3, TimeUnit.SECONDS);
-                    }
-                }
-                else if (plant.getRangeTanaman() == 1){
-                    if (plant.getNamaTanaman() == "Squash"){
-                        boolean benar = false;
-                        List<Tile> baris = new ArrayList<>(List.of(
-                            map.getTile(plant.getRowPlant(), plant.getColPlant() + 1),
-                            map.getTile(plant.getRowPlant(), plant.getColPlant() - 1)
-                        ));
-                        Zombie zombiedepan1 = baris.get(0).getZombies().get(0);
-                        Zombie zombiedepan2 = baris.get(1).getZombies().get(0);
-                        if (!baris.get(0).getZombies().isEmpty()){
-                            zombiedepan1.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
-                            benar = true;
-                        }
-                        else{
-                            zombiedepan2.setHealthZombie(zombiedepan1.getHealthZombie() - plant.getAttackDamageTanaman());
-                            benar = true;
-                        }
-                        if (benar){
-                            plant.setHealthTanaman(0);
-                        }
-                    }
+                else{
+                    plant.attackPlant(tile, map);
                 }
         }
 

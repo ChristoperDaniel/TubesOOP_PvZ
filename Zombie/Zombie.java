@@ -4,6 +4,7 @@ import classes.map.*;
 import plant.*;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -154,25 +155,25 @@ public abstract class Zombie extends Aquatic {
                         }
                     }
                 }
-            } , 0, atkspd, TimeUnit.MILLISECONDS);
+            }, 0, atkspd, TimeUnit.MILLISECONDS);
         }
     }
 
     public void moveZombie (Map map) {
         int x = getRowZombie();
-        int y = getColZombie();
         int spd = getSpeedZombie();
+        // Menggunakan AtomicInteger untuk memodifikasi nilai di dalam lambda
+        AtomicInteger posY = new AtomicInteger(getColZombie());
 
-        executorService.scheduleAtFixedRate(() ->{
-            for (int i = y; i > 0; i--) {
-                if (!(map.isTanamanAvail(x, i) == true)) {
-                    setRowZombie(i);
-                }
-                else {
-                    executorService.shutdown();
-                    break;
-                }
+        executorService.scheduleAtFixedRate(() -> {
+            int y = posY.get();
+            if (y > 0 && !map.isTanamanAvail(x, y - 1)) {
+                map.getTile(x, y).removeZombie(this);
+                y--;
+                setColZombie(y);
+                map.getTile(x, y).addZombie(this);
+                posY.set(y);
             }
-        } , 0, spd, TimeUnit.MILLISECONDS);
+        }, 0, spd, TimeUnit.MILLISECONDS);
     }
 }

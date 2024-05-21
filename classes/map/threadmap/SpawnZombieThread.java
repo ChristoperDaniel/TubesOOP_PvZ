@@ -21,11 +21,9 @@ public class SpawnZombieThread implements Runnable {
 
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = (currentTime - startTime)/1000; // Waktu yang telah berlalu sejak mulai
-                System.out.println(elapsedTime);
                 // Panggil placeZombie dalam range detik ke 20 hingga 160, setiap 3 detik
                 if (elapsedTime >= 20 && elapsedTime <= 160 && elapsedTime % 3 == 0) {
                     map.placeZombie(map.listofZombies);
-                    map.displayMap();
                 }
 
                 // Berhenti jika waktu mencapai 200 detik

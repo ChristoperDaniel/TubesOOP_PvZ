@@ -24,9 +24,8 @@ public class UpdateSunThread implements Runnable {
 
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = (currentTime - startTime)/1000; // Sesuaikan dengan siklus yang Anda inginkan
-
-                System.out.println("coba " +sun.gettotalSun()+", dan "+elapsedTime);
-                if ((i > nextSunInterval) && elapsedTime <= 100) {
+                
+                if ((i >= nextSunInterval) && elapsedTime <= 100) {
                     sun.addSun(); // Menambahkan 25 Sun
                     nextSunInterval = getRandomSunInterval(); // Mengatur ulang interval acak berikutnya
                     i = 0;
@@ -47,6 +46,6 @@ public class UpdateSunThread implements Runnable {
 
     private long getRandomSunInterval() {
         // Implementasi logika untuk menghasilkan interval acak
-        return 5 + (long) (Math.random() * 5); // Contoh interval acak antara 1 dan 100 milisecond
+        return 5 + (long) (Math.random() * 6); // Contoh interval acak antara 1 dan 100 milisecond
     }
 }
