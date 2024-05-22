@@ -320,7 +320,6 @@ public class Game {
                     break;
                 case 4:
                     // Display Map
-                    map.displayMap();
                     System.out.println("");
                     break;
                 case 5:
