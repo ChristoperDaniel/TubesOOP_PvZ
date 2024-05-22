@@ -1,17 +1,15 @@
 package plant;
-import classes.map.*;
-import zombie.DolphinRiderZombie;
-import zombie.JackInTheBoxZombie;
-import zombie.PoleVaultingZombie;
+import classes.map.Map;
+import classes.map.Tile;
 import zombie.Zombie;
 import classes.objects.*;
-import interfaces.ZombieWithAbility;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class Tanaman extends Aquatic {
     private ScheduledExecutorService executorService;
@@ -178,14 +176,16 @@ public class Tanaman extends Aquatic {
                     for (Tile tiles : baris ) {
                         if (!tiles.getZombies().isEmpty()) {
                         // Membunuh semua zombie di baris ini
-                            for (Zombie zombie : tiles.getZombies()) {
-                                tiles.removeZombie(zombie);
+                            Iterator<Zombie> iterator = tiles.getZombies().iterator();
+                            while (iterator.hasNext()) {
+                                Zombie zombie = iterator.next();
+                                iterator.remove();
                             }
-                        }
-                        setHealthTanaman(0);
                     }
                 }
+                setHealthTanaman(0);
             }
         }
     }
+}
 }
