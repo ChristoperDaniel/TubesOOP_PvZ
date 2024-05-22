@@ -272,7 +272,7 @@ public class Game {
                             System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
                             salah = true;
                         }
-                        System.out.print("Masukkan kolom untuk menanam tanaman (0-" + (Map.total_columns - 1) + "): ");
+                        System.out.print("Masukkan kolom untuk menanam tanaman (1-" + (Map.total_columns - 1) + "): ");
                         column = scanner.nextInt();
                         if (column < 0 || column >= Map.total_columns) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
