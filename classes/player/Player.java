@@ -35,13 +35,8 @@ public class Player {
             Tanaman tanaman = deck.getTanamanByName(pilihan);
             if (tanaman != null) {
                 if (!tanaman.isOnCooldown() && canAfford(tanaman.getCostTanaman())) {
-                    map.placeTanaman(row, col, tanaman);
                     sun.reduceSun(tanaman.getCostTanaman());
-                    PlantAction plantAction = new PlantAction(tanaman,map.getTile(row, col),map,sun);
-                    Thread plantThread = new Thread(plantAction);
-                    plantThread.start();
-                    tanaman.startCooldown(scheduler);
-                    System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
+                    map.placeTanaman(row, col, tanaman, sun, scheduler);
                 } else if (!canAfford(tanaman.getCostTanaman())) {
                     System.out.println("Tidak cukup sun untuk menanam " + tanaman.getNamaTanaman());
                 } else {

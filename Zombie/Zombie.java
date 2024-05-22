@@ -161,7 +161,6 @@ public abstract class Zombie extends Aquatic {
 
     public void moveZombie (Map map) {
         int x = getRowZombie();
-        int spd = getSpeedZombie();
         // Menggunakan AtomicInteger untuk memodifikasi nilai di dalam lambda
         int y = getColZombie();
         if (y > 0 && !map.isTanamanAvail(x, y - 1)) {

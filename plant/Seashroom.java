@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Seashroom extends Tanaman {
     public Seashroom() {
-        super("Seashroom", 0, 100, 20, 5, -1, 10,true);
+        super("Seashroom", 0, 100, 20, 5000, -1, 10000,true);
     }
 }
 //     @Override

@@ -12,6 +12,8 @@ import zombie.*;
 import main.*;
 import classes.objects.*;
 import classes.player.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Map {
     public static int total_rows = 6;
@@ -110,7 +112,7 @@ public class Map {
     }
 
     // Menempatkan tanaman pada tile tertentu
-    public void placeTanaman(int row, int col, Tanaman tanaman) {
+    public void placeTanaman(int row, int col, Tanaman tanaman, Sun sun, ScheduledExecutorService scheduler) {
         Tile current_Tile = getTile(row, col);
         boolean benar = true;
         if (current_Tile != null) {
@@ -196,12 +198,13 @@ public class Map {
                         System.out.println("Jenis tanaman tidak dikenali.");
                         return;
                 }
+                PlantAction plantAction = new PlantAction(tanaman,this.getTile(row, col),this,sun);
+                Thread plantThread = new Thread(plantAction);
+                plantThread.start();
+                tanaman.startCooldown(scheduler);
+                System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
             }
-
-        else {
-            System.out.println("Tile tidak tersedia.");
         }
-    }
     }
 
     public int getTotalZombies() {

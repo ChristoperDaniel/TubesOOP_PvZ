@@ -26,6 +26,7 @@ public class PlantAction implements Runnable {
         this.plant = plant;
         this.tile = tile;
         this.map = map;
+        this.sun = sun;
         this.row = tile.getY();  // Simpan baris untuk memudahkan akses nanti
         this.executorService = Executors.newScheduledThreadPool(1);
     }
@@ -37,20 +38,26 @@ public class PlantAction implements Runnable {
             synchronized (tile) {
                 if (plant.getNamaTanaman() == "Sunflower"){
                     Sunflower sunflower = (Sunflower) plant; 
-                    executorService.scheduleAtFixedRate(() ->{
+                    sun.addCustomSun(sunflower.generateSun());
+                    try {
+                        Thread.sleep(3000); // Misalnya menunggu 1 detik antara setiap aksi
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    /*executorService.scheduleAtFixedRate(() ->{
                         sun.addCustomSun(sunflower.generateSun());
-                    } , 0, 3000, TimeUnit.MILLISECONDS);
+                        System.out.println("hehe");
+                    } , 0, 3000, TimeUnit.MILLISECONDS); */
                 }
                 else{
                     plant.attackPlant(tile, map);
+                    System.out.println("hehe");
+                    try {
+                        Thread.sleep(plant.getAttackSpeedTanaman()); // Misalnya menunggu 1 detik antara setiap aksi
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
-        }
-
-            // Menunggu sebelum melakukan aksi berikutnya
-            try {
-                Thread.sleep(1000); // Misalnya menunggu 1 detik antara setiap aksi
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
             }
         }
 

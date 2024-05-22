@@ -321,6 +321,7 @@ public class Game {
                 case 4:
                     // Display Map
                     map.displayMap();
+                    System.out.println("");
                     break;
                 case 5:
                     // Quit Game

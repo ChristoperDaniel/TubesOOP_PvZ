@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class Magnetshroom extends Tanaman {
     private ScheduledExecutorService executorService;
     public Magnetshroom() {
-        super("Magnetshroom", 100, 100, 0, 10, -1, 20, false);
+        super("Magnetshroom", 100, 100, 0, 10000, -1, 20000, false);
     }
 
     // public void removeItem(Zombie zombie){

@@ -44,6 +44,11 @@ public class ZombieAction implements Runnable {
                 else if ((!tanaman.isEmpty()) && zombie.getIsAbilityUsed() == false) {
                     // Jika ada tanaman, serang tanaman
                     zombie.attackZombie(tile, map, tanaman.get(tanaman.size()-1));
+                    try {
+                        Thread.sleep(zombie.getSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 } 
 
                 else {
@@ -66,9 +71,9 @@ public class ZombieAction implements Runnable {
         }
         // Periksa apakah health zombie kurang dari atau sama dengan 0
         if (zombie.getHealthZombie() <= 0) {
-            // Jika iya, hapus zombie dari list zombie pada tile
-            tile.removeZombie(zombie);
-            // Keluar dari loop untuk menghentikan aksi zombie
+            synchronized (tile) {
+                map.removeZombie(tile.getY(),tile.getX(),zombie);
+            }
         }
     }
 }

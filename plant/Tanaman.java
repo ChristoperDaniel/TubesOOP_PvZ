@@ -89,7 +89,7 @@ public class Tanaman extends Aquatic {
     }
     public void startCooldown(ScheduledExecutorService scheduler) {
         isOnCooldown = true;
-        scheduler.schedule(() -> isOnCooldown = false, cooldownTanaman, TimeUnit.SECONDS);
+        scheduler.schedule(() -> isOnCooldown = false, cooldownTanaman, TimeUnit.MILLISECONDS);
     }
 
     public void removeItem(Zombie zombie){
@@ -98,7 +98,7 @@ public class Tanaman extends Aquatic {
         }   
     }
 
-    public void attackPlant(Tile tile, Map map) {
+    public synchronized void attackPlant(Tile tile, Map map) {
         this.tile = tile;
         this.map = map;
         int x = getColPlant();
@@ -106,7 +106,6 @@ public class Tanaman extends Aquatic {
         List<Tile> baris = map.getRow(tile.getY());
         if (getRangeTanaman() == -1) {
             if (getNamaTanaman() == "Snowpea"){
-                executorService.scheduleAtFixedRate(() ->{
                     for (Tile tiles : baris) {
                         if ((!tiles.getZombies().isEmpty())&&(tiles.getX() >= x)) {
                             for (int i = 0; i < tiles.getZombies().size();i++){                                      
@@ -118,10 +117,8 @@ public class Tanaman extends Aquatic {
                             }
                         }
                     }
-                } , 0, getAttackSpeedTanaman(), TimeUnit.SECONDS);
             }
             else if (getNamaTanaman() != "Snowpea"){
-                executorService.scheduleAtFixedRate(() ->{
                     for (Tile tiles : baris) {
                         if ((!tiles.getZombies().isEmpty())&&(tiles.getX() >= x)) {
                             for (int i = 0; i < tiles.getZombies().size();i++){  
@@ -132,7 +129,6 @@ public class Tanaman extends Aquatic {
                             }
                         }
                     }
-                }, 0, getAttackSpeedTanaman(), TimeUnit.SECONDS);
             }
         }
         else if (getRangeTanaman() == 1) {  
@@ -165,9 +161,8 @@ public class Tanaman extends Aquatic {
                                 }
                             }
                         }   
-                    }
+                    }setHealthTanaman(0);
                 }
-                setHealthTanaman(0);
             }
         }
         else if (getRangeTanaman() == 2) {  
@@ -176,16 +171,15 @@ public class Tanaman extends Aquatic {
                     for (Tile tiles : baris ) {
                         if (!tiles.getZombies().isEmpty()) {
                         // Membunuh semua zombie di baris ini
-                            Iterator<Zombie> iterator = tiles.getZombies().iterator();
-                            while (iterator.hasNext()) {
-                                Zombie zombie = iterator.next();
-                                iterator.remove();
+                            List<Zombie> list = tiles.getZombies();
+                            for (Zombie zombie : list) {
+                                tiles.removeZombie(zombie);
                             }
+                        }
                     }
+                    setHealthTanaman(0);
                 }
-                setHealthTanaman(0);
             }
         }
     }
-}
 }
