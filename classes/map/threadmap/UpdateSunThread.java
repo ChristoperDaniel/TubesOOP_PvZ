@@ -2,23 +2,23 @@ package classes.map.threadmap;
 import classes.objects.*;
 public class UpdateSunThread implements Runnable {
     private volatile boolean running;
-    private volatile boolean gameOver;
+    private volatile boolean statusgame;
     private long nextSunInterval;
     private Sun sun;
     private long startTime;
 
-    public UpdateSunThread(Sun sun) {
+    public UpdateSunThread(Sun sun, boolean statusgame) {
         this.sun = sun;
         this.running = true;
-        this.gameOver = false;
         this.nextSunInterval = getRandomSunInterval();
         this.startTime = System.currentTimeMillis();
+        this.statusgame = statusgame;
     }
 
     @Override
     public void run() {
         int i =0;
-        while (running) {
+        while (running && statusgame) {
             try {
                 Thread.sleep(1000); // Update setiap milisecond
 

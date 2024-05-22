@@ -1,15 +1,18 @@
 package classes.map.threadmap;
 import classes.map.Map;
+import main.Game;
 
 public class GameStatusThread implements Runnable{
     private Map map;
     private volatile boolean running;
     long startTime;
+    Game game;
 
-    public GameStatusThread(Map map) {
+    public GameStatusThread(Map map,Game game) {
         this.map = map;
         this.running = true;
         this.startTime = System.currentTimeMillis();
+        this.game = game;
     }
 
     @Override
@@ -48,5 +51,6 @@ public class GameStatusThread implements Runnable{
 
     public void stop() {
         running = false;
+        game.setStatusGame(true);
     }
 }

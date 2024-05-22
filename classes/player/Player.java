@@ -4,6 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.List;
 import plant.*;
+import zombie.ZombieAction;
 import classes.objects.*;
 import classes.map.*;
 
@@ -36,6 +37,9 @@ public class Player {
                 if (!tanaman.isOnCooldown() && canAfford(tanaman.getCostTanaman())) {
                     map.placeTanaman(row, col, tanaman);
                     sun.reduceSun(tanaman.getCostTanaman());
+                    PlantAction plantAction = new PlantAction(tanaman,map.getTile(row, col),map,sun);
+                    Thread plantThread = new Thread(plantAction);
+                    plantThread.start();
                     tanaman.startCooldown(scheduler);
                     System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
                 } else if (!canAfford(tanaman.getCostTanaman())) {

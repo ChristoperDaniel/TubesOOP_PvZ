@@ -6,16 +6,18 @@ public class SpawnZombieThread implements Runnable {
     private Map map;
     private volatile boolean running;
     private long startTime;
+    private volatile boolean statusgame;
 
-    public SpawnZombieThread(Map map) {
+    public SpawnZombieThread(Map map, boolean statusgame) {
         this.map = map;
         this.running = true;
         this.startTime = System.currentTimeMillis();
+        this.statusgame = statusgame;
     }
 
     @Override
     public void run() {
-        while (running) {
+        while (running && statusgame) {
             try {
                 Thread.sleep(1000); // Update setiap detik
 
@@ -29,6 +31,7 @@ public class SpawnZombieThread implements Runnable {
                 // Berhenti jika waktu mencapai 200 detik
                 if (elapsedTime >= 200) {
                     running = false;
+                    statusgame = false;
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

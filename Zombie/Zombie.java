@@ -163,17 +163,12 @@ public abstract class Zombie extends Aquatic {
         int x = getRowZombie();
         int spd = getSpeedZombie();
         // Menggunakan AtomicInteger untuk memodifikasi nilai di dalam lambda
-        AtomicInteger posY = new AtomicInteger(getColZombie());
-
-        executorService.scheduleAtFixedRate(() -> {
-            int y = posY.get();
-            if (y > 0 && !map.isTanamanAvail(x, y - 1)) {
-                map.getTile(x, y).removeZombie(this);
-                y--;
-                setColZombie(y);
-                map.getTile(x, y).addZombie(this);
-                posY.set(y);
-            }
-        }, 0, spd, TimeUnit.MILLISECONDS);
+        int y = getColZombie();
+        if (y > 0 && !map.isTanamanAvail(x, y - 1)) {
+            map.removeZombie(x,y,this);
+            y--;
+            setColZombie(y);
+            map.getTile(x, y).addZombie(this);
+        }
     }
 }

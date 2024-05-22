@@ -39,7 +39,7 @@ public class PlantAction implements Runnable {
                     Sunflower sunflower = (Sunflower) plant; 
                     executorService.scheduleAtFixedRate(() ->{
                         sun.addCustomSun(sunflower.generateSun());
-                    } , 0, 3, TimeUnit.SECONDS);
+                    } , 0, 3000, TimeUnit.MILLISECONDS);
                 }
                 else{
                     plant.attackPlant(tile, map);

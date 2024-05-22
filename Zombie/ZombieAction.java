@@ -48,6 +48,11 @@ public class ZombieAction implements Runnable {
 
                 else {
                     // Jika tidak ada tanaman, bergerak
+                    try {
+                        Thread.sleep(zombie.getSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                     zombie.moveZombie(map);
                 }
             }

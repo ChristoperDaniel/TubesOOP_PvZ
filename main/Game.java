@@ -212,9 +212,11 @@ public class Game {
                     plantDeck.swapPlants(pos1-1,pos2-1);
                     break;
                 case 7:
-                    isChoosing = false;
-                    if (plantDeck.getSize() != plantDeck.getMaxDeckSize()){
+                    if (plantDeck.getSize() < plantDeck.getMaxDeckSize()){
                         System.out.println("Isi deck belum full. Silahkan melengkapi deck terlebih dahulu sebelum memasuki game");
+                    }
+                    else{
+                        isChoosing = false;
                     }
                     break;
                 default :
@@ -310,6 +312,7 @@ public class Game {
                         continue;
                     }
                     player.menggali(map,row,column);
+                    scanner.nextLine();
                     break;
                 case 3:
                     // Display Deck
@@ -454,15 +457,14 @@ public class Game {
         Sun sun = new Sun();
         Player player = new Player(sun);
         Game game = new Game(map,player,sun);
-        System.out.println("Selamat datang di Michael vs Lalapan");
         game.MulaiGame();
-        SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map);
-        UpdateSunThread updateSunThread = new UpdateSunThread(sun);
-        GameStatusThread gameStatusThread = new GameStatusThread(map);
+        SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map,game.getStatusGame());
+        UpdateSunThread updateSunThread = new UpdateSunThread(sun,game.getStatusGame());
+        GameStatusThread gameStatusThread = new GameStatusThread(map, game);
         //PerangThread perangThread = new PerangThread(map, game);
 
 
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
         
         executor.execute(spawnZombieThread);
         executor.execute(updateSunThread);

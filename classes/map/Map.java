@@ -9,6 +9,9 @@ import classes.map.threadmap.GameStatusThread;
 import classes.map.threadmap.SpawnZombieThread;
 import plant.*;
 import zombie.*;
+import main.*;
+import classes.objects.*;
+import classes.player.*;
 
 public class Map {
     public static int total_rows = 6;
@@ -295,54 +298,10 @@ public class Map {
                         System.out.println("Jenis zombie tidak dikenali.");
                         return;
                 }
+                ZombieAction zombieAction = new ZombieAction(zombieType.getIsAbilityUsed(),zombieType,current_Tile,this);
+                Thread zombieThread = new Thread(zombieAction);
+                zombieThread.start();
             }
-<<<<<<< HEAD
-            
-            zombieType.setRowZombie(randomRow);
-            zombieType.setColZombie(randomCol);
-
-
-            //set symbol
-            switch (zombieType.getNamaZombie()){
-                case "NormalZombie":
-                    current_Tile.setDisplayName("NMz");
-                    break;
-                case "ConeheadZombie":
-                    current_Tile.setDisplayName("CHz");
-                    break;
-                case "BucketheadZombie":
-                    current_Tile.setDisplayName("BHz");
-                    break;
-                case "PoleVaultingZombie":
-                    current_Tile.setDisplayName("PVz");
-                    break;
-                case "DuckyTubeZombie":
-                    current_Tile.setDisplayName("DTz");
-                    break;
-                case "DolphinRiderZombie":
-                    current_Tile.setDisplayName("DRz");
-                    break;
-                case "PeashooterZombie":
-                    current_Tile.setDisplayName("PSz");
-                    break;
-                case "ScreendoorZombie":
-                    current_Tile.setDisplayName("SDz");
-                    break;
-                case "JackInTheBoxZombie":
-                    current_Tile.setDisplayName("JBz");
-                    break;
-                case "RugbyZombie":
-                    current_Tile.setDisplayName("RGz");
-                    break;
-                default:
-                    System.out.println("Jenis zombie tidak dikenali.");
-                    return;
-            }
-            ZombieAction zombieAction = new ZombieAction(zombieType.getIsAbilityUsed(),zombieType,current_Tile,this);
-            Thread zombieThread = new Thread(zombieAction);
-            zombieThread.start();
-=======
->>>>>>> bffeb760532705299b8fee429b0b92f1ce2ed4e2
         }
         
     }
@@ -399,13 +358,14 @@ public class Map {
 
     public static void main(String[] args) {
         Map maps = new Map();
-        SpawnZombieThread zombieSpawner = new SpawnZombieThread(maps);
-        GameStatusThread gameStatus = new GameStatusThread(maps);
+        Sun sun = new Sun();
+        Game game = new Game(maps,new Player(sun),sun);
+        SpawnZombieThread zombieSpawner = new SpawnZombieThread(maps,game.getStatusGame());
+        GameStatusThread gameStatus = new GameStatusThread(maps, game);
         Thread thread1 = new Thread(zombieSpawner);
         Thread thread2 = new Thread(gameStatus);
         thread1.start();
         thread2.start();
-        
         
 
         /*System.out.println("Map:");
