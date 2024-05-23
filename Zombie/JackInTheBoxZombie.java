@@ -25,6 +25,7 @@ public class JackInTheBoxZombie extends Zombie implements ZombieWithAbility {
                         xy.removeTanaman(t);
                         setIsAbilityUsed(true);
                         setHealthZombie(0);
+                        setColZombie(-1);
                     }
                 }
             }
