@@ -91,7 +91,7 @@ public class ZombieAction implements Runnable {
         }
         // Periksa apakah health zombie kurang dari atau sama dengan 0
         if (zombie.getHealthZombie() <= 0) {
-                map.removeZombie(tile.getY(),tile.getX(),zombie);
+            map.removeZombie(zombie.getRowZombie(),zombie.getColZombie(),zombie);
         }
     }
 }

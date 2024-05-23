@@ -191,14 +191,12 @@ public class Tanaman extends Aquatic {
                         if (!tiles.getZombies().isEmpty()) {
                             // Membunuh semua zombie di baris ini
                                 List<Zombie> list = tiles.getZombies();
-                                Iterator<Zombie> iterator = list.iterator();
-                                while (iterator.hasNext()) {
-                                    Zombie zombie = iterator.next();
+                                for (Zombie zombie : list) {
+                                    zombie.setColZombie(-1);
                                     zombie.setHealthZombie(0);
-                                    iterator.remove();
+
                                 }
                                 tiles.setDisplayName("___");
-                                System.out.println("coba");
                             }
                     }
                     setHealthTanaman(0);
