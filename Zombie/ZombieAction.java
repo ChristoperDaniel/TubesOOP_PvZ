@@ -34,31 +34,51 @@ public class ZombieAction implements Runnable {
                 zability.add(new JackInTheBoxZombie(tile));
 
                 List<Tanaman> tanaman = tile.getTanaman();
-                if ((!tanaman.isEmpty()) && zombie.getIsAbilityUsed() == true) {
+                if ((!tanaman.isEmpty()) && zombie.getIsAbilityUsed()) {
                     // Jika ada tanaman, serang tanaman
                     for (ZombieWithAbility zombie : zability) {
                         zombie.useAbility(is_Ability_Used, tile, map, tanaman.get(tanaman.size()-1));
                     }
                 }
 
-                else if ((!tanaman.isEmpty()) && zombie.getIsAbilityUsed() == false) {
+                else if ((!tanaman.isEmpty()) && (!zombie.getIsAbilityUsed()) && (!zombie.getIsGetSlowedZombie())) {
                     // Jika ada tanaman, serang tanaman
-                    zombie.attackZombie(tile, map, tanaman.get(tanaman.size()-1));
                     try {
-                        Thread.sleep(zombie.getSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
+                        Thread.sleep(zombie.getAttackSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
+                        zombie.attackZombie(tile, map, tanaman.get(tanaman.size()-1));
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                 } 
 
-                else {
+                else if (tanaman.isEmpty() && (!zombie.getIsAbilityUsed()) && (!zombie.getIsGetSlowedZombie())){
                     // Jika tidak ada tanaman, bergerak
                     try {
                         Thread.sleep(zombie.getSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
+                        zombie.moveZombie(map);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
-                    zombie.moveZombie(map);
+                }
+
+                else if ((!tanaman.isEmpty()) && (!zombie.getIsAbilityUsed()) && zombie.getIsGetSlowedZombie()){
+                    // Jika tidak ada tanaman, bergerak
+                    try {
+                        Thread.sleep(zombie.getAttackSpeedZombie() + 500); // Misalnya menunggu 1 detik antara setiap aksi
+                        zombie.attackZombie(tile, map, tanaman.get(tanaman.size()-1));
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
+                else if (tanaman.isEmpty() && (!zombie.getIsAbilityUsed()) && zombie.getIsGetSlowedZombie()){
+                    // Jika tidak ada tanaman, bergerak
+                    try {
+                        Thread.sleep(zombie.getSpeedZombie() + 5000); // Misalnya menunggu 1 detik antara setiap aksi
+                        zombie.moveZombie(map);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
 
