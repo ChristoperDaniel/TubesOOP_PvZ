@@ -244,7 +244,6 @@ public class Game {
 
     public void handleUserInput(Map map, Player player, Sun sun) {
         Scanner scanner = new Scanner(System.in);
-        boolean salah = false;
         int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
         int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
         while (!gameOver) { // Loop sampai permainan selesai
@@ -270,20 +269,20 @@ public class Game {
                         row = scanner.nextInt();
                         if (row < 0 || row >= Map.total_rows) {
                             System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
-                            salah = true;
+                            scanner.nextLine();
+                            break;
                         }
                         System.out.print("Masukkan kolom untuk menanam tanaman (1-" + (Map.total_columns - 1) + "): ");
                         column = scanner.nextInt();
                         if (column < 0 || column >= Map.total_columns) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
-                            salah = true;
+                            scanner.nextLine();
+                            break;
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Input harus berupa angka.");
-                        salah = true;
-                    }
-                    if (salah) {
-                        continue;
+                        scanner.nextLine();
+                        break;
                     }
                     player.menanam(plantDeck, row, column, map);
                     scanner.nextLine();
@@ -296,20 +295,20 @@ public class Game {
                         row = scanner.nextInt();
                         if (row < 0 || row >= Map.total_rows) {
                             System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
-                            salah = true;
+                            scanner.nextLine();
+                            break;
                         }
                         System.out.print("Masukkan kolom untuk menggali tanaman (0-" + (Map.total_columns - 1) + "): ");
                         column = scanner.nextInt();
                         if (column < 0 || column >= Map.total_columns) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
-                            salah = true;
+                            scanner.nextLine();
+                            break;
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Input harus berupa angka.");
-                        salah = true;
-                    }
-                    if (salah) {
-                        continue;
+                        scanner.nextLine();
+                        break;
                     }
                     player.menggali(map,row,column);
                     scanner.nextLine();
@@ -320,7 +319,6 @@ public class Game {
                     break;
                 case 4:
                     // Display Map
-                    map.displayMap();
                     System.out.println("");
                     break;
                 case 5:
@@ -454,32 +452,34 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        Map map = new Map();
-        Sun sun = new Sun();
-        Player player = new Player(sun);
-        Game game = new Game(map,player,sun);
-        game.MulaiGame();
-        SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map,game.getStatusGame());
-        UpdateSunThread updateSunThread = new UpdateSunThread(sun,game.getStatusGame());
-        GameStatusThread gameStatusThread = new GameStatusThread(map, game);
-        //PerangThread perangThread = new PerangThread(map, game);
+        while (true){
+            Map map = new Map();
+            Sun sun = new Sun();
+            Player player = new Player(sun);
+            Game game = new Game(map,player,sun);
+            game.MulaiGame();
+            SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map,game.getStatusGame());
+            UpdateSunThread updateSunThread = new UpdateSunThread(sun,game.getStatusGame());
+            GameStatusThread gameStatusThread = new GameStatusThread(map, game);
+            //PerangThread perangThread = new PerangThread(map, game);
 
 
-        ExecutorService executor = Executors.newFixedThreadPool(3);
-        
-        executor.execute(spawnZombieThread);
-        executor.execute(updateSunThread);
-        executor.execute(gameStatusThread);
+            ExecutorService executor = Executors.newFixedThreadPool(3);
+            
+            executor.execute(spawnZombieThread);
+            executor.execute(updateSunThread);
+            executor.execute(gameStatusThread);
 
-        // Cara untuk menghentikan thread secara aman
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            spawnZombieThread.stop();
-            updateSunThread.stop();
-            gameStatusThread.stop();
-            executor.shutdown();
-        }));
-        while (game.getStatusGame()){
-            game.start(map,player,sun,game);
+            // Cara untuk menghentikan thread secara aman
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                spawnZombieThread.stop();
+                updateSunThread.stop();
+                gameStatusThread.stop();
+                executor.shutdown();
+            }));
+            while (game.getStatusGame()){
+                game.start(map,player,sun,game);
+            }
         }
     }
 

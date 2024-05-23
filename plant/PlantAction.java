@@ -35,12 +35,12 @@ public class PlantAction implements Runnable {
     public void run() {
         while (plant.getHealthTanaman() > 0) {
             // Sinkronisasi untuk menghindari akses bersamaan ke tile
-            synchronized (tile) {
+            //synchronized (tile) {
                 if (plant.getNamaTanaman() == "Sunflower"){
                     Sunflower sunflower = (Sunflower) plant; 
-                    sun.addCustomSun(sunflower.generateSun());
                     try {
                         Thread.sleep(3000); // Misalnya menunggu 1 detik antara setiap aksi
+                        sun.addCustomSun(sunflower.generateSun());
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -49,24 +49,26 @@ public class PlantAction implements Runnable {
                         System.out.println("hehe");
                     } , 0, 3000, TimeUnit.MILLISECONDS); */
                 }
-                else{
+                else if (plant.getNamaTanaman() == "Jalapeno"){
                     plant.attackPlant(tile, map);
-                    System.out.println("hehe");
+                }
+                else{
                     try {
+                        plant.attackPlant(tile, map);
                         Thread.sleep(plant.getAttackSpeedTanaman()); // Misalnya menunggu 1 detik antara setiap aksi
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                 }
-            }
+            //}
         }
 
         // Periksa apakah health tanaman kurang dari atau sama dengan 0
         if (plant.getHealthTanaman() <= 0) {
             // Jika iya, hapus tanaman dari list tanaman pada tile
-            synchronized (tile) {
+            //synchronized (tile) {
                 tile.removeTanaman(plant);
-            }
+            //}
         }
     }
 }

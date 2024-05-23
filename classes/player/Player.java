@@ -10,7 +10,7 @@ import classes.map.*;
 
 public class Player {
     private ScheduledExecutorService scheduler;
-    Sun sun;
+    private volatile Sun sun;
     // Constructor
     public Player(Sun sun) {
         this.scheduler = Executors.newScheduledThreadPool(1);
@@ -31,12 +31,12 @@ public class Player {
             System.out.println("Sun Anda saat ini: " + sun.gettotalSun());
             System.out.println("Pilih tanaman untuk ditanam (atau ketik 'exit' untuk keluar):");
             String pilihan = scanner.nextLine();
-    
+            
             Tanaman tanaman = deck.getTanamanByName(pilihan);
             if (tanaman != null) {
                 if (!tanaman.isOnCooldown() && canAfford(tanaman.getCostTanaman())) {
                     sun.reduceSun(tanaman.getCostTanaman());
-                    map.placeTanaman(row, col, tanaman, sun, scheduler);
+                    map.placeTanaman(row, col, tanaman, sun);
                 } else if (!canAfford(tanaman.getCostTanaman())) {
                     System.out.println("Tidak cukup sun untuk menanam " + tanaman.getNamaTanaman());
                 } else {

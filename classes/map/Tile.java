@@ -52,6 +52,7 @@ public class Tile {
     }
 
     public void removeTanaman(Tanaman plants) {
+        displayName = "___";
         this.plants.remove(plants);
     }
 

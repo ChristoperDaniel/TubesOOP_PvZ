@@ -4,8 +4,6 @@ import classes.map.Tile;
 import zombie.Zombie;
 import classes.objects.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -87,9 +85,16 @@ public class Tanaman extends Aquatic {
             healthTanaman += (new Lilypad()).getHealthTanaman();
         }
     }
-    public void startCooldown(ScheduledExecutorService scheduler) {
-        isOnCooldown = true;
-        scheduler.schedule(() -> isOnCooldown = false, cooldownTanaman, TimeUnit.MILLISECONDS);
+    public void startCooldown() {
+        new Thread(() -> {
+            isOnCooldown = true;
+            try {
+                Thread.sleep(cooldownTanaman);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            isOnCooldown = false;
+        }).start();
     }
 
     public void removeItem(Zombie zombie){
@@ -118,17 +123,32 @@ public class Tanaman extends Aquatic {
                         }
                     }
             }
-            else if (getNamaTanaman() != "Snowpea"){
-                    for (Tile tiles : baris) {
-                        if ((!tiles.getZombies().isEmpty())&&(tiles.getX() >= x)) {
-                            for (int i = 0; i < tiles.getZombies().size();i++){  
-                                tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                                if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
-                                    tiles.getZombies().remove(i);
-                                }
-                            }
+            else if (getNamaTanaman() != "Snowpea") {
+                Tile closestTile = null;
+            
+                // Cari tile terdekat yang berisi zombie
+                for (Tile tiles : baris) {
+                    if (!tiles.getZombies().isEmpty() && tiles.getX() >= x) {
+                        closestTile = tiles;
+                        break;  // Berhenti setelah menemukan tile terdekat
+                    }
+                }
+            
+                // Jika tile terdekat ditemukan, serang semua zombie di tile tersebut
+                if (closestTile != null) {
+                    List<Zombie> zombies = closestTile.getZombies();
+                    for (int i = 0; i < zombies.size(); i++) {
+                        Zombie zombie = zombies.get(i);
+                        zombie.setHealthZombie(zombie.getHealthZombie() - getAttackDamageTanaman());
+                        System.out.println("Health zombie: " + zombie.getHealthZombie()+", "+zombie.getNamaZombie());
+                        map.displayMap();
+                        if (zombie.getHealthZombie() <= 0) {
+                            map.removeZombie(closestTile.getY(),x,zombie);
+                            zombies.remove(i);
+                            i--;  // Sesuaikan indeks setelah penghapusan
                         }
                     }
+                }
             }
         }
         else if (getRangeTanaman() == 1) {  
@@ -165,20 +185,23 @@ public class Tanaman extends Aquatic {
                 }
             }
         }
-        else if (getRangeTanaman() == 2) {  
+        else if (getRangeTanaman() == 2) {
             while (getHealthTanaman() > 0) {
-                synchronized (tile) {
-                    for (Tile tiles : baris ) {
+                    for (Tile tiles : baris) {
                         if (!tiles.getZombies().isEmpty()) {
-                        // Membunuh semua zombie di baris ini
-                            List<Zombie> list = tiles.getZombies();
-                            for (Zombie zombie : list) {
-                                tiles.removeZombie(zombie);
+                            // Membunuh semua zombie di baris ini
+                                List<Zombie> list = tiles.getZombies();
+                                Iterator<Zombie> iterator = list.iterator();
+                                while (iterator.hasNext()) {
+                                    Zombie zombie = iterator.next();
+                                    zombie.setHealthZombie(0);
+                                    iterator.remove();
+                                }
+                                tiles.setDisplayName("___");
+                                System.out.println("coba");
                             }
-                        }
                     }
                     setHealthTanaman(0);
-                }
             }
         }
     }

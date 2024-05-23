@@ -112,7 +112,7 @@ public class Map {
     }
 
     // Menempatkan tanaman pada tile tertentu
-    public void placeTanaman(int row, int col, Tanaman tanaman, Sun sun, ScheduledExecutorService scheduler) {
+    public void placeTanaman(int row, int col, Tanaman tanaman, Sun sun) {
         Tile current_Tile = getTile(row, col);
         boolean benar = true;
         if (current_Tile != null) {
@@ -166,33 +166,43 @@ public class Map {
                 switch (tanaman.getNamaTanaman()){
                     case "Sunflower":
                         current_Tile.setDisplayName("SFt");
+                        tanaman.setHealthTanaman(new Sunflower().getHealthTanaman());
                         break;
                     case "Jalapeno":
                         current_Tile.setDisplayName("JPt");
+                        tanaman.setHealthTanaman(new Jalapeno().getHealthTanaman());
                         break;
                     case "Lilypad":
                         current_Tile.setDisplayName("LPt");
+                        tanaman.setHealthTanaman(new Lilypad().getHealthTanaman());
                         break;
                     case "Magnetshroom":
                         current_Tile.setDisplayName("MSt");
+                        tanaman.setHealthTanaman(new Magnetshroom().getHealthTanaman());
                         break;
                     case "Peashooter":
                         current_Tile.setDisplayName("PSt");
+                        tanaman.setHealthTanaman(new Peashooter().getHealthTanaman());
                         break;
                     case "Seashroom":
                         current_Tile.setDisplayName("SSt");
+                        tanaman.setHealthTanaman(new Seashroom().getHealthTanaman());
                         break;
                     case "SnowPea":
                         current_Tile.setDisplayName("SPt");
+                        tanaman.setHealthTanaman(new SnowPea().getHealthTanaman());
                         break;
                     case "Squash":
                         current_Tile.setDisplayName("SQt");
+                        tanaman.setHealthTanaman(new Squash().getHealthTanaman());
                         break;
                     case "TangleKelp":
                         current_Tile.setDisplayName("TKt");
+                        tanaman.setHealthTanaman(new TangleKelp().getHealthTanaman());
                         break;
                     case "Wallnut":
                         current_Tile.setDisplayName("WNt");
+                        tanaman.setHealthTanaman(new Wallnut().getHealthTanaman());
                         break;
                     default:
                         System.out.println("Jenis tanaman tidak dikenali.");
@@ -201,7 +211,8 @@ public class Map {
                 PlantAction plantAction = new PlantAction(tanaman,this.getTile(row, col),this,sun);
                 Thread plantThread = new Thread(plantAction);
                 plantThread.start();
-                tanaman.startCooldown(scheduler);
+                System.out.println(tanaman.getHealthTanaman());
+                tanaman.startCooldown();
                 System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
             }
         }
