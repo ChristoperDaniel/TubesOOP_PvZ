@@ -19,8 +19,6 @@ public class PlantAction implements Runnable {
     @Override
     public void run() {
         while (plant.getHealthTanaman() > 0) {
-            // Sinkronisasi untuk menghindari akses bersamaan ke tile
-            //synchronized (tile) {
                 if (plant.getNamaTanaman() == "Sunflower"){
                     Sunflower sunflower = (Sunflower) plant; 
                     try {
@@ -51,14 +49,13 @@ public class PlantAction implements Runnable {
                         Thread.currentThread().interrupt();
                     }
                 }
-            //}
+            
         }
 
         // Periksa apakah health tanaman kurang dari atau sama dengan 0
         if (plant.getHealthTanaman() <= 0) {
             // Jika iya, hapus tanaman dari list tanaman pada tile
-                System.out.println("Cobaaa");
-                map.removeTanaman(plant.getRowPlant(), plant.getColPlant(), plant);
+            map.removeTanaman(plant.getRowPlant(), plant.getColPlant(), plant);
 
         }
     }
