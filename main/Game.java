@@ -110,7 +110,7 @@ public class Game {
                     break;
                 case 4:
                     System.out.println("-----------------");
-                    System.out.println("Isi deck tanaman:");
+                    System.out.println("Isi List Zombie :");
                     for (int i = 0; i < listofAllZombies.size(); i++) {
                         System.out.println((i + 1) + ". " + listofAllZombies.get(i).getNamaZombie());
                     }
@@ -126,7 +126,7 @@ public class Game {
             }
         }
         try{
-            
+
             startGame();
         } catch (DeckPenuhException e) {
             System.out.println(e.getMessage());
