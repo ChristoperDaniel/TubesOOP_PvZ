@@ -373,8 +373,15 @@ public class Map {
         final String RED = "\u001B[31m";
         final String BLUE = "\u001B[34m";
         final String GREEN = "\u001B[32m";
+
+        System.out.print("  ");
+        for(int x = 0; x < 11; x++){
+            System.out.print("  " + x + "   ");
+        }
+        System.out.println();
     
         for (int row = 0; row < total_rows; row++) {
+            System.out.print(row + "  ");
             for (int col = 0; col < total_columns; col++) {
                 Tile tile = tiles[row][col];
                 String color = RESET;
@@ -398,28 +405,7 @@ public class Map {
     }
     
     /*public static void main(String[] args) {
-        Scanner scanner = ScannerJava.getScanner();
-        Map maps = new Map();
-        Sun sun = new Sun();
-        Game game = new Game(maps,new Player(sun),sun, scanner);
-        SpawnZombieThread zombieSpawner = new SpawnZombieThread(maps,game.getStatusGame());
-        GameStatusThread gameStatus = new GameStatusThread(maps, game);
-        Thread thread1 = new Thread(zombieSpawner);
-        Thread thread2 = new Thread(gameStatus);
-        thread1.start();
-        thread2.start();
-        
-
-        /*System.out.println("Map:");
-        Map maps = new Map();
-        System.out.println("Menanam lilypad ");
-        maps.placeTanaman(2, 5, new Lilypad());
-        maps.displayMap();
-        System.out.println("Menanam peashooter");
-        maps.placeTanaman(2, 5, new Peashooter());
-        maps.displayMap();
-        System.out.println("Panggil zombie");
-        maps.placeZombie(listofZombies);
-        maps.displayMap();*/
-    //}
+       Map maps = new Map();
+       maps.displayMap();
+    }*/
 }
