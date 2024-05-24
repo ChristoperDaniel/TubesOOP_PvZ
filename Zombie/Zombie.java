@@ -2,7 +2,6 @@ package zombie;
 
 import classes.map.*;
 import plant.*;
-import java.util.List;
 
 public class Zombie extends Aquatic {
     private String namaZombieString;
@@ -107,59 +106,13 @@ public class Zombie extends Aquatic {
         this.is_ability_used = is_ability_used;
     }
 
-    public synchronized void attackZombie(Tile tile, Map map) {
-
-        int x = getRowZombie();
-        int y = getColZombie();
-        Tile tile1 = map.getTile(x, y);
-            // Cari tile terdekat yang berisi zombie
-        if (!tile1.getTanaman().isEmpty() && tile1.getX() == y) {
-            List<Tanaman> tanamans = tile1.getTanaman();
-            for (Tanaman t : tanamans) {
-                if (!(tanamans == null)) {
-                    t.setHealthTanaman(t.getHealthTanaman() - getAttackDamageZombie());
-                System.out.println("HP Tanaman" + t.getHealthTanaman());
-                if (t.getHealthTanaman() <= 0) {
-                    t.setColPlant(12);
-                    tanamans.remove(t);
-                }
-                }
-                else {
-                    break;
-                }
-            }
+    public void attackZombie(Tile tile, Map map, Tanaman tanaman) {
+        tanaman.setHealthTanaman(tanaman.getHealthTanaman() - getAttackDamageZombie());
+        System.out.println("HP Tanaman" + tanaman.getHealthTanaman());
+        if (tanaman.getHealthTanaman() <= 0) {
+            tile.removeTanaman(tanaman);
+            tanaman.setColPlant(12);
         }
-        
-        /*int x = getRowZombie();
-        int y = getColZombie();
-        Tile xy = map.getTile(x, y);
-        int dmg = getAttackDamageZombie();
-        List<Tanaman> planted = xy.getTanaman();
-        if (getRangeZombie() == 1) {
-            for (Tanaman t : xy.getTanaman()) {
-                t.setHealthTanaman(t.getHealthTanaman() - dmg);
-                System.out.println("HP Tanaman" + t.getHealthTanaman());
-                if (t.getHealthTanaman() <= 0) {
-                    t.setColPlant(12);
-                    xy.removeTanaman(t);
-                }
-            }
-        }
-
-        else {
-            for (int i = y; i > 0; i--) {
-                Tile xy1 = map.getTile(x, i);
-                List<Tanaman> planted1 = xy1.getTanaman();
-                if (planted1 != null) {
-                    for (Tanaman t : planted1) {
-                        t.setHealthTanaman(t.getHealthTanaman() - dmg);
-                        if (t.getHealthTanaman() <= 0) {
-                            xy1.removeTanaman(t);
-                        }
-                    }
-                }
-            }
-        }*/
     }
 
     public synchronized void moveZombie (Map map) {

@@ -37,7 +37,17 @@ public class PlantAction implements Runnable {
                 else if (plant.getNamaTanaman() == "Jalapeno"){
                     plant.attackPlant(tile, map);
                 }
-                else{
+
+                else if (plant.getNamaTanaman() == "Magnetshroom") {
+                    try {
+                        plant.removeItem(tile, map);
+                        Thread.sleep(20000); // Misalnya menunggu 1 detik antara setiap aksi
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+                
+                else {
                     try {
                         plant.attackPlant(tile, map);
                         Thread.sleep(plant.getAttackSpeedTanaman()); // Misalnya menunggu 1 detik antara setiap aksi
