@@ -207,7 +207,6 @@ public class Map {
                 Thread plantThread = new Thread(plantAction);
                 plantThread.setDaemon(true);
                 plantThread.start();
-                System.out.println(tanaman.getHealthTanaman());
                 tanaman.startCooldown();
                 System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
             }
