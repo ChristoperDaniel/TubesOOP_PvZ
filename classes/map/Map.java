@@ -4,15 +4,15 @@ package classes.map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.*;
+//import java.util.*;
 
-import classes.map.threadmap.GameStatusThread;
-import classes.map.threadmap.SpawnZombieThread;
+//import classes.map.threadmap.GameStatusThread;
+//import classes.map.threadmap.SpawnZombieThread;
 import plant.*;
 import zombie.*;
-import main.*;
+//import main.*;
 import classes.objects.*;
-import classes.player.*;
+//import classes.player.*;
 
 public class Map {
     public static int total_rows = 6;
@@ -187,7 +187,7 @@ public class Map {
                         current_Tile.setDisplayName("SSt");
                         tanaman.setHealthTanaman(new Seashroom().getHealthTanaman());
                         break;
-                    case "SnowPea":
+                    case "Snow Pea":
                         current_Tile.setDisplayName("SPt");
                         tanaman.setHealthTanaman(new SnowPea().getHealthTanaman());
                         break;
@@ -368,8 +368,7 @@ public class Map {
         }
     }
     
-
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Scanner scanner = ScannerJava.getScanner();
         Map maps = new Map();
         Sun sun = new Sun();
@@ -393,5 +392,5 @@ public class Map {
         System.out.println("Panggil zombie");
         maps.placeZombie(listofZombies);
         maps.displayMap();*/
-    }
+    //}
 }

@@ -225,14 +225,14 @@ public class Game {
                     try {
                         System.out.print("Masukkan baris untuk menanam tanaman (0-" + (Map.total_rows - 1) + "): ");
                         row = scanner.nextInt();
-                        if (row < 0 || row >= Map.total_rows) {
+                        if (row < 0 || row > (Map.total_rows-1)) {
                             System.out.println("Baris di luar batas. Silakan masukkan nilai yang valid.");
                             scanner.nextLine();
                             break;
                         }
-                        System.out.print("Masukkan kolom untuk menanam tanaman (1-" + (Map.total_columns - 1) + "): ");
+                        System.out.print("Masukkan kolom untuk menanam tanaman (1-" + (Map.total_columns - 2) + "): ");
                         column = scanner.nextInt();
-                        if (column < 0 || column >= Map.total_columns) {
+                        if (column < 1 || column > (Map.total_columns-2)) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
                             scanner.nextLine();
                             break;
@@ -258,7 +258,7 @@ public class Game {
                         }
                         System.out.print("Masukkan kolom untuk menggali tanaman (0-" + (Map.total_columns - 1) + "): ");
                         column = scanner.nextInt();
-                        if (column < 0 || column >= Map.total_columns) {
+                        if (column < 1 || column >= Map.total_columns) {
                             System.out.println("Kolom di luar batas. Silakan masukkan nilai yang valid.");
                             scanner.nextLine();
                             break;

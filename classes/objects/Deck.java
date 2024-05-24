@@ -1,5 +1,6 @@
 package classes.objects;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import plant.*;
@@ -21,7 +22,14 @@ public class Deck {
     public Tanaman getTanamanByName(String nama) {
         for (Tanaman tanaman : listPlants) {
             if (tanaman.getNamaTanaman().equalsIgnoreCase(nama)) {
-                return tanaman;
+                try {
+                    Tanaman newtanaman = tanaman.getClass().getDeclaredConstructor().newInstance();
+                    return newtanaman;
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                    // Anda bisa mengembalikan null atau melempar pengecualian baru di sini
+                    return null;
+                }
             }
         }
         return null; // jika tanaman tidak ditemukan

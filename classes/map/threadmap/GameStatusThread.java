@@ -28,17 +28,20 @@ public class GameStatusThread implements Runnable{
                 // Kondisi kemenangan
                 if (elapsedTime > 160 && map.getTotalZombies() == 0) {
                     System.out.println("Anda menang!");
+                    game.setStatusGame(false);
                     stop();
                 }
 
                 // Kondisi kekalahan
                 if (map.isZombieReachedFirstColumn()) {
                     System.out.println("Anda kalah!");
+                    game.setStatusGame(false);
                     stop();
                 }
 
                 if(elapsedTime == 200 && map.getTotalZombies() != 0){
                     System.out.println("Anda kalah!");
+                    game.setStatusGame(false);
                     stop();
                 }
                 

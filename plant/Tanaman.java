@@ -98,99 +98,138 @@ public class Tanaman extends Aquatic {
         int x = getColPlant();
         // List<Zombie> kosong = new ArrayList<>();
         List<Tile> baris = map.getRow(tile.getY());
-        if (getRangeTanaman() == -1) {
-            if (getNamaTanaman() == "Snowpea"){
-                    for (Tile tiles : baris) {
-                        if ((!tiles.getZombies().isEmpty())&&(tiles.getX() >= x)) {
-                            for (int i = 0; i < tiles.getZombies().size();i++){                                      
-                                tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                                tiles.getZombies().get(i).SetIsGetSlowedZombie(true);
-                                if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
-                                    tiles.getZombies().remove(i);
+        if (getHealthTanaman() > 0) {
+            if (getRangeTanaman() == -1) {
+                if (getNamaTanaman() == "Snowpea"){
+                        for (Tile tiles : baris) {
+                            if ((!tiles.getZombies().isEmpty())&&(tiles.getX() >= x)) {
+                                for (int i = 0; i < tiles.getZombies().size();i++){                                      
+                                    tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
+                                    tiles.getZombies().get(i).SetIsGetSlowedZombie(true);
+                                    if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
+                                        //tiles.getZombies().get(i).setColZombie(-1);
+                                        tiles.getZombies().remove(i);
+                                        tiles.setDisplayName("___");
+                                    }
                                 }
                             }
                         }
-                    }
-            }
-            else if (getNamaTanaman() != "Snowpea") {
-                Tile closestTile = null;
-            
-                // Cari tile terdekat yang berisi zombie
-                for (Tile tiles : baris) {
-                    if (!tiles.getZombies().isEmpty() && tiles.getX() >= x) {
-                        closestTile = tiles;
-                        break;  // Berhenti setelah menemukan tile terdekat
-                    }
                 }
-            
-                // Jika tile terdekat ditemukan, serang semua zombie di tile tersebut
-                if (closestTile != null) {
-                    List<Zombie> zombies = closestTile.getZombies();
-                    for (int i = 0; i < zombies.size(); i++) {
-                        Zombie zombie = zombies.get(i);
-                        zombie.setHealthZombie(zombie.getHealthZombie() - getAttackDamageTanaman());
-                        System.out.println("Health zombie: " + zombie.getHealthZombie()+", "+zombie.getNamaZombie());
-                        map.displayMap();
-                        if (zombie.getHealthZombie() <= 0) {
-                            map.removeZombie(closestTile.getY(),x,zombie);
-                            zombies.remove(i);
-                            i--;  // Sesuaikan indeks setelah penghapusan
+                else if (getNamaTanaman() != "Snowpea") {
+                    Tile closestTile = null;
+                
+                    // Cari tile terdekat yang berisi zombie
+                    for (Tile tiles : baris) {
+                        if (!tiles.getZombies().isEmpty() && tiles.getX() >= x) {
+                            closestTile = tiles;
+                            break;  // Berhenti setelah menemukan tile terdekat
                         }
                     }
-                }
-            }
-        }
-        else if (getRangeTanaman() == 1) {  
-            while (getHealthTanaman() > 0) {
-                synchronized (tile) {
-                    for (Tile tiles : baris) {
-                        if (!tiles.getZombies().isEmpty()) {
-                            if (tiles.getX() == x - 1){
-                                for (int i = 0; i < tiles.getZombies().size();i++){  
-                                    tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                                    if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
-                                        tiles.getZombies().remove(i);
-                                    }
-                                }
+                
+                    // Jika tile terdekat ditemukan, serang semua zombie di tile tersebut
+                    if (closestTile != null) {
+                        for (int i = 0; i < closestTile.getZombies().size();i++){  
+                            closestTile.getZombies().get(i).setHealthZombie(closestTile.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
+                            //System.out.println("Health zombie: " + closestTile.getZombies().get(i).getHealthZombie() +", "+closestTile.getZombies().get(i).getNamaZombie());
+                            if (closestTile.getZombies().get(i).getHealthZombie() <= 0) {
+                                closestTile.getZombies().remove(i);
+                                closestTile.setDisplayName("___");
                             }
-                            else if (tiles.getX() == x){
-                                for (int i = 0; i < tiles.getZombies().size();i++){  
-                                    tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                                    if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
-                                        tiles.getZombies().remove(i);
-                                    }
-                                }
+                        }
+
+                        /*List<Zombie> zombies = closestTile.getZombies();
+                        for (Zombie zombie : zombies) {
+                            zombie.setHealthZombie(zombie.getHealthZombie() - getAttackDamageTanaman());
+                            System.out.println("Health zombie: " + zombie.getHealthZombie() +", "+zombie.getNamaZombie());
+                            map.displayMap();
+                            if (zombie.getHealthZombie() <= 0) {
+                                closestTile.getZombies().remove(i);
+                                map.removeZombie(closestTile.getY(),x,zombie);
+                                //zombie.setColZombie(-1);
+                                zombies.remove(zombie);
                             }
-                            else if (tiles.getX() == x + 1){
-                                for (int i = 0; i < tiles.getZombies().size();i++){  
-                                    tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                                    if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
-                                        tiles.getZombies().remove(i);
-                                    }
-                                }
+                        }*/
+                        /*for (int i = 0; i < zombies.size(); i++) {
+                            Zombie zombie = zombies.get(i);
+                            zombie.setHealthZombie(zombie.getHealthZombie() - getAttackDamageTanaman());
+                            System.out.println("Health zombie: " + zombie.getHealthZombie()+", "+zombie.getNamaZombie());
+                            map.displayMap();
+                            if (zombie.getHealthZombie() <= 0) {
+                                map.removeZombie(closestTile.getY(),x,zombie);
+                                zombie.setColZombie(-1);
+                                zombies.remove(i);
+                                i--;  // Sesuaikan indeks setelah penghapusan
+                                
                             }
-                        }   
-                    }setHealthTanaman(0);
-                }
-            }
-        }
-        else if (getRangeTanaman() == 2) {
-            while (getHealthTanaman() > 0) {
-                    for (Tile tiles : baris) {
-                        if (!tiles.getZombies().isEmpty()) {
-                            // Membunuh semua zombie di baris ini
-                                List<Zombie> list = tiles.getZombies();
-                                Iterator<Zombie> iterator = list.iterator();
-                                while (iterator.hasNext()) {
-                                    Zombie zombie = iterator.next();
-                                    zombie.setHealthZombie(0);
-                                    iterator.remove();
-                                }
-                                tiles.setDisplayName("___");
-                                System.out.println("coba");
-                            }
+                        }*/
                     }
-                    setHealthTanaman(0);
+                }
+            }
+            else if (getRangeTanaman() == 1) {  
+                boolean berhasilbunuh = false;
+                while (getHealthTanaman() > 0) {
+                    synchronized (tile) {
+                            if ((!tile.getZombies().isEmpty())||(!map.getTile(tile.getY(), tile.getX()+1).getZombies().isEmpty()) ||(!map.getTile(tile.getY(), tile.getX()-1).getZombies().isEmpty())) {
+                                Tile tiledepan = map.getTile(tile.getY(), tile.getX()+1);
+                                Tile tilebelakang = map.getTile(tile.getY(), tile.getX()-1);
+                                if (!tiledepan.getZombies().isEmpty()){
+                                    for (int i = 0; i < tiledepan.getZombies().size();i++){  
+                                        tiledepan.getZombies().get(i).setHealthZombie(tiledepan.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
+                                        if (tiledepan.getZombies().get(i).getHealthZombie() <= 0) {
+                                            tiledepan.getZombies().remove(i);
+                                            tiledepan.setDisplayName("___");
+                                            berhasilbunuh= true;
+                                        }
+                                    }
+                                }
+                                else if (!tile.getZombies().isEmpty()){
+                                    for (int i = 0; i < tile.getZombies().size();i++){  
+                                        tile.getZombies().get(i).setHealthZombie(tile.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
+                                        if (tile.getZombies().get(i).getHealthZombie() <= 0) {
+                                            tile.getZombies().remove(i);
+                                            tile.setDisplayName("___");
+                                            berhasilbunuh= true;
+                                        }
+                                    }
+                                }
+                                else if (!tilebelakang.getZombies().isEmpty()){
+                                    for (int i = 0; i < tilebelakang.getZombies().size();i++){  
+                                        tilebelakang.getZombies().get(i).setHealthZombie(tilebelakang.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
+                                        if (tilebelakang.getZombies().get(i).getHealthZombie() <= 0) {
+                                            tilebelakang.getZombies().remove(i);
+                                            tilebelakang.setDisplayName("___");
+                                            berhasilbunuh= true;
+                                        }
+                                    }
+                                }
+                            }   
+                        }
+                        if (berhasilbunuh){
+                            System.out.println("Apa dah");
+                            setHealthTanaman(0);
+                        }
+                }
+            }
+            else if (getRangeTanaman() == 2) {
+                while (getHealthTanaman() > 0) {
+                        for (Tile tiles : baris) {
+                            if (!tiles.getZombies().isEmpty()) {
+                                // Membunuh semua zombie di baris ini
+                                    List<Zombie> list = tiles.getZombies();
+                                    for (Zombie zombie : list) {
+                                        if (!(list == null)) {
+                                            //zombie.setColZombie(-1);
+                                            zombie.setHealthZombie(0);
+                                        }
+                                        else {
+                                            break;
+                                        }
+                                    }
+                                    tiles.setDisplayName("___");
+                                }
+                        }
+                        setHealthTanaman(0);
+                }
             }
         }
     }

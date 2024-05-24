@@ -107,16 +107,40 @@ public abstract class Zombie extends Aquatic {
         this.is_ability_used = is_ability_used;
     }
 
-    public void attackZombie(Tile tile, Map map, Tanaman tanaman) {
+    public void attackZombie(Tile tile, Map map) {
+
         int x = getRowZombie();
+        int y = getColZombie();
+        Tile tile1 = map.getTile(x, y);
+            // Cari tile terdekat yang berisi zombie
+        if (!tile1.getTanaman().isEmpty() && tile1.getX() == y) {
+            List<Tanaman> tanamans = tile1.getTanaman();
+            for (Tanaman t : tanamans) {
+                if (!(tanamans == null)) {
+                    t.setHealthTanaman(t.getHealthTanaman() - getAttackDamageZombie());
+                System.out.println("HP Tanaman" + t.getHealthTanaman());
+                if (t.getHealthTanaman() <= 0) {
+                    t.setColPlant(12);
+                    tanamans.remove(t);
+                }
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        
+        /*int x = getRowZombie();
         int y = getColZombie();
         Tile xy = map.getTile(x, y);
         int dmg = getAttackDamageZombie();
         List<Tanaman> planted = xy.getTanaman();
         if (getRangeZombie() == 1) {
-            for (Tanaman t : planted) {
+            for (Tanaman t : xy.getTanaman()) {
                 t.setHealthTanaman(t.getHealthTanaman() - dmg);
+                System.out.println("HP Tanaman" + t.getHealthTanaman());
                 if (t.getHealthTanaman() <= 0) {
+                    t.setColPlant(12);
                     xy.removeTanaman(t);
                 }
             }
@@ -135,18 +159,20 @@ public abstract class Zombie extends Aquatic {
                     }
                 }
             }
-        }
+        }*/
     }
 
     public void moveZombie (Map map) {
-        int x = getRowZombie();
-        // Menggunakan AtomicInteger untuk memodifikasi nilai di dalam lambda
-        int y = getColZombie();
-        if (y > 0 && !map.isTanamanAvail(x, y - 1)) {
-            map.removeZombie(x,y,this);
-            y--;
-            setColZombie(y);
-            map.getTile(x, y).addZombie(this);
-        }
+            int x = getRowZombie();
+            // Menggunakan AtomicInteger untuk memodifikasi nilai di dalam lambda
+            int y = getColZombie();
+            if (y > 0) {
+                map.removeZombie(x,y,this);
+                y--;
+                setColZombie(y);
+                map.getTile(x, y).addZombie(this);
+            }
+            
+        
     }
 }
