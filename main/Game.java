@@ -321,12 +321,18 @@ public class Game {
             SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map,game.getStatusGame());
             UpdateSunThread updateSunThread = new UpdateSunThread(sun,game.getStatusGame());
             GameStatusThread gameStatusThread = new GameStatusThread(map, game);
+            Thread thread1 = new Thread(spawnZombieThread);
+            Thread thread2 = new Thread(updateSunThread);
+            Thread thread3 = new Thread(gameStatusThread);
+        
+            thread1.setDaemon(true);
+            thread2.setDaemon(true);
 
             ExecutorService executor = Executors.newFixedThreadPool(3);
             
-            executor.execute(spawnZombieThread);
-            executor.execute(updateSunThread);
-            executor.execute(gameStatusThread);
+            thread1.start();
+            thread2.start();
+            thread3.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 spawnZombieThread.stop();
