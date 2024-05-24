@@ -1,7 +1,4 @@
 package plant;
-import classes.map.*;
-import zombie.Zombie;
-import java.util.List;
 
 public class Jalapeno extends Tanaman {
     public Jalapeno() {

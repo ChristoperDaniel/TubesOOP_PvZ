@@ -1,19 +1,14 @@
 package classes.player;
-import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.List;
 import plant.*;
-import zombie.ZombieAction;
 import classes.objects.*;
+import main.ScannerJava;
 import classes.map.*;
 
 public class Player {
-    private ScheduledExecutorService scheduler;
     private volatile Sun sun;
     // Constructor
     public Player(Sun sun) {
-        this.scheduler = Executors.newScheduledThreadPool(1);
         this.sun = sun;
     }
     public boolean canAfford(int cost) {
@@ -21,7 +16,6 @@ public class Player {
     }
     // menanam tanaman
     public void menanam(Deck deck, int row, int col, Map map) {
-        Scanner scanner = new Scanner(System.in);
         while (true) { // loop ini bisa diganti sesuai kondisi permainan Anda
             System.out.println("Tanaman yang tersedia:");
             List<Tanaman> availableTanamans = deck.getAvailableTanamans();
@@ -30,8 +24,10 @@ public class Player {
             }
             System.out.println("Sun Anda saat ini: " + sun.gettotalSun());
             System.out.println("Pilih tanaman untuk ditanam (atau ketik 'exit' untuk keluar):");
-            String pilihan = scanner.nextLine();
-            
+            ScannerJava.getScanner().nextLine();
+            String pilihan = ScannerJava.getScanner().nextLine();
+            System.out.println(pilihan);
+
             Tanaman tanaman = deck.getTanamanByName(pilihan);
             if (tanaman != null) {
                 if (!tanaman.isOnCooldown() && canAfford(tanaman.getCostTanaman())) {

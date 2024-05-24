@@ -2,33 +2,18 @@ package plant;
 
 import classes.map.*;
 import classes.objects.*;
-import interfaces.ZombieWithAbility;
-import zombie.DolphinRiderZombie;
-import zombie.JackInTheBoxZombie;
-import zombie.PoleVaultingZombie;
-import zombie.Zombie;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class PlantAction implements Runnable {
     private Tanaman plant;
     private Tile tile;
     private Map map;
-    private int row;
     private Sun sun;
-    private ScheduledExecutorService executorService;
 
     public PlantAction(Tanaman plant, Tile tile, Map map, Sun sun) {
         this.plant = plant;
         this.tile = tile;
         this.map = map;
         this.sun = sun;
-        this.row = tile.getY();  // Simpan baris untuk memudahkan akses nanti
-        this.executorService = Executors.newScheduledThreadPool(1);
     }
 
     @Override

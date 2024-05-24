@@ -4,6 +4,7 @@ package classes.map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.*;
 
 import classes.map.threadmap.GameStatusThread;
 import classes.map.threadmap.SpawnZombieThread;
@@ -12,8 +13,6 @@ import zombie.*;
 import main.*;
 import classes.objects.*;
 import classes.player.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class Map {
     public static int total_rows = 6;
@@ -371,9 +370,10 @@ public class Map {
     
 
     public static void main(String[] args) {
+        Scanner scanner = ScannerJava.getScanner();
         Map maps = new Map();
         Sun sun = new Sun();
-        Game game = new Game(maps,new Player(sun),sun);
+        Game game = new Game(maps,new Player(sun),sun, scanner);
         SpawnZombieThread zombieSpawner = new SpawnZombieThread(maps,game.getStatusGame());
         GameStatusThread gameStatus = new GameStatusThread(maps, game);
         Thread thread1 = new Thread(zombieSpawner);

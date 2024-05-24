@@ -2,15 +2,9 @@ package plant;
 import classes.map.Map;
 import classes.map.Tile;
 import zombie.Zombie;
-import classes.objects.*;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 public class Tanaman extends Aquatic {
-    private ScheduledExecutorService executorService;
     private String namaTanaman;
     private int costTanaman;
     private int healthTanaman;
@@ -21,8 +15,6 @@ public class Tanaman extends Aquatic {
     private int row;
     private int col;
     private boolean isOnCooldown = false;
-    private Tile tile;
-    private Map map;
     
     
     // konstruktor
@@ -37,7 +29,6 @@ public class Tanaman extends Aquatic {
         this.cooldownTanaman = cooldownTanaman;
         this.row = -1;
         this.col = -1;
-        executorService = Executors.newSingleThreadScheduledExecutor();
     }
     
     // method
@@ -104,8 +95,6 @@ public class Tanaman extends Aquatic {
     }
 
     public synchronized void attackPlant(Tile tile, Map map) {
-        this.tile = tile;
-        this.map = map;
         int x = getColPlant();
         // List<Zombie> kosong = new ArrayList<>();
         List<Tile> baris = map.getRow(tile.getY());

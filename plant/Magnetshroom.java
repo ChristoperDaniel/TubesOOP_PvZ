@@ -1,15 +1,7 @@
 package plant;
-import classes.map.*;
-import zombie.Zombie;
-import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 
 public class Magnetshroom extends Tanaman {
-    private ScheduledExecutorService executorService;
     public Magnetshroom() {
         super("Magnetshroom", 100, 100, 0, 10000, -1, 20000, false);
     }

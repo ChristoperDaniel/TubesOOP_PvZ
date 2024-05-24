@@ -1,41 +1,23 @@
 package main;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import classes.map.*;
 import classes.map.threadmap.GameStatusThread;
-import classes.map.threadmap.PerangThread;
 import classes.map.threadmap.SpawnZombieThread;
 import classes.map.threadmap.UpdateSunThread;
 import classes.objects.*;
 import classes.player.*;
-import plant.*;
 import zombie.*;
 
 public class Game {
     private boolean statusGame;
-    private Player player;
-    private volatile Map map;
     private volatile Deck plantDeck;
     private Inventory inventory;
-    private volatile int time;
-    private volatile Sun sun;
-    private volatile boolean isDayTime;
-    private volatile boolean gameOver;
-    private volatile Set<Tile> plantTilesWithThreads;
-    private volatile Set<Tile> zombieTilesWithThreads;
-    private volatile ScheduledExecutorService executor;
-    private volatile int currentTime;
-    private List<Thread> plantThreads = new ArrayList<>();
-    private List<Thread> zombieThreads = new ArrayList<>();
+    private volatile Scanner scanner;
     private volatile List<Zombie> listofAllZombies = new ArrayList<>(List.of(
         new NormalZombie(null),
         new BucketheadZombie(null),
@@ -49,21 +31,15 @@ public class Game {
         new DuckyTubeZombie(null)
         // jangan lupa bikin jadi zombie
     ));
-    private Random random = new Random(); // Menambahkan Random instance
-    private int maxZombies;
 
-    public Game(Map map, Player player, Sun sun) {
+    public Game(Map map, Player player, Sun sun, Scanner scanner) {
         statusGame = false;
         map = new Map();
         plantDeck = new Deck();
         inventory = new Inventory();
-        time = 0;
-        isDayTime = true;
         sun = new Sun();
         player = new Player(sun);
-        plantTilesWithThreads = new HashSet<>();
-        zombieTilesWithThreads = new HashSet<>();
-        maxZombies = 10;
+        this.scanner = scanner; 
     }
 
     public boolean getStatusGame() {
@@ -107,7 +83,6 @@ public class Game {
     }
 
     public void MulaiGame() {
-        Scanner scanner = new Scanner(System.in);
         boolean isChoosing = true;
 
         System.out.println("Selamat datang di Game Michael vs. Lalapan");
@@ -156,7 +131,6 @@ public class Game {
     public void startGame() {
 
         // Menampilkan daftar tanaman dari inventory
-        Scanner scanner = new Scanner(System.in);
         boolean isChoosing = true;
         int index;
         int pos1; 
@@ -224,29 +198,13 @@ public class Game {
                     break;
             }
         }
-        enterGame(map);
-    }
-
-    public void enterGame(Map map) {
-
-        executor = Executors.newScheduledThreadPool(1); // 5 threads, tambahkan satu thread untuk update currentTime dan input pengguna
         statusGame = true;
     }
 
-    // private void updateCurrentTime() {
-    //     if (!gameOver || !executor.isShutdown()){
-    //         currentTime++;
-    //         if (currentTime > 200) {
-    //             stopGame();
-    //         }
-    //     }
-    // }
-
     public void handleUserInput(Map map, Player player, Sun sun) {
-        Scanner scanner = new Scanner(System.in);
         int row = -1; // Inisialisasi row dengan nilai default yang tidak valid
         int column = -1; // Inisialisasi column dengan nilai default yang tidak valid
-        while (!gameOver) { // Loop sampai permainan selesai
+        while (statusGame) { // Loop sampai permainan selesai
             map.displayMap();
             displayMenuEnter(); 
 
@@ -285,7 +243,7 @@ public class Game {
                         break;
                     }
                     player.menanam(plantDeck, row, column, map);
-                    scanner.nextLine();
+                    //scanner.nextLine();
                     break;
                 case 2:
                     // Menggali Tanaman
@@ -323,7 +281,7 @@ public class Game {
                     break;
                 case 5:
                     // Quit Game
-                    gameOver = true; // Menghentikan permainan
+                    statusGame = false; // Menghentikan permainan
                     break;
                 case 6:
                     // Help
@@ -335,95 +293,6 @@ public class Game {
             }
         }
     }
-
-    /*public void gameBaru() {
-        Game newGame = new Game();
-        newGame.MulaiGame();
-    }
-
-    private void stopGame() {
-        if (executor != null && !executor.isShutdown()) {
-            executor.shutdownNow();
-        }
-        gameOver = true; // Ensure gameOver is set to true
-        System.out.println("Game has been stopped.");
-    }*/
-
-    public void perang(Map map) {
-        while (!gameOver) {
-            for (int row = 0; row < Map.total_rows; row++) {
-                for (int col = 0; col < Map.total_columns; col++) {
-                    Tile tile = map.getTile(row, col);
-
-                    // Jalankan aksi untuk setiap tanaman di tile
-                    if (!plantTilesWithThreads.contains(tile)) {
-                        for (Tanaman plant : tile.getTanaman()) {
-                            PlantAction plantAction = new PlantAction(plant,tile,map,sun);
-                            Thread plantThread = new Thread(plantAction);
-                            plantThread.start();
-                            plantThreads.add(plantThread);
-                        }
-                        plantTilesWithThreads.add(tile);
-                    }
-
-                    // Jalankan aksi untuk setiap zombie di tile
-                    if (!zombieTilesWithThreads.contains(tile)) {
-                        for (Zombie zombie : tile.getZombies()) {
-                            ZombieAction zombieAction = new ZombieAction(false,zombie, tile, map);
-                            Thread zombieThread = new Thread(zombieAction);
-                            zombieThread.start();
-                            zombieThreads.add(zombieThread);
-                        }
-                        zombieTilesWithThreads.add(tile);
-                    }
-                }
-            }
-        }
-    }
-    /*Runnable changeTimeOfDay = new Runnable(){
-        @Override
-        public void run(){
-            if (!gameOver || !executor.isShutdown()){
-                if (time > 100){
-                    isDayTime = !isDayTime;
-                }
-            }
-        }
-    };
-    Runnable checkWinOrLose = new Runnable(){
-        @Override
-        public void run(){
-            if (!gameOver || !executor.isShutdown()) {
-                // Cek kondisi menang atau kalah
-                if (map.getTotalZombies() == 0 && currentTime >= 161) {
-                    System.out.println("Anda menang! Semua zombie telah dikalahkan.");
-                    stopGame();
-                } else if (map.isZombieReachedFirstColumn()) {
-                    System.out.println("Anda kalah! Zombie menang");
-                    stopGame();
-                }
-            }
-            else{
-                System.out.println("Anda kalah! Zombie menang");
-            }
-        }
-    };
-
-    private void checkWinOrLose() {
-        if (!gameOver || !executor.isShutdown()) {
-            // Cek kondisi menang atau kalah
-            if (map.getTotalZombies() == 0 && currentTime >= 161) {
-                System.out.println("Anda menang! Semua zombie telah dikalahkan.");
-                stopGame();
-            } else if (map.isZombieReachedFirstColumn()) {
-                System.out.println("Anda kalah! Zombie menang");
-                stopGame();
-            }
-        }
-        else{
-            System.out.println("Anda kalah! Zombie menang");
-        }
-    }*/
 
     public void quitGame() {
         statusGame = false;
@@ -440,29 +309,18 @@ public class Game {
         System.out.println("6. Pilih 'Help' untuk melihat menu bantuan ini lagi.");
     }
 
-    public void start(Map map, Player player, Sun sun, Game game) {
-        // Buat thread untuk menjalankan metode perang
-        //PerangThread perangThread = new PerangThread(map,game);
-        //Thread thread = new Thread(perangThread);
-        //1
-        //thread.start();
-
-        // Jalankan handleUserInput di thread utama
-        handleUserInput(map, player, sun);
-    }
-
     public static void main(String[] args) {
+
+        Scanner scanner = ScannerJava.getScanner();
         while (true){
             Map map = new Map();
             Sun sun = new Sun();
             Player player = new Player(sun);
-            Game game = new Game(map,player,sun);
+            Game game = new Game(map,player,sun, scanner);
             game.MulaiGame();
             SpawnZombieThread spawnZombieThread = new SpawnZombieThread(map,game.getStatusGame());
             UpdateSunThread updateSunThread = new UpdateSunThread(sun,game.getStatusGame());
             GameStatusThread gameStatusThread = new GameStatusThread(map, game);
-            //PerangThread perangThread = new PerangThread(map, game);
-
 
             ExecutorService executor = Executors.newFixedThreadPool(3);
             
@@ -470,7 +328,6 @@ public class Game {
             executor.execute(updateSunThread);
             executor.execute(gameStatusThread);
 
-            // Cara untuk menghentikan thread secara aman
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 spawnZombieThread.stop();
                 updateSunThread.stop();
@@ -478,9 +335,18 @@ public class Game {
                 executor.shutdown();
             }));
             while (game.getStatusGame()){
-                game.start(map,player,sun,game);
+                game.handleUserInput(map, player, sun);
+            }
+            if (!game.getStatusGame()){
+            System.out.print("Do you want to return to the main game? (yes/no): ");
+            String input = scanner.nextLine();
+            if (!input.equalsIgnoreCase("yes")) {
+                break; // Keluar dari loop utama jika tidak ingin kembali ke game utama
             }
         }
+        }
+        scanner.close();
+        System.exit(0);
     }
 
 }
