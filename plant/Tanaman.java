@@ -1,6 +1,7 @@
 package plant;
 import classes.map.Map;
 import classes.map.Tile;
+import interfaces.ZombieWithItem;
 import zombie.Zombie;
 import java.util.*;
 
@@ -88,9 +89,39 @@ public class Tanaman extends Aquatic {
         }).start();
     }
 
-    public void removeItem(Zombie zombie){
-        if (!zombie.getIsItemRemovedZombie()) {
-            zombie.setIsItemRemovedZombie(true);
+    public synchronized void removeItem(Tile tile, Map map){
+        int x = getColPlant();
+        // List<Zombie> kosong = new ArrayList<>();
+        List<Tile> baris = map.getRow(tile.getY());
+        if (getHealthTanaman() > 0) {
+            if (getRangeTanaman() == -1) {
+                if (getNamaTanaman() == "Magnetshroom"){
+                    Tile closestTile = null;
+                
+                    // Cari tile terdekat yang berisi zombie
+                    for (Tile tiles : baris) {
+                        if (!tiles.getZombies().isEmpty() && tiles.getX() >= x) {
+                            closestTile = tiles;
+                            break;  // Berhenti setelah menemukan tile terdekat
+                        }
+                    }
+                
+                    // Jika tile terdekat ditemukan, serang semua zombie di tile tersebut
+                    if (closestTile != null) {
+                        for (int i = 0; i < closestTile.getZombies().size();i++){  
+                            if (closestTile.getZombies().get(i) instanceof ZombieWithItem) {
+                                ((ZombieWithItem)closestTile.getZombies().get(i)).reduceStat(true);
+                            }
+                            System.out.println("Health zombie: " +  closestTile.getZombies().get(i).getHealthZombie()+", "+ closestTile.getZombies().get(i).getNamaZombie());
+                            //System.out.println("Health zombie: " + closestTile.getZombies().get(i).getHealthZombie() +", "+closestTile.getZombies().get(i).getNamaZombie());
+                            if (closestTile.getZombies().get(i).getHealthZombie() <= 0) {
+                                closestTile.getZombies().remove(i);
+                                closestTile.setDisplayName("___");
+                            }
+                        }
+                    }
+                }
+            }
         }   
     }
 
@@ -101,19 +132,29 @@ public class Tanaman extends Aquatic {
         if (getHealthTanaman() > 0) {
             if (getRangeTanaman() == -1) {
                 if (getNamaTanaman() == "Snowpea"){
-                        for (Tile tiles : baris) {
-                            if ((!tiles.getZombies().isEmpty())&&(tiles.getX() >= x)) {
-                                for (int i = 0; i < tiles.getZombies().size();i++){                                      
-                                    tiles.getZombies().get(i).setHealthZombie(tiles.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                                    tiles.getZombies().get(i).SetIsGetSlowedZombie(true);
-                                    if (tiles.getZombies().get(i).getHealthZombie() <= 0) {
-                                        //tiles.getZombies().get(i).setColZombie(-1);
-                                        tiles.getZombies().remove(i);
-                                        tiles.setDisplayName("___");
-                                    }
-                                }
+                    Tile closestTile = null;
+                
+                    // Cari tile terdekat yang berisi zombie
+                    for (Tile tiles : baris) {
+                        if (!tiles.getZombies().isEmpty() && tiles.getX() >= x) {
+                            closestTile = tiles;
+                            break;  // Berhenti setelah menemukan tile terdekat
+                        }
+                    }
+                
+                    // Jika tile terdekat ditemukan, serang semua zombie di tile tersebut
+                    if (closestTile != null) {
+                        for (int i = 0; i < closestTile.getZombies().size();i++){  
+                            closestTile.getZombies().get(i).setHealthZombie(closestTile.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
+                            closestTile.getZombies().get(i).SetIsGetSlowedZombie(true);
+                            System.out.println("Health zombie: " +  closestTile.getZombies().get(i).getHealthZombie()+", "+ closestTile.getZombies().get(i).getNamaZombie());
+                            //System.out.println("Health zombie: " + closestTile.getZombies().get(i).getHealthZombie() +", "+closestTile.getZombies().get(i).getNamaZombie());
+                            if (closestTile.getZombies().get(i).getHealthZombie() <= 0) {
+                                closestTile.getZombies().remove(i);
+                                closestTile.setDisplayName("___");
                             }
                         }
+                    }
                 }
                 else if (getNamaTanaman() != "Snowpea") {
                     Tile closestTile = null;

@@ -195,11 +195,11 @@ public class Map {
                         current_Tile.setDisplayName("SQt");
                         tanaman.setHealthTanaman(new Squash().getHealthTanaman());
                         break;
-                    case "TangleKelp":
+                    case "Tangle Kelp":
                         current_Tile.setDisplayName("TKt");
                         tanaman.setHealthTanaman(new TangleKelp().getHealthTanaman());
                         break;
-                    case "Wallnut":
+                    case "Wall Nut":
                         current_Tile.setDisplayName("WNt");
                         tanaman.setHealthTanaman(new Wallnut().getHealthTanaman());
                         break;
