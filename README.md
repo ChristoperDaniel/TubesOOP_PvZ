@@ -8,7 +8,7 @@ Michael vs Lalapan adalah program imitasi dari Plant vs Zombie dimana player bis
 Java Programming Language
 
 ## How to Run
-1. Clone this github repository in your directory
+1. Clone github repository berikut ke dalam directory Anda
    https://github.com/ChristoperDaniel/TubesOOP_PvZ.git
 
-2. Run the program from Main in Game.java
+2. Run program dari Main yang ada di dalam Game.java
