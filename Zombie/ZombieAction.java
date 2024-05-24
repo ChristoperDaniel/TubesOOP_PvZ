@@ -43,7 +43,7 @@ public class ZombieAction implements Runnable {
                             zombie.useAbility(is_Ability_Used, tile, map, tanaman.get(tanaman.size()-1));
                         }
                     }
-
+//
                     else if ((!tanaman.isEmpty()) && (!zombie.getIsAbilityUsed()) && (!zombie.getIsGetSlowedZombie())) {
                         // Jika ada tanaman, serang tanaman
                         try {
