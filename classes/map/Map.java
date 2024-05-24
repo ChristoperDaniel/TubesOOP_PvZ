@@ -228,7 +228,7 @@ public class Map {
         }
         return count;
     }
-    public volatile static List<Zombie> listofZombies = new ArrayList<>(List.of(
+    public static List<Zombie> listofZombies = new ArrayList<>(List.of(
         new NormalZombie(null),
         new BucketheadZombie(null),
         new ConeheadZombie(null),
