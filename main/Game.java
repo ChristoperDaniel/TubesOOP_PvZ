@@ -300,13 +300,22 @@ public class Game {
     } 
 
     public void help() {
-        System.out.println("Tentang Cara Bermain:");
+        System.out.println("Sebelum Bermain:");
+        System.out.println("1. Pilih 'Display Inventory' untuk melihat tanaman yang tersedia.");
+        System.out.println("2. Pilih 'Display Deck' untuk melihat tanaman yang ada dalam deck.");
+        System.out.println("3. Pilih 'Add Plants' untuk menambahkan tanaman ke dalam deck.");
+        System.out.println("4. Pilih 'Remove Plants' untuk menghapus tanaman dari dalam deck.");
+        System.out.println("5. Pilih 'Swap Deck Plants' untuk Menukar posisi tanaman dalam deck.");
+        System.out.println("6. Pilih 'Swap Inventory Plants' untuk menukar posisi tanaman dalam inventory.");
+        System.out.println("7. Pilih 'Swap Inventory Plants' untuk menukar posisi tanaman dalam inventory.");
+        System.out.println("8. Pilih 'Enter Game' untuk masuk ke dalam permainan.\n");
+        System.out.println("Cara Bermain:");
         System.out.println("1. Pilih 'Menanam Tanaman' untuk menanam tanaman di peta.");
         System.out.println("2. Pilih 'Menggali Tanaman' untuk menggali tanaman dari peta.");
         System.out.println("3. Pilih 'Display Deck' untuk melihat tanaman yang tersedia di deck.");
         System.out.println("4. Pilih 'Display Map' untuk melihat peta permainan.");
         System.out.println("5. Pilih 'Quit Game' untuk keluar dari permainan.");
-        System.out.println("6. Pilih 'Help' untuk melihat menu bantuan ini lagi.");
+        System.out.println("6. Pilih 'Help' untuk melihat menu bantuan ini lagi.\n");
     }
 
     public static void main(String[] args) {
@@ -354,7 +363,6 @@ public class Game {
         scanner.close();
         System.exit(0);
     }
-
 }
 
 
