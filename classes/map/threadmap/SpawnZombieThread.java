@@ -17,7 +17,7 @@ public class SpawnZombieThread implements Runnable {
 
     @Override
     public void run() {
-        while (running && statusgame) {
+        while (running && statusgame && (map.getTotalZombies() < 10)) {
             try {
                 Thread.sleep(1000); // Update setiap detik
 

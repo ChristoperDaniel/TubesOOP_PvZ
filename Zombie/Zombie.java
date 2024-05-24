@@ -4,7 +4,7 @@ import classes.map.*;
 import plant.*;
 import java.util.List;
 
-public abstract class Zombie extends Aquatic {
+public class Zombie extends Aquatic {
     private String namaZombieString;
     private int healthZombie;
     private int attack_damageZombie;
@@ -107,7 +107,7 @@ public abstract class Zombie extends Aquatic {
         this.is_ability_used = is_ability_used;
     }
 
-    public void attackZombie(Tile tile, Map map) {
+    public synchronized void attackZombie(Tile tile, Map map) {
 
         int x = getRowZombie();
         int y = getColZombie();
@@ -162,7 +162,7 @@ public abstract class Zombie extends Aquatic {
         }*/
     }
 
-    public void moveZombie (Map map) {
+    public synchronized void moveZombie (Map map) {
             int x = getRowZombie();
             // Menggunakan AtomicInteger untuk memodifikasi nilai di dalam lambda
             int y = getColZombie();

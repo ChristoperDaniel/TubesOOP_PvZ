@@ -4,6 +4,7 @@ package classes.map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.lang.reflect.InvocationTargetException;
 //import java.util.*;
 
 //import classes.map.threadmap.GameStatusThread;
@@ -239,18 +240,44 @@ public class Map {
         new DuckyTubeZombie(null)
         // jangan lupa bikin jadi zombie
     ));
-    
+
+    public volatile static List<Class<? extends Zombie>> listofZombieClasses = new ArrayList<>();
+
+    static {
+        // Isi listofZombieClasses dengan referensi class dari setiap instance zombie dalam listofZombies
+        for (Zombie zombie : listofZombies) {
+            Class<? extends Zombie> zombieClass = zombie.getClass();
+            listofZombieClasses.add(zombieClass);
+        }
+    }
+
     public void placeZombie(List<Zombie> listofZombies) {
         Tile current_Tile;
         Random random = new Random();
         for(int i = 0; i < total_rows; i++){
             double randomValue = Math.random();
+            int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
+            int randomRow = i;
+            current_Tile = tiles[randomRow][randomCol];
             if (randomValue <= 0.3){
                 int zombieTypeIndex = random.nextInt(listofZombies.size()); // Pilih tipe zombie secara acak
-                Zombie zombieType = listofZombies.get(zombieTypeIndex); // Ambil tipe zombie dari list
-                int randomCol = Map.total_columns - 1; // Pilih kolom di sisi kanan map
-                int randomRow = i;
-                current_Tile = tiles[randomRow][randomCol];
+                Zombie zombieType = listofZombies.get(zombieTypeIndex);
+                try{
+                Class<? extends Zombie> zombieClass = listofZombieClasses.get(zombieTypeIndex); // Ambil tipe zombie dari list
+                zombieType = zombieClass.getDeclaredConstructor(Tile.class).newInstance(current_Tile);
+                } catch (NoSuchMethodException e) {
+                    // Tangani jika tidak ada konstruktor yang sesuai
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    // Tangani jika tidak dapat membuat instance baru
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    // Tangani jika tidak diizinkan mengakses konstruktor
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    // Tangani jika ada kesalahan saat memanggil konstruktor
+                    e.printStackTrace();
+                }
                 //System.out.println(randomRow);
                 //System.out.println(randomCol);
                 //System.out.println(zombieType.getNamaZombie());

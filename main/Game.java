@@ -125,10 +125,15 @@ public class Game {
 
             }
         }
-        startGame();
+        try{
+            
+            startGame();
+        } catch (DeckPenuhException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void startGame() {
+    public void startGame() throws DeckPenuhException {
 
         // Menampilkan daftar tanaman dari inventory
         boolean isChoosing = true;
@@ -163,7 +168,7 @@ public class Game {
                         plantDeck.addPlants(inventory.removePlantsInventory(index));
                     }
                     else{
-                        System.out.println("Deck sudah penuh");
+                        throw new DeckPenuhException("Deck sudah penuh");
                     }
                     break;
                 case 4:
