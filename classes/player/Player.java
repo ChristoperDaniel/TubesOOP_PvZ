@@ -63,11 +63,5 @@ public class Player {
     }
 
     // menampilkan daftar aksi
-    public void displayListActions() {
-        System.out.println("Actions:");
-        System.out.println("1. Menanam tanaman"); //cth
-        System.out.println("2. Menggali tanaman"); //cth
-        //soon
-    }
 }
 

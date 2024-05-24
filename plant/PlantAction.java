@@ -57,7 +57,6 @@ public class PlantAction implements Runnable {
         // Periksa apakah health tanaman kurang dari atau sama dengan 0
         if (plant.getHealthTanaman() <= 0) {
             // Jika iya, hapus tanaman dari list tanaman pada tile
-                System.out.println("Cobaaa");
                 map.removeTanaman(plant.getRowPlant(), plant.getColPlant(), plant);
 
         }
