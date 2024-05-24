@@ -29,10 +29,6 @@ public class PlantAction implements Runnable {
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
-                    /*executorService.scheduleAtFixedRate(() ->{
-                        sun.addCustomSun(sunflower.generateSun());
-                        System.out.println("hehe");
-                    } , 0, 3000, TimeUnit.MILLISECONDS); */
                 }
                 else if (plant.getNamaTanaman() == "Jalapeno"){
                     plant.attackPlant(tile, map);
@@ -61,9 +57,9 @@ public class PlantAction implements Runnable {
         // Periksa apakah health tanaman kurang dari atau sama dengan 0
         if (plant.getHealthTanaman() <= 0) {
             // Jika iya, hapus tanaman dari list tanaman pada tile
-            //synchronized (tile) {
-                tile.removeTanaman(plant);
-            //}
+                System.out.println("Cobaaa");
+                map.removeTanaman(plant.getRowPlant(), plant.getColPlant(), plant);
+
         }
     }
 }
