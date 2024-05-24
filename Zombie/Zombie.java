@@ -108,7 +108,6 @@ public class Zombie extends Aquatic {
 
     public void attackZombie(Tile tile, Map map, Tanaman tanaman) {
         tanaman.setHealthTanaman(tanaman.getHealthTanaman() - getAttackDamageZombie());
-        System.out.println("HP Tanaman" + tanaman.getHealthTanaman());
         if (tanaman.getHealthTanaman() <= 0) {
             tile.removeTanaman(tanaman);
             tanaman.setColPlant(12);
