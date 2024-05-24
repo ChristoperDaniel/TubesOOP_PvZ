@@ -64,6 +64,10 @@ public class ZombieAction implements Runnable {
                             Thread.currentThread().interrupt();
                         }
                     }
+
+                    else {
+                        break;
+                    }
                 }
 
                 if (tanaman.isEmpty() && (!zombie.getIsAbilityUsed()) && (!zombie.getIsGetSlowedZombie())){
