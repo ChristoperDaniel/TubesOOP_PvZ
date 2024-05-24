@@ -47,8 +47,8 @@ public class ZombieAction implements Runnable {
                             else if ((!(zombie.getIsAbilityUsed())) && (!(zombie.getIsGetSlowedZombie()))) {
                                 // Jika ada tanaman, serang tanaman
                                 try {
-                                    Thread.sleep(zombie.getAttackSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
                                     zombie.attackZombie(tile, map, t);
+                                    Thread.sleep(zombie.getAttackSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
                                 } catch (InterruptedException e) {
                                     Thread.currentThread().interrupt();
                                 }
@@ -57,8 +57,8 @@ public class ZombieAction implements Runnable {
                             else if ((!(zombie.getIsAbilityUsed())) && zombie.getIsGetSlowedZombie()){
                                 // Jika tidak ada tanaman, bergerak
                                 try {
-                                    Thread.sleep(zombie.getAttackSpeedZombie() + 500); // Misalnya menunggu 1 detik antara setiap aksi
                                     zombie.attackZombie(tile, map, t);
+                                    Thread.sleep(zombie.getAttackSpeedZombie() + 500); // Misalnya menunggu 1 detik antara setiap aksi
                                 } catch (InterruptedException e) {
                                     Thread.currentThread().interrupt();
                                 }
