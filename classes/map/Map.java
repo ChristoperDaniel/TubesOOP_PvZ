@@ -209,6 +209,7 @@ public class Map {
                 }
                 PlantAction plantAction = new PlantAction(tanaman,this.getTile(row, col),this,sun);
                 Thread plantThread = new Thread(plantAction);
+                plantThread.setDaemon(true);
                 plantThread.start();
                 System.out.println(tanaman.getHealthTanaman());
                 tanaman.startCooldown();
@@ -313,6 +314,7 @@ public class Map {
                 }
                 ZombieAction zombieAction = new ZombieAction(zombieType.getIsAbilityUsed(),zombieType,current_Tile,this);
                 Thread zombieThread = new Thread(zombieAction);
+                zombieThread.setDaemon(true);
                 zombieThread.start();
             }
         }
