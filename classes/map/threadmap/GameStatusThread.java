@@ -17,7 +17,7 @@ public class GameStatusThread implements Runnable{
 
     @Override
     public void run() {
-        while (running) {
+        while (running && game.getStatusGame()) {
             try {
                 Thread.sleep(1000); // Update setiap milisecond
 

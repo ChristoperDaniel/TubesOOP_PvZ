@@ -113,7 +113,6 @@ public class Tanaman extends Aquatic {
                                 ((ZombieWithItem)closestTile.getZombies().get(i)).reduceStat(true);
                             }
                             System.out.println("Health zombie: " +  closestTile.getZombies().get(i).getHealthZombie()+", "+ closestTile.getZombies().get(i).getNamaZombie());
-                            //System.out.println("Health zombie: " + closestTile.getZombies().get(i).getHealthZombie() +", "+closestTile.getZombies().get(i).getNamaZombie());
                             if (closestTile.getZombies().get(i).getHealthZombie() <= 0) {
                                 closestTile.getZombies().remove(i);
                                 closestTile.setDisplayName("___");
@@ -148,7 +147,6 @@ public class Tanaman extends Aquatic {
                             closestTile.getZombies().get(i).setHealthZombie(closestTile.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
                             closestTile.getZombies().get(i).SetIsGetSlowedZombie(true);
                             System.out.println("Health zombie: " +  closestTile.getZombies().get(i).getHealthZombie()+", "+ closestTile.getZombies().get(i).getNamaZombie());
-                            //System.out.println("Health zombie: " + closestTile.getZombies().get(i).getHealthZombie() +", "+closestTile.getZombies().get(i).getNamaZombie());
                             if (closestTile.getZombies().get(i).getHealthZombie() <= 0) {
                                 closestTile.getZombies().remove(i);
                                 closestTile.setDisplayName("___");
@@ -171,38 +169,11 @@ public class Tanaman extends Aquatic {
                     if (closestTile != null) {
                         for (int i = 0; i < closestTile.getZombies().size();i++){  
                             closestTile.getZombies().get(i).setHealthZombie(closestTile.getZombies().get(i).getHealthZombie() - getAttackDamageTanaman());
-                            //System.out.println("Health zombie: " + closestTile.getZombies().get(i).getHealthZombie() +", "+closestTile.getZombies().get(i).getNamaZombie());
                             if (closestTile.getZombies().get(i).getHealthZombie() <= 0) {
                                 closestTile.getZombies().remove(i);
                                 closestTile.setDisplayName("___");
                             }
                         }
-
-                        /*List<Zombie> zombies = closestTile.getZombies();
-                        for (Zombie zombie : zombies) {
-                            zombie.setHealthZombie(zombie.getHealthZombie() - getAttackDamageTanaman());
-                            System.out.println("Health zombie: " + zombie.getHealthZombie() +", "+zombie.getNamaZombie());
-                            map.displayMap();
-                            if (zombie.getHealthZombie() <= 0) {
-                                closestTile.getZombies().remove(i);
-                                map.removeZombie(closestTile.getY(),x,zombie);
-                                //zombie.setColZombie(-1);
-                                zombies.remove(zombie);
-                            }
-                        }*/
-                        /*for (int i = 0; i < zombies.size(); i++) {
-                            Zombie zombie = zombies.get(i);
-                            zombie.setHealthZombie(zombie.getHealthZombie() - getAttackDamageTanaman());
-                            System.out.println("Health zombie: " + zombie.getHealthZombie()+", "+zombie.getNamaZombie());
-                            map.displayMap();
-                            if (zombie.getHealthZombie() <= 0) {
-                                map.removeZombie(closestTile.getY(),x,zombie);
-                                zombie.setColZombie(-1);
-                                zombies.remove(i);
-                                i--;  // Sesuaikan indeks setelah penghapusan
-                                
-                            }
-                        }*/
                     }
                 }
             }
@@ -246,30 +217,29 @@ public class Tanaman extends Aquatic {
                             }   
                         }
                         if (berhasilbunuh){
-                            System.out.println("Apa dah");
                             setHealthTanaman(0);
                         }
                 }
             }
             else if (getRangeTanaman() == 2) {
                 while (getHealthTanaman() > 0) {
-                        for (Tile tiles : baris) {
-                            if (!tiles.getZombies().isEmpty()) {
-                                // Membunuh semua zombie di baris ini
-                                    List<Zombie> list = tiles.getZombies();
-                                    for (Zombie zombie : list) {
-                                        if (!(list == null)) {
-                                            //zombie.setColZombie(-1);
-                                            zombie.setHealthZombie(0);
-                                        }
-                                        else {
-                                            break;
-                                        }
+                    for (Tile tiles : baris) {
+                        if (!tiles.getZombies().isEmpty()) {
+                            // Membunuh semua zombie di baris ini
+                                List<Zombie> list = tiles.getZombies();
+                                for (Zombie zombie : list) {
+                                    if (!(list == null)) {
+                                        //zombie.setColZombie(-1);
+                                        zombie.setHealthZombie(0);
                                     }
-                                    tiles.setDisplayName("___");
+                                    else {
+                                        break;
+                                    }
                                 }
+                                tiles.setDisplayName("___");
+                            }
                         }
-                        setHealthTanaman(0);
+                    setHealthTanaman(0);
                 }
             }
         }

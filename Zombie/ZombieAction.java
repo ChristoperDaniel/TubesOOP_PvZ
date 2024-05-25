@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import interfaces.ZombieWithAbility;
 
-//import java.util.concurrent.TimeUnit;
-
 public class ZombieAction implements Runnable {
     private boolean is_Ability_Used;
     private Zombie zombie;
@@ -49,8 +47,8 @@ public class ZombieAction implements Runnable {
                             else if ((!(zombie.getIsAbilityUsed())) && (!(zombie.getIsGetSlowedZombie()))) {
                                 // Jika ada tanaman, serang tanaman
                                 try {
-                                    Thread.sleep(zombie.getAttackSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
                                     zombie.attackZombie(tile, map, t);
+                                    Thread.sleep(zombie.getAttackSpeedZombie()); // Misalnya menunggu 1 detik antara setiap aksi
                                 } catch (InterruptedException e) {
                                     Thread.currentThread().interrupt();
                                 }
@@ -59,8 +57,8 @@ public class ZombieAction implements Runnable {
                             else if ((!(zombie.getIsAbilityUsed())) && zombie.getIsGetSlowedZombie()){
                                 // Jika tidak ada tanaman, bergerak
                                 try {
-                                    Thread.sleep(zombie.getAttackSpeedZombie() + 500); // Misalnya menunggu 1 detik antara setiap aksi
                                     zombie.attackZombie(tile, map, t);
+                                    Thread.sleep(zombie.getAttackSpeedZombie() + 500); // Misalnya menunggu 1 detik antara setiap aksi
                                 } catch (InterruptedException e) {
                                     Thread.currentThread().interrupt();
                                 }
@@ -93,12 +91,7 @@ public class ZombieAction implements Runnable {
                 }
             }
         }
-            // Menunggu sebelum melakukan aksi berikutnya
-            /*try {
-                TimeUnit.SECONDS.sleep(1); // Misalnya menunggu 1 detik antara setiap aksi
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }*/
+
         // Periksa apakah health zombie kurang dari atau sama dengan 0
         if (zombie.getHealthZombie() <= 0) {
             map.removeZombie(zombie.getRowZombie(),zombie.getColZombie(),zombie);

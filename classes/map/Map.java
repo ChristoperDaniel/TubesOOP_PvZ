@@ -5,15 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.lang.reflect.InvocationTargetException;
-//import java.util.*;
 
-//import classes.map.threadmap.GameStatusThread;
-//import classes.map.threadmap.SpawnZombieThread;
 import plant.*;
 import zombie.*;
-//import main.*;
 import classes.objects.*;
-//import classes.player.*;
 
 public class Map {
     public static int total_rows = 6;
@@ -212,7 +207,6 @@ public class Map {
                 Thread plantThread = new Thread(plantAction);
                 plantThread.setDaemon(true);
                 plantThread.start();
-                System.out.println(tanaman.getHealthTanaman());
                 tanaman.startCooldown();
                 System.out.println(tanaman.getNamaTanaman() + " telah ditanam. Cooldown dimulai. Sun tersisa: " + sun.gettotalSun());
             }
@@ -239,7 +233,6 @@ public class Map {
         new RugbyZombie(null),
         new ScreendoorZombie(null),
         new DuckyTubeZombie(null)
-        // jangan lupa bikin jadi zombie
     ));
 
     public volatile static List<Class<? extends Zombie>> listofZombieClasses = new ArrayList<>();
@@ -279,9 +272,6 @@ public class Map {
                     // Tangani jika ada kesalahan saat memanggil konstruktor
                     e.printStackTrace();
                 }
-                //System.out.println(randomRow);
-                //System.out.println(randomCol);
-                //System.out.println(zombieType.getNamaZombie());
                 
                 if(isWaterTile(randomRow, randomCol) == true){
                     if(zombieType.getNamaZombie().equals("DuckyTubeZombie")){
@@ -386,7 +376,7 @@ public class Map {
                 Tile tile = tiles[row][col];
                 String color = RESET;
     
-                // Determine the color based on the row and column
+                //atur warna
                 if (row >= 0 && row <= 5 && col == 0) {
                     color = ORANGE;
                 } else if (row >= 0 && row <= 5 && col == 10) {
@@ -397,7 +387,7 @@ public class Map {
                     color = GREEN;
                 }
     
-                // Print the tile with the colored brackets
+                // ngeprint tile
                 System.out.print(color + "[" + RESET + tile.getDisplayName() + color + "]" + RESET + " ");
             }
             System.out.println();

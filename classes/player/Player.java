@@ -26,7 +26,6 @@ public class Player {
             System.out.println("Pilih tanaman untuk ditanam (atau ketik 'exit' untuk keluar):");
             ScannerJava.getScanner().nextLine();
             String pilihan = ScannerJava.getScanner().nextLine();
-            System.out.println(pilihan);
 
             Tanaman tanaman = deck.getTanamanByName(pilihan);
             if (tanaman != null) {
